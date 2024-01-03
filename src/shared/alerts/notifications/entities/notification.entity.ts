@@ -25,7 +25,7 @@ export class NotificationEntity extends AbstractEntity {
   @Column({ type: 'boolean', default: false })
   read: boolean;
 
-  @Column('jsonb')
+  @Column('json')
   metaData: Record<string, any>;
 
   @Column({ type: 'enum', enum: NotificationTypes })

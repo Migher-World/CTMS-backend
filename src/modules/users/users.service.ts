@@ -42,7 +42,7 @@ export class UsersService extends BasicService<User> {
     await this.checkDuplicate(createUserDto);
 
     if (!password) {
-      password = Helper.randPassword(3, 2, 6);
+      password = Helper.randString(3, 2, 6);
     }
 
     const response = this.userRepo.create({ ...createUserDto, password });

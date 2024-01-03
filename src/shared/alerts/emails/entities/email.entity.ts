@@ -27,7 +27,7 @@ export class EmailEntity extends AbstractEntity {
   @Column({ nullable: true })
   error: string;
 
-  @Column('jsonb', { default: [] })
+  @Column('simple-array', { nullable: true })
   attachments: {
     filename: string;
     content?: any;

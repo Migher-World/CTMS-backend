@@ -4,9 +4,10 @@ import * as envVar from 'env-var';
 dotenv.config();
 
 const env = {
+  appUrl: envVar.get('APP_URL').required().asString(),
   jwtSecret: envVar.get('JWT_SECRET').required().asString(),
   expiresIn: envVar.get('JWT_DURATION').asString() ?? '1 year',
-  typeormUrl: envVar.get('TYPEORM_URL').required().asString(),
+  dbUrl: envVar.get('DB_URL').required().asString(),
   typeormDriverExtra: envVar.get('TYPEORM_DRIVER_EXTRA').asJson(),
   port: envVar.get('PORT').asInt() ?? 3000,
   synchronize: envVar.get('TYPEORM_SYNCHRONIZE').required().asBool(),
@@ -26,6 +27,11 @@ const env = {
   awsSecretKey: envVar.get('AWS_SECRET_KEY').required().asString(),
   s3BucketName: envVar.get('S3_BUCKET_NAME').required().asString(),
   awsRegion: envVar.get('AWS_REGION').required().asString(),
+  encryption: {
+    key: envVar.get('ENCRYPTION_KEY').required().asString(),
+    iv: envVar.get('ENCRYPTION_IV').required().asString(),
+    algorithm: envVar.get('ENCRYPTION_ALGORITHM').required().asString(),
+  },
 };
 
 export default env;
