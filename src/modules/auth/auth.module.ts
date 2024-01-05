@@ -11,6 +11,7 @@ import env from '../../config/env.config';
 import { UsersModule } from '../users/users.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JWTGuard } from '../../shared/guards/auth.guard';
+import { CompaniesModule } from '../companies/companies.module';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ dotenv.config();
       defaultStrategy: 'jwt',
     }),
     UsersModule,
+    CompaniesModule,
   ],
   providers: [AuthService, JwtStrategy, {
     provide: APP_GUARD,

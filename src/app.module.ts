@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
@@ -13,6 +13,8 @@ import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import { BullModule } from '@nestjs/bull';
 import { WebsocketModule } from './websockets/websocket.module';
 import { GlobalModule } from './global.module';
+import { CompaniesModule } from './modules/companies/companies.module';
+import { CompanyMiddleware } from './shared/middlewares/company.middleware';
 const mg = require('nodemailer-mailgun-transport');
 
 @Module({
@@ -46,8 +48,14 @@ const mg = require('nodemailer-mailgun-transport');
     EmailsModule,
     NotificationsModule,
     WebsocketModule,
+    CompaniesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    // apply to all routes except auth routes
+    consumer.apply(CompanyMiddleware).exclude({ path: 'auth/*', method: RequestMethod.ALL })/* .forRoutes('*') */;
+  }
+}

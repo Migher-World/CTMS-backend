@@ -1,18 +1,13 @@
-import {
-  AfterLoad,
-  BeforeInsert,
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-} from 'typeorm';
+import { AfterLoad, BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { Role } from '../../roles/entities/role.entity';
-import { classToPlain, Exclude } from 'class-transformer';
+import { instanceToPlain, Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 import { AbstractEntity } from '../../../shared/entities/abstract-entity';
+import { Company } from '../../companies/entities/company.entity';
+import { IUser } from '../interfaces/user.interface';
 
 @Entity('users')
-export class User extends AbstractEntity {
+export class User extends AbstractEntity implements IUser {
   @Column()
   firstName: string;
 
@@ -28,6 +23,13 @@ export class User extends AbstractEntity {
   @Exclude()
   @Column()
   password: string;
+
+  @Column()
+  companyId: string;
+
+  @ManyToOne(() => Company, { eager: true })
+  @JoinColumn()
+  company: Company;
 
   @ManyToOne(() => Role, (role) => role.users, { eager: true })
   @JoinColumn()
@@ -45,8 +47,8 @@ export class User extends AbstractEntity {
   @Column({ default: false })
   phoneNumberVerified: boolean;
 
-  protected fullName: string;
-  protected verified: boolean;
+  fullName: string;
+  verified: boolean;
 
   @BeforeInsert()
   async handleBeforeInsert() {
@@ -64,6 +66,6 @@ export class User extends AbstractEntity {
   }
 
   toJSON() {
-    return classToPlain(this);
+    return instanceToPlain(this);
   }
 }
