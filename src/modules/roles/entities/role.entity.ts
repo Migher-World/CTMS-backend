@@ -1,5 +1,5 @@
 import { Permission } from './../../permissions/entities/permission.entity';
-import { Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { BasicEntity } from '../../../shared/entities/basic-entity';
 
@@ -13,4 +13,7 @@ export class Role extends BasicEntity {
   })
   @JoinTable()
   permissions: Permission[];
+
+  @Column()
+  companyId: string;
 }

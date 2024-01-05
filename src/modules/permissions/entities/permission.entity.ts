@@ -1,15 +1,9 @@
-import {
-  BeforeInsert,
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToMany,
-  ManyToOne,
-} from 'typeorm';
+import { BeforeInsert, Column, Entity, JoinColumn, ManyToMany, ManyToOne } from 'typeorm';
 import { PermissionGroup } from '../../permission-groups/entities/permission-group.entity';
 import { Role } from '../../roles/entities/role.entity';
 import slugify from 'slugify';
 import { BasicEntity } from '../../../shared/entities/basic-entity';
+import { CompanyCategory } from '../../companies/interfaces/company.interface';
 
 @Entity('permissions')
 export class Permission extends BasicEntity {
@@ -23,9 +17,12 @@ export class Permission extends BasicEntity {
   @Column()
   permissionGroupId: string;
 
+  @Column('simple-array')
+  categories: CompanyCategory[];
+
   @BeforeInsert()
   handleBeforeInsert() {
-    var reversed = this.name.split(' ').reverse().join(' ');
+    const reversed = this.name.split(' ').reverse().join(' ');
     this.slug = slugify(reversed, { lower: true, replacement: '.' });
   }
 }
