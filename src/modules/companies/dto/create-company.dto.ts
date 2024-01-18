@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
-import { CompanyCategory } from '../interfaces/company.interface';
+import { CompanyType } from '../interfaces/company.interface';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Helper } from '../../../shared/helpers';
 
@@ -21,8 +21,8 @@ export class CreateCompanyDto {
   address: string;
 
   @IsNotEmpty()
-  @IsEnum(CompanyCategory)
-  type: CompanyCategory;
+  @IsEnum(CompanyType)
+  type: CompanyType;
 
   @IsOptional()
 @ApiPropertyOptional({ example: Helper.faker.company.bs() })

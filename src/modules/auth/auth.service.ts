@@ -6,12 +6,13 @@ import { AppDataSource } from '../../config/db.config';
 import { Helper } from '../../shared/helpers';
 import { Company } from '../companies/entities/company.entity';
 import { CreateCompanyDto } from '../companies/dto/create-company.dto';
-import { CompanyCategory } from '../companies/interfaces/company.interface';
+import { CompanyType } from '../companies/interfaces/company.interface';
 import { User } from '../users/entities/user.entity';
+import { CompaniesService } from '../companies/companies.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private jwtService: JwtService, private usersService: UsersService) {}
+  constructor(private jwtService: JwtService, private usersService: UsersService, private companyService: CompaniesService) {}
 
   async signUp(credentials: RegisterDto) {
     const transaction = await AppDataSource.transaction(async (manager) => {
@@ -25,12 +26,13 @@ export class AuthService {
       password = await Helper.hash(password);
 
       const companyDto: CreateCompanyDto =
-        credentials.company.type === CompanyCategory.INDIVIDUAL || credentials.company.type === CompanyCategory.SPONSOR
+        credentials.company.type === CompanyType.INDIVIDUAL || credentials.company.type === CompanyType.SPONSOR
           ? { ...credentials.company, name: `${credentials.firstName}: ${credentials.company.type} Company` }
           : credentials.company;
 
       const company = await manager.save<Company>(manager.create<Company>(Company, companyDto));
       const user = await manager.save<User>(manager.create<User>(User, { ...credentials, password, company }));
+      await this.companyService.createCompanyDefaultRoles(company.id);
 
       const payload: AuthPayload = { id: user.id };
       const token = this.jwtService.sign(payload);

@@ -1,6 +1,6 @@
 import { Column, Entity } from 'typeorm';
 import { AbstractEntity } from '../../../shared/entities/abstract-entity';
-import { CompanyCategory, ICompany } from '../interfaces/company.interface';
+import { CompanyType, ICompany } from '../interfaces/company.interface';
 
 @Entity('companies')
 export class Company extends AbstractEntity implements ICompany {
@@ -19,8 +19,8 @@ export class Company extends AbstractEntity implements ICompany {
   @Column()
   address: string;
 
-  @Column({ enum: CompanyCategory, type: 'enum' })
-  type: CompanyCategory;
+  @Column({ enum: CompanyType, type: 'enum' })
+  type: CompanyType;
 
   @Column({ nullable: true })
   industry: string;

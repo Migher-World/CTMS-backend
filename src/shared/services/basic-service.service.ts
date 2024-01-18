@@ -1,11 +1,5 @@
 import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
-import {
-  DeepPartial,
-  EntityNotFoundError,
-  EntityTarget,
-  FindManyOptions,
-  FindOneOptions,
-} from 'typeorm';
+import { DeepPartial, EntityNotFoundError, EntityTarget, FindManyOptions, FindOneOptions } from 'typeorm';
 import { AppDataSource } from '../../config/db.config';
 import { CacheService } from '../../modules/cache/cache.service';
 import { AbstractPaginationDto } from '../dto/abstract-pagination.dto';
@@ -149,19 +143,12 @@ export class BasicService<T> {
   list(): Promise<T[]> {
     if (this.cache) {
       const cacheKey = `${this.cacheKeyPrefix}:list`;
-      return this.cache.getOrSet(cacheKey, () =>
-        this.repository.find({ select: this.fields }),
-      );
+      return this.cache.getOrSet(cacheKey, () => this.repository.find({ select: this.fields }));
     }
     return this.repository.find({ select: this.fields });
   }
 
-  async findOne(
-    value: string,
-    key = 'id',
-    relations: string[] = [],
-    fail = true,
-  ): Promise<T> {
+  async findOne(value: string, key = 'id', relations: string[] = [], fail = true): Promise<T> {
     const where = {};
     where[key] = value;
     const response = await this.repository.findOne({ where, relations });
@@ -201,11 +188,7 @@ export class BasicService<T> {
     return {};
   }
 
-  async resolveRelationships<Type>(
-    payload: string[],
-    entity: EntityTarget<Type>,
-    key = 'id',
-  ): Promise<Type[]> {
+  async resolveRelationships<Type>(payload: string[], entity: EntityTarget<Type>, key = 'id'): Promise<Type[]> {
     const data: Promise<Type>[] = [];
     for (const value of payload) {
       const where = {};
@@ -234,12 +217,8 @@ export class BasicService<T> {
       pageCount: Number(response.meta.totalPages),
       limit: Number(response.meta.itemsPerPage),
       total: Number(response.meta.totalItems),
-      skipped: Number(
-        response.meta.itemsPerPage * (response.meta.currentPage - 1),
-      ),
-      nextPage:
-        response.meta.currentPage * response.meta.itemsPerPage <
-        response.meta.totalItems,
+      skipped: Number(response.meta.itemsPerPage * (response.meta.currentPage - 1)),
+      nextPage: response.meta.currentPage * response.meta.itemsPerPage < response.meta.totalItems,
     };
 
     return {

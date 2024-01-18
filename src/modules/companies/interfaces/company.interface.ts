@@ -1,4 +1,4 @@
-export enum CompanyCategory {
+export enum CompanyType {
     INDIVIDUAL = 'INDIVIDUAL',
     SITE = 'SITE',
     VENDOR = 'VENDOR',
@@ -10,7 +10,7 @@ export interface ICompany {
     address: string;
     email: string;
     phoneNumber: string;
-    type: CompanyCategory;
+    type: CompanyType;
     status: boolean;
     industry?: string;
 }

@@ -6,6 +6,7 @@ import { BasicService } from '../../shared/services/basic-service.service';
 import { RolesService } from '../roles/roles.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
+import { AssignRoleDto } from './dto/assign-role.dto';
 
 @Injectable()
 export class UsersService extends BasicService<User> {
@@ -51,12 +52,12 @@ export class UsersService extends BasicService<User> {
     return user;
   }
 
-  // async assignRole(assignRoleDto: AssignRoleDto) {
-  //   const { userId, roleId } = assignRoleDto;
-  //   const user = await this.findOne(userId);
-  //   const role = await this.rolesService.findOne(roleId);
-  //   user.role = role;
-  //   await user.save();
-  //   return user;
-  // }
+  async assignRole(assignRoleDto: AssignRoleDto) {
+    const { userId, roleId } = assignRoleDto;
+    const user = await this.findOne(userId);
+    const role = await this.rolesService.findOne(roleId);
+    user.role = role;
+    await user.save();
+    return user;
+  }
 }

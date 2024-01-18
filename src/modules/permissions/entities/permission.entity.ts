@@ -3,7 +3,6 @@ import { PermissionGroup } from '../../permission-groups/entities/permission-gro
 import { Role } from '../../roles/entities/role.entity';
 import slugify from 'slugify';
 import { BasicEntity } from '../../../shared/entities/basic-entity';
-import { CompanyCategory } from '../../companies/interfaces/company.interface';
 
 @Entity('permissions')
 export class Permission extends BasicEntity {
@@ -17,8 +16,8 @@ export class Permission extends BasicEntity {
   @Column()
   permissionGroupId: string;
 
-  @Column('simple-array')
-  categories: CompanyCategory[];
+  // @Column('simple-array')
+  // categories: CompanyType[];
 
   @BeforeInsert()
   handleBeforeInsert() {

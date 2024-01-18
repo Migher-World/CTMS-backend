@@ -21,11 +21,11 @@ export class UsersController {
     );
   }
 
-  // @Post('assign-role')
-  // async assignRole(@Body() assignRoleDto: AssignRoleDto) {
-  //   return resolveResponse(
-  //     this.usersService.assignRole(assignRoleDto),
-  //     'Role Assigned',
-  //   );
-  // }
+  @Post('assign-role')
+  async assignRole(@Body() assignRoleDto: AssignRoleDto) {
+    return resolveResponse(
+      this.usersService.assignRole(assignRoleDto),
+      'Role Assigned',
+    );
+  }
 }
