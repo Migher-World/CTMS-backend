@@ -4,10 +4,10 @@ import { Company } from './entities/company.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RolesService } from '../roles/roles.service';
 import { CompanyType } from './interfaces/company.interface';
-import individualRoles from '../../json/individual-roles.json';
-import siteRoles from '../../json/site-roles.json';
-import sponsorRoles from '../../json/sponsor-roles.json';
-import vendorRoles from '../../json/vendor-roles.json';
+import * as individualRoles from '../../json/individual-roles.json';
+import * as siteRoles from '../../json/site-roles.json';
+import * as sponsorRoles from '../../json/sponsor-roles.json';
+import * as vendorRoles from '../../json/vendor-roles.json';
 import { IRole } from '../roles/interface/role.interface';
 
 @Injectable()
@@ -19,11 +19,11 @@ export class CompaniesService extends BasicService<Company> {
     super(companyRepository, 'Company');
   }
 
-  async createCompanyDefaultRoles(companyId: string) {
-    const company = await this.findOne(companyId);
+  async createCompanyDefaultRoles(company: Company) {
+    // const company = await this.findOne(companyId);
     const rolesJson = await this.prepareRoles(company.type);
     rolesJson.map((role) => {
-      role.companyId = companyId;
+      role.companyId = company.id;
     });
     const roles = await this.roleService.bulkCreate(rolesJson);
     return roles;

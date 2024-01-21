@@ -31,8 +31,8 @@ export class AuthService {
           : credentials.company;
 
       const company = await manager.save<Company>(manager.create<Company>(Company, companyDto));
-      const user = await manager.save<User>(manager.create<User>(User, { ...credentials, password, company }));
-      await this.companyService.createCompanyDefaultRoles(company.id);
+      const roles = await this.companyService.createCompanyDefaultRoles(company);
+      const user = await manager.save<User>(manager.create<User>(User, { ...credentials, password, company, role: roles.find((role) => role.name.includes('admin')) }));
 
       const payload: AuthPayload = { id: user.id };
       const token = this.jwtService.sign(payload);
@@ -57,5 +57,4 @@ export class AuthService {
       throw new UnauthorizedException('Invalid Credentials');
     }
   }
-  0;
 }

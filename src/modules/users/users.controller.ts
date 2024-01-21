@@ -4,9 +4,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AssignRoleDto } from './dto/assign-role.dto';
 import { resolveResponse } from '../../shared/resolvers';
+import { Headers } from '../../shared/decorators/headers.decorator';
 
 @ApiTags('Users')
 @ApiBearerAuth()
+@Headers()
 // @UseGuards(AuthGuard, PermissionGuard)
 @Controller('users')
 export class UsersController {

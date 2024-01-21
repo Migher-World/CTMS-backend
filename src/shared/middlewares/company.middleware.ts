@@ -1,9 +1,10 @@
 import { BadRequestException, Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
+import { Company } from '../../modules/companies/entities/company.entity';
 
 @Injectable()
 export class CompanyMiddleware implements NestMiddleware {
-  use(req: any, res: Response, next: NextFunction) {
+  async use(req: any, res: Response, next: NextFunction) {
     const { headers } = req;
     const companyId = headers['x-company-id'];
 
@@ -12,7 +13,11 @@ export class CompanyMiddleware implements NestMiddleware {
       throw new BadRequestException('x-company-id header is required');
     }
 
-    req.companyId = companyId;
+    const company = await Company.findOne({where:{id: companyId}})
+    if(!company) {
+      throw new BadRequestException('invalid company id')
+    }
+    req.company = company;
 
     next();
   }
