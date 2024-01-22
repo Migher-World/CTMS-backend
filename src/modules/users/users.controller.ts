@@ -6,6 +6,8 @@ import { AssignRoleDto } from './dto/assign-role.dto';
 import { resolveResponse } from '../../shared/resolvers';
 import { Headers } from '../../shared/decorators/headers.decorator';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AddUserDto } from './dto/add-user.dto';
+import { CreateClientDto } from '../clients/dto/create-client.dto';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -41,6 +43,14 @@ export class UsersController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return resolveResponse(this.usersService.deleteUser(id), 'User deleted');
+  }
+
+  @Post()
+  async add(@Body() addUserDto:AddUserDto, createClientDto:CreateClientDto) {
+    return resolveResponse(
+      this.usersService.addUser(addUserDto, createClientDto),
+      'User Added',
+    )
   }
 
   @Post('assign-role')
