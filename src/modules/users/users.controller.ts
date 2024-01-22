@@ -4,6 +4,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AssignRoleDto } from './dto/assign-role.dto';
 import { resolveResponse } from '../../shared/resolvers';
+import { AddUserDto } from './dto/add-user.dto';
+import { CreateClientDto } from '../clients/dto/create-client.dto';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -19,6 +21,14 @@ export class UsersController {
       this.usersService.create(createUserDto),
       'Account Created',
     );
+  }
+
+  @Post()
+  async add(@Body() addUserDto:AddUserDto, createClientDto:CreateClientDto) {
+    return resolveResponse(
+      this.usersService.addUser(addUserDto, createClientDto),
+      'User Added',
+    )
   }
 
   @Post('assign-role')

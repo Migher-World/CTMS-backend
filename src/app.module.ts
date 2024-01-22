@@ -15,6 +15,7 @@ import { WebsocketModule } from './websockets/websocket.module';
 import { GlobalModule } from './global.module';
 import { CompaniesModule } from './modules/companies/companies.module';
 import { CompanyMiddleware } from './shared/middlewares/company.middleware';
+import { CreateUserModule } from './create-user/create-user.module';
 const mg = require('nodemailer-mailgun-transport');
 
 @Module({
@@ -49,6 +50,7 @@ const mg = require('nodemailer-mailgun-transport');
     NotificationsModule,
     WebsocketModule,
     CompaniesModule,
+    CreateUserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

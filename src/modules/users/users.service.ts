@@ -7,11 +7,15 @@ import { RolesService } from '../roles/roles.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { AssignRoleDto } from './dto/assign-role.dto';
+import { AddUserDto } from './dto/add-user.dto';
+import { CreateClientDto } from '../clients/dto/create-client.dto';
+import { Client } from '../clients/entities/client.entity';
 
 @Injectable()
 export class UsersService extends BasicService<User> {
   constructor(
     @InjectRepository(User) private userRepo: Repository<User>, // private jwtService: JwtService,
+    @InjectRepository(Client) private clientRepo: Repository<Client>,
     private readonly rolesService: RolesService,
   ) {
     super(userRepo, 'Users');
@@ -48,6 +52,18 @@ export class UsersService extends BasicService<User> {
 
     const response = this.userRepo.create({ ...createUserDto, password });
 
+    const user = await this.userRepo.save(response);
+    return user;
+  }
+
+  async addUser(addUserDto: AddUserDto, createClientDto: CreateClientDto) {
+    const {fullName, email, phoneNumber} = addUserDto;
+    const {name, clientEmail, contactPerson, category, clientType} = createClientDto
+
+    await this.checkDuplicate(addUserDto);
+
+    const response = this.userRepo.create({ ...addUserDto});
+    const client = this.clientRepo.create({...createClientDto});
     const user = await this.userRepo.save(response);
     return user;
   }
