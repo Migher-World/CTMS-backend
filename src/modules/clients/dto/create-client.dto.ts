@@ -1,5 +1,4 @@
 import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
-import { Helper } from 'src/shared/helpers';
 import { Category, ClientType } from '../interfaces/clients.interface';
 
 export class CreateClientDto {

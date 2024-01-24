@@ -1,7 +1,8 @@
 import { IUser } from "src/modules/users/interfaces/user.interface";
 
 export enum Category {}
-export enum ClientType {}
+export enum ClientType {
+}
 
 export interface IClient {
   id: string;
@@ -9,6 +10,6 @@ export interface IClient {
   clientEmail: string;
   contactPerson: string;
   category: Category;
-  clientType: ClientType
   user: IUser;
+  clientType: ClientType;
 }

@@ -21,6 +21,6 @@ export class Client extends AbstractEntity implements IClient {
   @JoinColumn()
   user: User;
 
-  @Column({enum: ClientType})
+  @Column({type: 'enum', enum: ClientType})
   clientType: ClientType;
 }

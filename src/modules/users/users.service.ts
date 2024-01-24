@@ -7,15 +7,12 @@ import { RolesService } from '../roles/roles.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { AssignRoleDto } from './dto/assign-role.dto';
-import { AddUserDto } from './dto/add-user.dto';
-import { CreateClientDto } from '../clients/dto/create-client.dto';
-import { Client } from '../clients/entities/client.entity';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService extends BasicService<User> {
   constructor(
     @InjectRepository(User) private userRepo: Repository<User>, // private jwtService: JwtService,
-    @InjectRepository(Client) private clientRepo: Repository<Client>,
     private readonly rolesService: RolesService,
   ) {
     super(userRepo, 'Users');
@@ -56,16 +53,32 @@ export class UsersService extends BasicService<User> {
     return user;
   }
 
-  async addUser(addUserDto: AddUserDto, createClientDto: CreateClientDto) {
-    const {fullName, email, phoneNumber} = addUserDto;
-    const {name, clientEmail, contactPerson, category, clientType} = createClientDto
+  async findUsers(){
+    const users = await this.userRepo.find();
+    return users;
+  }
 
-    await this.checkDuplicate(addUserDto);
-
-    const response = this.userRepo.create({ ...addUserDto});
-    const client = this.clientRepo.create({...createClientDto});
-    const user = await this.userRepo.save(response);
+  async findUser(userId: string){
+    const id = userId
+    const user = await this.userRepo.findOne({where: {id}});
     return user;
+  }
+
+  async updateUser(userId: string, updateUserDto: UpdateUserDto){
+    const user = await this.findUser(userId);
+
+    if (user){
+      const updatedUser = await this.userRepo.update(userId, updateUserDto);
+      return updatedUser;
+    }
+  }
+
+  async deleteUser(userId: string) {
+    const user = await this.findUser(userId);
+
+    if (user){
+      await this.userRepo.delete(userId)
+    }
   }
 
   async assignRole(assignRoleDto: AssignRoleDto) {

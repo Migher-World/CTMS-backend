@@ -1,15 +1,16 @@
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
+import { CreateUserDto } from './create-user.dto';
+import { CreateClientDto } from 'src/modules/clients/dto/create-client.dto';
 
 export class AddUserDto {
   @IsNotEmpty()
-  @IsOptional()
-  fullName: string;
+  @ValidateNested({ always: true })
+  @Type(() => CreateUserDto)
+  user: CreateUserDto;
 
   @IsNotEmpty()
   @IsOptional()
-  email: string;
-
-  @IsNotEmpty()
-  @IsOptional()
-  phoneNumber: string;
+  @Type(() => CreateClientDto)
+  client: CreateClientDto
 }
