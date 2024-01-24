@@ -45,14 +45,6 @@ export class UsersController {
     return resolveResponse(this.usersService.deleteUser(id), 'User deleted');
   }
 
-  @Post()
-  async add(@Body() addUserDto:AddUserDto, createClientDto:CreateClientDto) {
-    return resolveResponse(
-      this.usersService.addUser(addUserDto, createClientDto),
-      'User Added',
-    )
-  }
-
   @Post('assign-role')
   async assignRole(@Body() assignRoleDto: AssignRoleDto) {
     return resolveResponse(this.usersService.assignRole(assignRoleDto), 'Role Assigned');

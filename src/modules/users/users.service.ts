@@ -16,7 +16,6 @@ import { Client } from '../clients/entities/client.entity';
 export class UsersService extends BasicService<User> {
   constructor(
     @InjectRepository(User) private userRepo: Repository<User>, // private jwtService: JwtService,
-    @InjectRepository(Client) private clientRepo: Repository<Client>,
     private readonly rolesService: RolesService,
   ) {
     super(userRepo, 'Users');
@@ -69,16 +68,12 @@ export class UsersService extends BasicService<User> {
   }
 
   async updateUser(userId: string, updateUserDto: UpdateUserDto){
-    const existingUser = await this.findUser(userId);
+    const user = await this.findUser(userId);
 
-    if (!existingUser){
-      throw new Error('User not Found')
+    if (user){
+      const updatedUser = await this.userRepo.update(userId, updateUserDto);
+      return updatedUser;
     }
-
-    Object.assign(existingUser, updateUserDto);
-
-    const updatedUser = await this.userRepo.save(existingUser);
-    return updatedUser;
   }
 
   async deleteUser(userId: string) {
@@ -87,18 +82,6 @@ export class UsersService extends BasicService<User> {
     if (user){
       await this.userRepo.delete(userId)
     }
-  }
-
-  async addUser(addUserDto: AddUserDto, createClientDto: CreateClientDto) {
-    const {fullName, email, phoneNumber} = addUserDto;
-    const {name, clientEmail, contactPerson, category, clientType} = createClientDto
-
-    await this.checkDuplicate(addUserDto);
-
-    const response = this.userRepo.create({ ...addUserDto});
-    const client = this.clientRepo.create({...createClientDto});
-    const user = await this.userRepo.save(response);
-    return user;
   }
 
   async assignRole(assignRoleDto: AssignRoleDto) {
