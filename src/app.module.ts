@@ -16,6 +16,7 @@ import { GlobalModule } from './global.module';
 import { CompaniesModule } from './modules/companies/companies.module';
 import { CompanyMiddleware } from './shared/middlewares/company.middleware';
 import { PermissionGroupsModule } from './modules/permission-groups/permission-groups.module';
+import { PatientsModule } from './modules/patients/patients.module';
 const mg = require('nodemailer-mailgun-transport');
 
 @Module({
@@ -50,6 +51,7 @@ const mg = require('nodemailer-mailgun-transport');
     NotificationsModule,
     WebsocketModule,
     CompaniesModule,
+    PatientsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

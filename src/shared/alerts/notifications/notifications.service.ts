@@ -19,7 +19,7 @@ export class NotificationsService extends BasicService<NotificationEntity> {
     super(notificationsRepo, 'Notification');
   }
 
-  @OnEvent('notifications.create')
+  @OnEvent(AppEvents.CREATE_NOTIFICATION)
   async create(createNotificationDto: CreateNotificationDto) {
     const data = this.notificationsRepo.create(createNotificationDto);
     const notification = await this.notificationsRepo.save(data);
