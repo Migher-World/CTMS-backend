@@ -14,12 +14,15 @@ export class Client extends AbstractEntity implements IClient {
   @Column()
   contactPerson: string;
 
-  @Column({ enum: Category })
+  @Column({ enum: Category, type: 'enum' })
   category: Category;
 
   @ManyToOne(()=> User, {eager: true})
   @JoinColumn()
   user: User;
+
+  @Column()
+  userId: string;
 
   @Column({type: 'enum', enum: ClientType})
   clientType: ClientType;
