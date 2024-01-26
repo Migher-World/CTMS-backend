@@ -25,6 +25,6 @@ export class CreateCompanyDto {
   type: CompanyType;
 
   @IsOptional()
-  @ApiPropertyOptional({ example: Helper.faker.company.bs() })
+  @ApiPropertyOptional({ example: Helper.faker.company.buzzPhrase() })
   industry: string;
 }

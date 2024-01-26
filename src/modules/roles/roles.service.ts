@@ -32,4 +32,8 @@ export class RolesService extends BasicService<Role> {
     role.permissions = permissions;
     return this.roleRepo.save(role);
   }
+
+  async findAllByCompanyId(companyId: string) {
+    return this.roleRepo.find({ where: { companyId } });
+  }
 }

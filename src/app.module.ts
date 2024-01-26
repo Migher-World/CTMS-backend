@@ -15,6 +15,7 @@ import { WebsocketModule } from './websockets/websocket.module';
 import { GlobalModule } from './global.module';
 import { CompaniesModule } from './modules/companies/companies.module';
 import { CompanyMiddleware } from './shared/middlewares/company.middleware';
+import { PermissionGroupsModule } from './modules/permission-groups/permission-groups.module';
 const mg = require('nodemailer-mailgun-transport');
 
 @Module({
@@ -43,7 +44,7 @@ const mg = require('nodemailer-mailgun-transport');
     //     credential: admin.credential.applicationDefault(),
     //   }),
     // }),
-
+    PermissionGroupsModule,
     AuthModule,
     EmailsModule,
     NotificationsModule,
@@ -55,7 +56,13 @@ const mg = require('nodemailer-mailgun-transport');
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    // apply to all routes except auth routes
-    consumer.apply(CompanyMiddleware).exclude({ path: 'auth/*', method: RequestMethod.ALL })/* .forRoutes('*') */;
+    // apply to all routes except auth routes using regex
+    consumer
+      .apply(CompanyMiddleware)
+      .exclude(
+        { path: '/api/auth/(.*)', method: RequestMethod.ALL },
+        { path: '/api/permission-groups', method: RequestMethod.ALL },
+      )
+      .forRoutes('*');
   }
 }
