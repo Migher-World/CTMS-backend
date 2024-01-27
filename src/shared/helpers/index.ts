@@ -44,6 +44,12 @@ export class Helper {
     return slugify(name, { lower: true, replacement: '_' });
   }
 
+  static generatePatientId(companyName: string) {
+    const companyInitials = this.getInitials(companyName, 3);
+    const patientId = `${companyInitials}-${Helper.generateToken(6)}`;
+    return patientId;
+  }
+
   /** 
     @param letters number of letters
     @param numbers number of numbers
@@ -132,5 +138,11 @@ export class Helper {
       EUR: '€',
     };
     return currencies[currency];
+  }
+
+  static getInitials(name: string, length = 2): string {
+    const names = name.split(' ');
+    const initials = names.map((n) => n[0]);
+    return initials.join('').substr(0, length);
   }
 }

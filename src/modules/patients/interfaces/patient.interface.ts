@@ -1,13 +1,24 @@
+export enum EnrollmentStatus {
+    ENROLLED = 'Enrolled',
+    WITHDRAWN = 'Withdrawn',
+    COMPLETED = 'Completed',
+    ON_HOLD = 'On Hold',
+    SCREENING_IN_PROGRESS = 'Screening In Progress',
+    SCREENING_FAILED = 'Screening Failed',
+    INACTIVE = 'Inactive',
+    PENDING_CONSENT = 'Pending Consent',
+    PENDING_SCREENING_RESULTS = 'Pending Screening Results',
+}
+
 export interface IPatient {
     name: string;
     patientId: string;
     enrollmentDate: string;
-    enrollmentSite: string;
-    enrollmentStatus: string;
+    enrollmentStatus: EnrollmentStatus;
     birthDate: string;
-    gender: string;
+    gender: 'male' | 'female';
     nationality: string;
-    consentRecived: boolean;
+    consentReceived: boolean;
     commencedTreatment: boolean;
     droppedOut: boolean;
     visitCompleted: boolean;
