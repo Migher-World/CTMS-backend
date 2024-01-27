@@ -1,6 +1,6 @@
 import { Column, Entity } from "typeorm";
 import { AbstractEntity } from "../../../shared/entities/abstract-entity";
-import { IPatient } from "../interfaces/patient.interface";
+import { EnrollmentStatus, IPatient } from "../interfaces/patient.interface";
 
 @Entity('patients')
 export class Patient extends AbstractEntity implements IPatient {
@@ -13,23 +13,20 @@ export class Patient extends AbstractEntity implements IPatient {
     @Column({type: 'date'})
     enrollmentDate: string;
 
-    @Column()
-    enrollmentSite: string;
-
-    @Column()
-    enrollmentStatus: string;
+    @Column({type: 'enum', enum: EnrollmentStatus})
+    enrollmentStatus: EnrollmentStatus;
 
     @Column()
     birthDate: string;
 
     @Column()
-    gender: string;
+    gender: 'male' | 'female';
 
     @Column()
     nationality: string;
 
     @Column()
-    consentRecived: boolean;
+    consentReceived: boolean;
 
     @Column()
     commencedTreatment: boolean;
