@@ -38,12 +38,11 @@ export class PatientsController {
 
   @Get()
   getPatientsByCompanyId(@Query() pagination: BasicPaginationDto, @CurrentCompany() company: ICompany) {
-    return resolveResponse(
-      this.patientsService.findAll(pagination, {
-        where: {
-          companyId: company.id,
-        },
-      }),
-    );
+    return resolveResponse(this.patientsService.findAll(pagination, company.id));
+  }
+
+  @Get('/get/overview')
+  getPatientOverview(@CurrentCompany() company: ICompany) {
+    return resolveResponse<unknown>(this.patientsService.getPatientOverview(company.id));
   }
 }
