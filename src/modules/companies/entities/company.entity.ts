@@ -1,6 +1,7 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { AbstractEntity } from '../../../shared/entities/abstract-entity';
 import { CompanyType, ICompany } from '../interfaces/company.interface';
+import { User } from 'src/modules/users/entities/user.entity';
 
 @Entity('companies')
 export class Company extends AbstractEntity implements ICompany {
@@ -24,4 +25,7 @@ export class Company extends AbstractEntity implements ICompany {
 
   @Column({ nullable: true })
   industry: string;
+
+  @OneToMany(() => User, user => user.company)
+  users: User[];
 }

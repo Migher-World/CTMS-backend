@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, Patch, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Patch, Delete, Header, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -17,8 +17,10 @@ export class UsersController {
 
   // @Permissions('user.create')
   @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
-    return resolveResponse(this.usersService.create(createUserDto), 'Account Created');
+  async create(@Req() request, @Body() createUserDto: CreateUserDto) {
+    const companyId = request.headers['x-company-id'];
+    console.log(companyId)
+    return resolveResponse(this.usersService.create(createUserDto, companyId), 'Account Created');
   }
 
   @Get()

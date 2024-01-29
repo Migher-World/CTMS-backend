@@ -38,7 +38,7 @@ export class UsersService extends BasicService<User> {
     }
   }
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto, companyId:string) {
     let { password } = createUserDto;
 
     await this.checkDuplicate(createUserDto);
@@ -47,7 +47,7 @@ export class UsersService extends BasicService<User> {
       password = Helper.randString(3, 2, 6);
     }
 
-    const response = this.userRepo.create({ ...createUserDto, password });
+    const response = this.userRepo.create({ ...createUserDto, password, companyId });
 
     const user = await this.userRepo.save(response);
     return user;
@@ -65,12 +65,16 @@ export class UsersService extends BasicService<User> {
   }
 
   async updateUser(userId: string, updateUserDto: UpdateUserDto){
-    const user = await this.findUser(userId);
+    const existingUser = await this.findUser(userId);
 
-    if (user){
-      const updatedUser = await this.userRepo.update(userId, updateUserDto);
-      return updatedUser;
+    if (!existingUser){
+      throw new Error('User not Found')
     }
+
+    Object.assign(existingUser, updateUserDto);
+
+    const updatedUser = await this.userRepo.save(existingUser);
+    return updatedUser;
   }
 
   async deleteUser(userId: string) {

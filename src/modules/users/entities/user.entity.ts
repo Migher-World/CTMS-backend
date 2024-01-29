@@ -24,10 +24,15 @@ export class User extends AbstractEntity implements IUser {
   @Column()
   password: string;
 
-  @Column()
+  // @Column({default: '8ea14ca3-e424-4db2-bcb5-8f2fcb70a2a8'})
+  // companyId: string;
+  @Column({default: 0})
   companyId: string;
 
-  @ManyToOne(() => Company, { eager: true })
+  // @ManyToOne(() => Company, { eager: true })
+  // @JoinColumn()
+
+  @ManyToOne(() => Company, company => company.users)
   @JoinColumn()
   company: Company;
 
