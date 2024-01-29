@@ -3,7 +3,7 @@ import { BasicService } from '../../shared/services/basic-service.service';
 import { Patient } from './entities/patient.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreatePatientDto } from './dto/patient.dto';
+import { CreatePatientDto, UpdatePatientDto, UpdatePatientStatusDto } from './dto/patient.dto';
 import { Helper } from '../../shared/helpers';
 import { ICompany } from '../companies/interfaces/company.interface';
 import { EnrollmentStatus } from './interfaces/patient.interface';
@@ -14,18 +14,21 @@ export class PatientsService extends BasicService<Patient> {
     super(patientRepo, 'Patients');
   }
 
-  async getPatientsByCompanyId(companyId: string): Promise<Patient[]> {
-    return this.patientRepo.find({ where: { companyId } });
-  }
-
   async create(payload: CreatePatientDto, company: ICompany): Promise<Patient> {
     const patientId = await this.generatePatientId(company);
     const patient = await this.patientRepo.create({
       ...payload,
       companyId: company.id,
       patientId,
+      enrollmentDate: new Date().toISOString(),
     });
     await this.patientRepo.save(patient);
+    return patient;
+  }
+
+  async update(id: string, payload: UpdatePatientDto): Promise<Patient> {
+    const patient = await this.findOne(id);
+    await this.patientRepo.save({ ...patient, ...payload });
     return patient;
   }
 
@@ -46,9 +49,9 @@ export class PatientsService extends BasicService<Patient> {
     return patientId;
   }
 
-  async updatePatientStatus(id: string, status: EnrollmentStatus): Promise<Patient> {
-    const patient = await this.findOne(id);
-    patient.enrollmentStatus = status;
+  async updatePatientStatus(payload: UpdatePatientStatusDto): Promise<Patient> {
+    const patient = await this.findOne(payload.patientId);
+    patient.enrollmentStatus = payload.status;
     await patient.save();
     return patient;
   }

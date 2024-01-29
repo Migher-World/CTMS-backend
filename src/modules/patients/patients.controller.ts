@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { PatientsService } from './patients.service';
-import { CreatePatientDto } from './dto/patient.dto';
+import { CreatePatientDto, UpdatePatientDto, UpdatePatientStatusDto } from './dto/patient.dto';
 import { resolveResponse } from '../../shared/resolvers';
 import { ICompany } from '../companies/interfaces/company.interface';
 import { CurrentCompany } from '../../shared/decorators/current-company.decorator';
@@ -21,9 +21,14 @@ export class PatientsController {
     return resolveResponse(this.patientsService.create(createPatientDto, company));
   }
 
-  @Post('update-status/:id')
-  updatePatientStatus(@Body('status') status: EnrollmentStatus, @Param() id: string) {
-    return resolveResponse(this.patientsService.updatePatientStatus(id, status));
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updatePatientDto: UpdatePatientDto, @CurrentCompany() company: ICompany) {
+    return resolveResponse(this.patientsService.update(id, updatePatientDto));
+  }
+
+  @Post('update-status')
+  updatePatientStatus(@Body() payload: UpdatePatientStatusDto, @CurrentCompany() company: ICompany) {
+    return resolveResponse(this.patientsService.updatePatientStatus(payload));
   }
 
   @Get()

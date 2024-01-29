@@ -10,7 +10,7 @@ export class Patient extends AbstractEntity implements IPatient {
     @Column()
     patientId: string;
 
-    @Column({type: 'date'})
+    @Column({type: 'timestamp'})
     enrollmentDate: string;
 
     @Column({type: 'enum', enum: EnrollmentStatus})

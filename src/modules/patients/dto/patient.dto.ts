@@ -7,17 +7,8 @@ export class CreatePatientDto {
   @IsNotEmpty()
   name: string;
 
-  // @IsNotEmpty()
-  // patientId: string;
-
-  // @IsNotEmpty()
-  // enrollmentDate: string;
-
-  // @IsNotEmpty()
-  // enrollmentSite: string;
-
   @IsNotEmpty()
-  @IsEnum({ enum: EnrollmentStatus })
+  @IsEnum(EnrollmentStatus)
   @ApiProperty({ enum: EnrollmentStatus })
   enrollmentStatus: EnrollmentStatus;
 
@@ -58,4 +49,17 @@ export class CreatePatientDto {
   @IsNotEmpty()
   @ApiProperty({ example: Helper.faker.datatype.boolean() })
   withinWindow: boolean;
+}
+
+export class UpdatePatientDto extends CreatePatientDto {}
+
+export class UpdatePatientStatusDto {
+  @IsNotEmpty()
+  @IsEnum(EnrollmentStatus)
+  @ApiProperty({ enum: EnrollmentStatus })
+  status: EnrollmentStatus;
+
+  @IsNotEmpty()
+  @ApiProperty({ example: Helper.faker.string.uuid() })
+  patientId: string;
 }
