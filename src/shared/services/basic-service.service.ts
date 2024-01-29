@@ -2,7 +2,7 @@ import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
 import { DeepPartial, EntityNotFoundError, EntityTarget, FindManyOptions, FindOneOptions } from 'typeorm';
 import { AppDataSource } from '../../config/db.config';
 import { CacheService } from '../../modules/cache/cache.service';
-import { AbstractPaginationDto } from '../dto/abstract-pagination.dto';
+import { BasicPaginationDto } from '../dto/basic-pagination.dto';
 import { CACHE_LIMIT } from '../../config/cacheKeys';
 import { SelectQueryBuilder } from 'typeorm';
 
@@ -125,7 +125,7 @@ export class BasicService<T> {
     return this.repository.save(entities);
   }
 
-  async findAll(pagination: AbstractPaginationDto, ..._args: unknown[]) {
+  async findAll(pagination: BasicPaginationDto, ..._args: unknown[]) {
     if (this.cache && this.fitsInCache(pagination.page, pagination.limit)) {
       const cacheKey = `${this.cacheKeyPrefix}:findAll`;
       const items = await this.cache.getOrSet(cacheKey, async () => {
@@ -229,7 +229,7 @@ export class BasicService<T> {
 
   protected paginate(
     queryBuilder: SelectQueryBuilder<T>,
-    filter: AbstractPaginationDto,
+    filter: BasicPaginationDto,
   ): Promise<{
     list: T[];
     pagination: {

@@ -1,15 +1,8 @@
-import {
-  Controller,
-  Get,
-  Patch,
-  Param,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Patch, Param, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { User } from '../../../modules/users/entities/user.entity';
 import { CurrentUser } from '../../decorators/current-user.decorator';
-import { AbstractPaginationDto } from '../../dto/abstract-pagination.dto';
+import { BasicPaginationDto } from '../../dto/basic-pagination.dto';
 import { resolveResponse } from '../../resolvers';
 import { NotificationsService } from './notifications.service';
 
@@ -25,10 +18,7 @@ export class NotificationsController {
   // }
 
   @Get()
-  findAll(
-    @Query() pagination: AbstractPaginationDto,
-    @CurrentUser() user: User,
-  ) {
+  findAll(@Query() pagination: BasicPaginationDto, @CurrentUser() user: User) {
     return resolveResponse(
       this.notificationsService.findAll(pagination, {
         where: {
