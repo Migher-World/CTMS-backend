@@ -7,6 +7,7 @@ import { CreatePatientDto, UpdatePatientDto, UpdatePatientStatusDto } from './dt
 import { Helper } from '../../shared/helpers';
 import { ICompany } from '../companies/interfaces/company.interface';
 import { EnrollmentStatus } from './interfaces/patient.interface';
+import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
 
 @Injectable()
 export class PatientsService extends BasicService<Patient> {
@@ -54,5 +55,34 @@ export class PatientsService extends BasicService<Patient> {
     patient.enrollmentStatus = payload.status;
     await patient.save();
     return patient;
+  }
+
+  async findAll(pagination: BasicPaginationDto, companyId: string) {
+    const query = this.patientRepo.createQueryBuilder('patient');
+    query.where('patient.companyId = :companyId', { companyId });
+    return this.paginate(query, pagination);
+  }
+
+  async getPatientOverview(companyId: string) {
+    const patients = await this.patientRepo.find({ where: { companyId } });
+
+    const enrollmentStatusCounts = {
+      [EnrollmentStatus.ENROLLED.replace(/\s/g, '')]: 0,
+      [EnrollmentStatus.WITHDRAWN.replace(/\s/g, '')]: 0,
+      [EnrollmentStatus.COMPLETED.replace(/\s/g, '')]: 0,
+      [EnrollmentStatus.ON_HOLD.replace(/\s/g, '')]: 0,
+      [EnrollmentStatus.SCREENING_IN_PROGRESS.replace(/\s/g, '')]: 0,
+      [EnrollmentStatus.SCREENING_FAILED.replace(/\s/g, '')]: 0,
+      [EnrollmentStatus.INACTIVE.replace(/\s/g, '')]: 0,
+      [EnrollmentStatus.PENDING_CONSENT.replace(/\s/g, '')]: 0,
+      [EnrollmentStatus.PENDING_SCREENING_RESULTS.replace(/\s/g, '')]: 0,
+    };
+
+    patients.forEach((patient) => {
+      const status = patient.enrollmentStatus as EnrollmentStatus;
+      enrollmentStatusCounts[status]++;
+    });
+
+    return enrollmentStatusCounts;
   }
 }
