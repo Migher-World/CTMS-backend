@@ -1,38 +1,24 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Put,
-  Param,
-  Delete,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, Query } from '@nestjs/common';
 import { PermissionGroupsService } from './permission-groups.service';
 import { CreatePermissionGroupDto } from './dto/create-permission-group.dto';
 import { UpdatePermissionGroupDto } from './dto/update-permission-group.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { resolveResponse } from '../../shared/resolvers';
-import { AbstractPaginationDto } from '../../shared/dto/abstract-pagination.dto';
+import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
 
 @ApiTags('Permission Groups')
 @ApiBearerAuth()
 @Controller('permission-groups')
 export class PermissionGroupsController {
-  constructor(
-    private readonly permissionGroupsService: PermissionGroupsService,
-  ) {}
+  constructor(private readonly permissionGroupsService: PermissionGroupsService) {}
 
   @Post()
   create(@Body() createPermissionGroupDto: CreatePermissionGroupDto) {
-    return resolveResponse(
-      this.permissionGroupsService.create(createPermissionGroupDto),
-      'Permission Group Created',
-    );
+    return resolveResponse(this.permissionGroupsService.create(createPermissionGroupDto), 'Permission Group Created');
   }
 
   @Get()
-  findAll(@Query() pagination: AbstractPaginationDto) {
+  findAll(@Query() pagination: BasicPaginationDto) {
     return resolveResponse(this.permissionGroupsService.findAll(pagination));
   }
 
@@ -47,10 +33,7 @@ export class PermissionGroupsController {
   }
 
   @Put(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updatePermissionGroupDto: UpdatePermissionGroupDto,
-  ) {
+  update(@Param('id') id: string, @Body() updatePermissionGroupDto: UpdatePermissionGroupDto) {
     return resolveResponse(
       this.permissionGroupsService.update(id, updatePermissionGroupDto),
       'Permission Group Updated',
@@ -59,9 +42,6 @@ export class PermissionGroupsController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return resolveResponse(
-      this.permissionGroupsService.remove(id),
-      'Permission Group Deleted',
-    );
+    return resolveResponse(this.permissionGroupsService.remove(id), 'Permission Group Deleted');
   }
 }
