@@ -23,7 +23,6 @@ export class AuthService {
       if (!password) {
         password = Helper.randString(3, 2, 6);
       }
-      password = await Helper.hash(password);
 
       const companyDto: CreateCompanyDto =
         credentials.company.type === CompanyType.INDIVIDUAL || credentials.company.type === CompanyType.SPONSOR
