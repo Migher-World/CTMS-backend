@@ -21,6 +21,11 @@ export class PatientsController {
     return resolveResponse(this.patientsService.create(createPatientDto, company));
   }
 
+  @Get(':id')
+  findOne(@Param('id') id: string, @CurrentCompany() company: ICompany) {
+    return resolveResponse(this.patientsService.findOne(id));
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePatientDto: UpdatePatientDto, @CurrentCompany() company: ICompany) {
     return resolveResponse(this.patientsService.update(id, updatePatientDto));
