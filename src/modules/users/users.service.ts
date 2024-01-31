@@ -8,9 +8,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { AssignRoleDto } from './dto/assign-role.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AddUserDto } from './dto/add-user.dto';
-import { CreateClientDto } from '../clients/dto/create-client.dto';
-import { Client } from '../clients/entities/client.entity';
 
 @Injectable()
 export class UsersService extends BasicService<User> {

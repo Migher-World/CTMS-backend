@@ -6,8 +6,6 @@ import { AssignRoleDto } from './dto/assign-role.dto';
 import { resolveResponse } from '../../shared/resolvers';
 import { Headers } from '../../shared/decorators/headers.decorator';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AddUserDto } from './dto/add-user.dto';
-import { CreateClientDto } from '../clients/dto/create-client.dto';
 
 @ApiTags('Users')
 @ApiBearerAuth()
