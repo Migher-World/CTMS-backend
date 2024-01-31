@@ -7,6 +7,10 @@ import { RolesService } from '../roles/roles.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { AssignRoleDto } from './dto/assign-role.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { AddUserDto } from './dto/add-user.dto';
+import { CreateClientDto } from '../clients/dto/create-client.dto';
+import { Client } from '../clients/entities/client.entity';
 
 @Injectable()
 export class UsersService extends BasicService<User> {
@@ -37,7 +41,7 @@ export class UsersService extends BasicService<User> {
     }
   }
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto, companyId:string) {
     let { password } = createUserDto;
 
     await this.checkDuplicate(createUserDto);
@@ -46,10 +50,38 @@ export class UsersService extends BasicService<User> {
       password = Helper.randString(3, 2, 6);
     }
 
-    const response = this.userRepo.create({ ...createUserDto, password });
+    const response = this.userRepo.create({ ...createUserDto, password, companyId });
 
     const user = await this.userRepo.save(response);
     return user;
+  }
+
+  async findUsers(){
+    const users = await this.userRepo.find();
+    return users;
+  }
+
+  async findUser(userId: string){
+    const id = userId
+    const user = await this.userRepo.findOne({where: {id}});
+    return user;
+  }
+
+  async updateUser(userId: string, updateUserDto: UpdateUserDto){
+    const user = await this.findUser(userId);
+
+    if (user){
+      const updatedUser = await this.userRepo.update(userId, updateUserDto);
+      return updatedUser;
+    }
+  }
+
+  async deleteUser(userId: string) {
+    const user = await this.findUser(userId);
+
+    if (user){
+      await this.userRepo.delete(userId)
+    }
   }
 
   async assignRole(assignRoleDto: AssignRoleDto) {
