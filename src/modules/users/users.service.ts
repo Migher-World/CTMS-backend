@@ -68,16 +68,12 @@ export class UsersService extends BasicService<User> {
   }
 
   async updateUser(userId: string, updateUserDto: UpdateUserDto){
-    const existingUser = await this.findUser(userId);
+    const user = await this.findUser(userId);
 
-    if (!existingUser){
-      throw new Error('User not Found')
+    if (user){
+      const updatedUser = await this.userRepo.update(userId, updateUserDto);
+      return updatedUser;
     }
-
-    Object.assign(existingUser, updateUserDto);
-
-    const updatedUser = await this.userRepo.save(existingUser);
-    return updatedUser;
   }
 
   async deleteUser(userId: string) {
