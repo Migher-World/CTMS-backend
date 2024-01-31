@@ -16,8 +16,8 @@ export class CreateIssueDto {
   @IsEnum(IssueStatus)
   status: IssueStatus;
 
-  @IsNotEmpty()
-  @ApiProperty({ type: String, description: Helper.faker.string.uuid() })
+  @IsOptional()
+  @ApiPropertyOptional({ type: String, description: Helper.faker.string.uuid() })
   assignedToId: string;
 
   @IsOptional()

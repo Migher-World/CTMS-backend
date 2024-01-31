@@ -73,4 +73,14 @@ export class IssuesService extends BasicService<Issue> {
     });
     return this.commentRepo.save(comment);
   }
+
+  async getOverview(companyId: string) {
+    const query = this.issueRepo.createQueryBuilder('issue');
+    query.where('issue.companyId = :companyId', { companyId });
+    const total = await query.getCount();
+    const open = await query.andWhere('issue.status = :status', { status: IssueStatus.OPEN }).getCount();
+    const inProgress = await query.andWhere('issue.status = :status', { status: IssueStatus.IN_PROGRESS }).getCount();
+    const done = await query.andWhere('issue.status = :status', { status: IssueStatus.DONE }).getCount();
+    return { total, open, inProgress, done };
+  }
 }

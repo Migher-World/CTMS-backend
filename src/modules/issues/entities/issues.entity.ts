@@ -20,14 +20,14 @@ export class Issue extends AbstractEntity {
   @Column({ type: 'enum', enum: IssueStatus, default: IssueStatus.OPEN })
   status: IssueStatus;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { nullable: true, eager: true })
   @JoinColumn()
   assignedTo: User;
 
   @Column({ nullable: true })
   assignedToId: string;
 
-  @OneToMany(() => Comment, (comment) => comment.issue, { eager: true})
+  @OneToMany(() => Comment, (comment) => comment.issue, { eager: true })
   comments: Comment[];
 
   @Column()
@@ -40,6 +40,6 @@ export class Issue extends AbstractEntity {
   @Column()
   companyId: string;
 
-  @Column()
+  @Column({ nullable: true})
   attachment: string;
 }
