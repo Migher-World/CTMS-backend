@@ -11,6 +11,16 @@ export class RequestResetPasswordDto {
   email: string;
 }
 
+export class SetPasswordDto {
+  @IsEmail()
+  @IsNotEmpty()
+  @ApiProperty({ example: Helper.faker.internet.email() })
+  email: string;
+
+  @IsNotEmpty()
+  password: string;
+}
+
 export class ResetPasswordDto {
   @IsEmail()
   @IsNotEmpty()
@@ -19,6 +29,9 @@ export class ResetPasswordDto {
 
   @IsNotEmpty()
   password: string;
+
+  @IsNotEmpty()
+  otp: string;
 }
 
 export class LoginDto {

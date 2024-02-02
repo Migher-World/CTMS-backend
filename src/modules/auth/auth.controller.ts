@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../../shared/decorators/current-user.decorator';
 import { resolveResponse, sendObjectResponse } from '../../shared/resolvers';
 import { User } from '../users/entities/user.entity';
-import { LoginDto, RegisterDto, RequestResetPasswordDto, ResetPasswordDto } from './auth.dto';
+import { LoginDto, RegisterDto, RequestResetPasswordDto, ResetPasswordDto, SetPasswordDto } from './auth.dto';
 import { AuthService } from './auth.service';
 import { Public } from '../../shared/decorators/public.decorator';
 
@@ -36,12 +36,12 @@ export class AuthController {
   }
 
   @Post('reset-password')
-  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto, @Body() otp: string) {
-    return resolveResponse(this.authService.resetPassword(resetPasswordDto, otp), 'Reset Password')
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    return resolveResponse(this.authService.resetPassword(resetPasswordDto), 'Reset Password')
   }
 
   @Post('set-password')
-  async setPassword(@Body() setPasswordDto: ResetPasswordDto){
+  async setPassword(@Body() setPasswordDto: SetPasswordDto){
     return resolveResponse(this.authService.setPassword(setPasswordDto), 'Password set')
   }
 }

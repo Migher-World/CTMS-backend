@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthPayload, LoginDto, RegisterDto, RequestResetPasswordDto, ResetPasswordDto } from './auth.dto';
+import { AuthPayload, LoginDto, RegisterDto, RequestResetPasswordDto, ResetPasswordDto, SetPasswordDto } from './auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { AppDataSource } from '../../config/db.config';
@@ -73,7 +73,7 @@ export class AuthService {
     }
   }
 
-  async setPassword(setPasswordDto: ResetPasswordDto) {
+  async setPassword(setPasswordDto: SetPasswordDto) {
     const { email, password } = setPasswordDto;
     const newPassword = await bcrypt.hash(password, 10);
     const user = await this.userRepo.findOne({ where: { email } });
@@ -90,25 +90,23 @@ export class AuthService {
 
   async requestResetPassword(requestResetPasswordDto: RequestResetPasswordDto) {
     const { email } = requestResetPasswordDto;
-    const isEmailExist = await this.usersService.findUserByEmail(email);
+    const isEmailExist = await this.userRepo.findOne({ where: { email } })
     // Generate otp
     const otp = await Helper.generateToken();
-    console.log(otp);
-    console.log(email);
+
     // Save to redis
     await this.cacheService.set(email, otp, 600);
 
     // Send mail
   }
 
-  async resetPassword(resetPasswordDto: ResetPasswordDto, otp: string) {
-    const { email, password } = resetPasswordDto;
+  async resetPassword(resetPasswordDto: ResetPasswordDto) {
+    const { email, password, otp } = resetPasswordDto;
     const newPassword = await bcrypt.hash(password, 10);
 
     // Retrieve Otp from Cache
     const storedOtp = await this.cacheService.get(email);
-    console.log(storedOtp);
-    if (otp !== storedOtp) {
+    if (otp != storedOtp) {
       throw new UnauthorizedException('Invalid OTP');
     }
 
