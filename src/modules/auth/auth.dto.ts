@@ -4,6 +4,16 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Helper } from '../../shared/helpers';
 import { Type } from 'class-transformer';
 
+export class ResetPasswordDto {
+  @IsEmail()
+  @IsNotEmpty()
+  @ApiProperty({ example: Helper.faker.internet.email() })
+  email: string;
+
+  @IsNotEmpty()
+  password: string;
+}
+
 export class LoginDto {
   @IsEmail()
   @IsNotEmpty()

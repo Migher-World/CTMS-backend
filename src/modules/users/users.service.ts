@@ -45,6 +45,7 @@ export class UsersService extends BasicService<User> {
 
     if (!password) {
       password = Helper.randString(3, 2, 6);
+      console.log(password)
     }
 
     const response = this.userRepo.create({ ...createUserDto, password, companyId });
@@ -53,6 +54,14 @@ export class UsersService extends BasicService<User> {
     return user;
   }
 
+  async findUserByEmail(email: string) {
+    const isEmailExist = await this.userRepo.findOne({ where: { email } });
+
+    if (isEmailExist) {
+      throw new BadRequestException('Email exists');
+    }
+
+  }
   async findUsers(){
     const users = await this.userRepo.find();
     return users;

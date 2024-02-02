@@ -1,5 +1,5 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthPayload, LoginDto, RegisterDto } from './auth.dto';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { AuthPayload, LoginDto, RegisterDto, ResetPasswordDto} from './auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { AppDataSource } from '../../config/db.config';
@@ -9,11 +9,19 @@ import { CreateCompanyDto } from '../companies/dto/create-company.dto';
 import { CompanyType } from '../companies/interfaces/company.interface';
 import { User } from '../users/entities/user.entity';
 import { CompaniesService } from '../companies/companies.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CacheService } from '../cache/cache.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
-  constructor(private jwtService: JwtService, private usersService: UsersService, private companyService: CompaniesService) {}
-
+  constructor(
+    @InjectRepository(User) private userRepo: Repository<User>,
+    private jwtService: JwtService, 
+    private usersService: UsersService, 
+    private companyService: CompaniesService,
+    private cacheService: CacheService) {}
   async signUp(credentials: RegisterDto) {
     const transaction = await AppDataSource.transaction(async (manager) => {
       let { password, email, phoneNumber } = credentials;
@@ -55,5 +63,50 @@ export class AuthService {
     } catch (error) {
       throw new UnauthorizedException('Invalid Credentials');
     }
+  }
+
+  async setPassword(setPasswordDto: ResetPasswordDto){
+    const {email, password} = setPasswordDto;
+    const newPassword = await bcrypt.hash(password, 10)
+    const user = await this.userRepo.findOne({ where: { email } });
+
+    if (user.password) {
+      throw new UnauthorizedException('Password already set');
+    }
+
+    Object.assign(user, {password:newPassword});
+    const updatedUserPassword = await this.userRepo.save(user)
+  
+    return updatedUserPassword;
+  }
+
+  async requestResetPassword(email: string){
+    const isEmailExist = await this.usersService.findUserByEmail(email)
+      // Generate otp
+      const otp = Math.floor(1000 + Math.random()*9000);
+      console.log(otp)
+      // Save to redis
+      await this.cacheService.set(email, otp, 600);
+
+      // Send mail
+  }
+  
+  async resetPassword(resetPasswordDto: ResetPasswordDto, otp: string) {
+    const {email, password} = resetPasswordDto;
+    const newPassword = await bcrypt.hash(password, 10);
+
+    // Retrieve Otp from Cache
+    const storedOtp = await this.cacheService.get(email);
+    console.log(storedOtp)
+    if (otp !== storedOtp) {
+      throw new UnauthorizedException('Invalid OTP');
+    }
+
+    const user = await this.userRepo.findOne({ where: { email } });
+    Object.assign(user, {password:newPassword});
+    const updatedUserPassword = await this.userRepo.save(user)
+  
+    return updatedUserPassword;
+
   }
 }
