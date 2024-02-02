@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthPayload, LoginDto, RegisterDto, ResetPasswordDto} from './auth.dto';
+import { AuthPayload, LoginDto, RegisterDto, RequestResetPasswordDto, ResetPasswordDto } from './auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { AppDataSource } from '../../config/db.config';
@@ -18,10 +18,11 @@ import * as bcrypt from 'bcrypt';
 export class AuthService {
   constructor(
     @InjectRepository(User) private userRepo: Repository<User>,
-    private jwtService: JwtService, 
-    private usersService: UsersService, 
+    private jwtService: JwtService,
+    private usersService: UsersService,
     private companyService: CompaniesService,
-    private cacheService: CacheService) {}
+    private cacheService: CacheService,
+  ) {}
   async signUp(credentials: RegisterDto) {
     const transaction = await AppDataSource.transaction(async (manager) => {
       let { password, email, phoneNumber } = credentials;
@@ -39,7 +40,14 @@ export class AuthService {
 
       const company = await manager.save<Company>(manager.create<Company>(Company, companyDto));
       const roles = await this.companyService.createCompanyDefaultRoles(company);
-      const user = await manager.save<User>(manager.create<User>(User, { ...credentials, password, company, role: roles.find((role) => role.name.includes('admin')) }));
+      const user = await manager.save<User>(
+        manager.create<User>(User, {
+          ...credentials,
+          password,
+          company,
+          role: roles.find((role) => role.name.includes('admin')),
+        }),
+      );
 
       const payload: AuthPayload = { id: user.id };
       const token = this.jwtService.sign(payload);
@@ -65,48 +73,49 @@ export class AuthService {
     }
   }
 
-  async setPassword(setPasswordDto: ResetPasswordDto){
-    const {email, password} = setPasswordDto;
-    const newPassword = await bcrypt.hash(password, 10)
+  async setPassword(setPasswordDto: ResetPasswordDto) {
+    const { email, password } = setPasswordDto;
+    const newPassword = await bcrypt.hash(password, 10);
     const user = await this.userRepo.findOne({ where: { email } });
 
     if (user.setPassword == true) {
       throw new UnauthorizedException('Password already set');
     }
 
-    Object.assign(user, {password:newPassword, setPassword: true});
-    const updatedUserPassword = await this.userRepo.save(user)
-  
+    Object.assign(user, { password: newPassword, setPassword: true });
+    const updatedUserPassword = await this.userRepo.save(user);
+
     return updatedUserPassword;
   }
 
-  async requestResetPassword(email: string){
-    const isEmailExist = await this.usersService.findUserByEmail(email)
-      // Generate otp
-      const otp = Math.floor(1000 + Math.random()*9000);
-      console.log(otp)
-      // Save to redis
-      await this.cacheService.set(email, otp, 600);
+  async requestResetPassword(requestResetPasswordDto: RequestResetPasswordDto) {
+    const { email } = requestResetPasswordDto;
+    const isEmailExist = await this.usersService.findUserByEmail(email);
+    // Generate otp
+    const otp = await Helper.generateToken();
+    console.log(otp);
+    console.log(email);
+    // Save to redis
+    await this.cacheService.set(email, otp, 600);
 
-      // Send mail
+    // Send mail
   }
-  
+
   async resetPassword(resetPasswordDto: ResetPasswordDto, otp: string) {
-    const {email, password} = resetPasswordDto;
+    const { email, password } = resetPasswordDto;
     const newPassword = await bcrypt.hash(password, 10);
 
     // Retrieve Otp from Cache
     const storedOtp = await this.cacheService.get(email);
-    console.log(storedOtp)
+    console.log(storedOtp);
     if (otp !== storedOtp) {
       throw new UnauthorizedException('Invalid OTP');
     }
 
     const user = await this.userRepo.findOne({ where: { email } });
-    Object.assign(user, {password:newPassword});
-    const updatedUserPassword = await this.userRepo.save(user)
-  
-    return updatedUserPassword;
+    Object.assign(user, { password: newPassword });
+    const updatedUserPassword = await this.userRepo.save(user);
 
+    return updatedUserPassword;
   }
 }
