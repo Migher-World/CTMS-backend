@@ -24,6 +24,9 @@ export class CreateUserDto {
   @IsOptional()
   @Type(() => CreateClientDto)
   client: CreateClientDto
+
+  @IsOptional()
+  setPassword: boolean;
 }
 
 export enum PreferredCommunication {

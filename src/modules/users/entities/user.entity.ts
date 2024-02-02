@@ -52,6 +52,9 @@ export class User extends AbstractEntity implements IUser {
   @Column({ default: false })
   phoneNumberVerified: boolean;
 
+  @Column({ default: true })
+  setPassword: boolean;
+
   fullName: string;
   verified: boolean;
 

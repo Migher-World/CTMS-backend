@@ -70,11 +70,11 @@ export class AuthService {
     const newPassword = await bcrypt.hash(password, 10)
     const user = await this.userRepo.findOne({ where: { email } });
 
-    if (user.password) {
+    if (user.setPassword == true) {
       throw new UnauthorizedException('Password already set');
     }
 
-    Object.assign(user, {password:newPassword});
+    Object.assign(user, {password:newPassword, setPassword: true});
     const updatedUserPassword = await this.userRepo.save(user)
   
     return updatedUserPassword;

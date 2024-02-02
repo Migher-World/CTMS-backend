@@ -39,16 +39,16 @@ export class UsersService extends BasicService<User> {
   }
 
   async create(createUserDto: CreateUserDto, companyId:string) {
-    let { password } = createUserDto;
+    let { password, setPassword } = createUserDto;
 
     await this.checkDuplicate(createUserDto);
 
     if (!password) {
       password = Helper.randString(3, 2, 6);
-      console.log(password)
+      setPassword = false;
     }
 
-    const response = this.userRepo.create({ ...createUserDto, password, companyId });
+    const response = this.userRepo.create({ ...createUserDto, password, setPassword,companyId });
 
     const user = await this.userRepo.save(response);
     return user;
