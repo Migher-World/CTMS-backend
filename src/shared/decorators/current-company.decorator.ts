@@ -1,0 +1,11 @@
+import { BadRequestException, createParamDecorator, ExecutionContext } from '@nestjs/common';
+
+export const CurrentCompany = createParamDecorator(
+    (data, ctx: ExecutionContext): string => {
+        const req = ctx.switchToHttp().getRequest();
+        if(req.user && req.user.companyId !== req.company.id) {
+            throw new BadRequestException('Company not found');
+        }
+        return req.company;
+    },
+);
