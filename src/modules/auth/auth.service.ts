@@ -12,7 +12,6 @@ import { CompaniesService } from '../companies/companies.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CacheService } from '../cache/cache.service';
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -25,12 +24,15 @@ export class AuthService {
   ) {}
   async signUp(credentials: RegisterDto) {
     const transaction = await AppDataSource.transaction(async (manager) => {
-      let { password, email, phoneNumber } = credentials;
+      let { password, setPassword,email, phoneNumber } = credentials;
 
       await this.usersService.checkDuplicate({ email, phoneNumber });
 
       if (!password) {
         password = Helper.randString(3, 2, 6);
+        setPassword = false;
+      }else{
+        setPassword = true
       }
 
       const companyDto: CreateCompanyDto =
@@ -44,6 +46,7 @@ export class AuthService {
         manager.create<User>(User, {
           ...credentials,
           password,
+          setPassword,
           company,
           role: roles.find((role) => role.name.includes('admin')),
         }),
@@ -75,11 +78,11 @@ export class AuthService {
 
   async setPassword(setPasswordDto: SetPasswordDto) {
     const { email, password } = setPasswordDto;
-    const newPassword = await bcrypt.hash(password, 10);
+    const newPassword = await Helper.hash(password);
     const user = await this.userRepo.findOne({ where: { email } });
 
     if (user.setPassword == true) {
-      throw new UnauthorizedException('Password already set');
+      throw new BadRequestException('Password already set');
     }
 
     Object.assign(user, { password: newPassword, setPassword: true });
@@ -102,7 +105,7 @@ export class AuthService {
 
   async resetPassword(resetPasswordDto: ResetPasswordDto) {
     const { email, password, otp } = resetPasswordDto;
-    const newPassword = await bcrypt.hash(password, 10);
+    const newPassword = await Helper.hash(password);
 
     // Retrieve Otp from Cache
     const storedOtp = await this.cacheService.get(email);

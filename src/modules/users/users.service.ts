@@ -46,6 +46,8 @@ export class UsersService extends BasicService<User> {
     if (!password) {
       password = Helper.randString(3, 2, 6);
       setPassword = false;
+    }else{
+      setPassword = true
     }
 
     const response = this.userRepo.create({ ...createUserDto, password, setPassword,companyId });

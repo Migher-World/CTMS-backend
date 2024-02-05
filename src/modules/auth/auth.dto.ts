@@ -70,6 +70,9 @@ export class RegisterDto {
   @ValidateNested({ always: true })
   @Type(() => CreateCompanyDto)
   company: CreateCompanyDto;
+
+  @IsOptional()
+  setPassword: boolean;
 }
 
 export interface AuthPayload {
