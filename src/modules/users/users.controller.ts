@@ -19,7 +19,6 @@ export class UsersController {
   @Post()
   async create(@Req() request, @Body() createUserDto: CreateUserDto) {
     const companyId = request.headers['x-company-id'];
-    console.log(companyId)
     return resolveResponse(this.usersService.create(createUserDto, companyId), 'Account Created');
   }
 

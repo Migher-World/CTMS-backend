@@ -15,4 +15,5 @@ export interface IUser {
   verified: boolean;
   emailVerified: boolean;
   phoneNumberVerified: boolean;
+  setPassword: boolean;
 }

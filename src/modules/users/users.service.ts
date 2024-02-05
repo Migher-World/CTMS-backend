@@ -39,20 +39,31 @@ export class UsersService extends BasicService<User> {
   }
 
   async create(createUserDto: CreateUserDto, companyId:string) {
-    let { password } = createUserDto;
+    let { password, setPassword } = createUserDto;
 
     await this.checkDuplicate(createUserDto);
 
     if (!password) {
       password = Helper.randString(3, 2, 6);
+      setPassword = false;
+    }else{
+      setPassword = true
     }
 
-    const response = this.userRepo.create({ ...createUserDto, password, companyId });
+    const response = this.userRepo.create({ ...createUserDto, password, setPassword,companyId });
 
     const user = await this.userRepo.save(response);
     return user;
   }
 
+  async findUserByEmail(email: string) {
+    const isEmailExist = await this.userRepo.findOne({ where: { email } });
+
+    if (isEmailExist) {
+      throw new BadRequestException('Email exists');
+    }
+
+  }
   async findUsers(){
     const users = await this.userRepo.find();
     return users;

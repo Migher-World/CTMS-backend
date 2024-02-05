@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../../shared/decorators/current-user.decorator';
 import { resolveResponse, sendObjectResponse } from '../../shared/resolvers';
 import { User } from '../users/entities/user.entity';
-import { LoginDto, RegisterDto } from './auth.dto';
+import { LoginDto, RegisterDto, RequestResetPasswordDto, ResetPasswordDto, SetPasswordDto } from './auth.dto';
 import { AuthService } from './auth.service';
 import { Public } from '../../shared/decorators/public.decorator';
 
@@ -28,5 +28,20 @@ export class AuthController {
   @Get('me')
   validateToken(@CurrentUser() user: User) {
     return sendObjectResponse(user, 'Token is valid');
+  }
+
+  @Post('request-reset-password')
+  async requestResetPassword(@Body() requestResetPasswordDto: RequestResetPasswordDto){
+    return resolveResponse(this.authService.requestResetPassword(requestResetPasswordDto))
+  }
+
+  @Post('reset-password')
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    return resolveResponse(this.authService.resetPassword(resetPasswordDto), 'Reset Password')
+  }
+
+  @Post('set-password')
+  async setPassword(@Body() setPasswordDto: SetPasswordDto){
+    return resolveResponse(this.authService.setPassword(setPasswordDto), 'Password set')
   }
 }
