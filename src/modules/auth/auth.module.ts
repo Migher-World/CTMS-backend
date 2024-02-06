@@ -12,6 +12,8 @@ import { UsersModule } from '../users/users.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JWTGuard } from '../../shared/guards/auth.guard';
 import { CompaniesModule } from '../companies/companies.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { EmailEntity } from 'src/shared/alerts/emails/entities/email.entity';
 
 dotenv.config();
 
@@ -26,6 +28,7 @@ dotenv.config();
     PassportModule.register({
       defaultStrategy: 'jwt',
     }),
+    TypeOrmModule.forFeature([EmailEntity]),
     UsersModule,
     CompaniesModule,
   ],
