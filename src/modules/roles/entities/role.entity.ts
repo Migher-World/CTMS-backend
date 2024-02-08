@@ -22,4 +22,7 @@ export class Role extends AbstractEntity {
 
   @Column()
   companyId: string;
+
+  @Column({ default: false })
+  requireTraining: boolean;
 }

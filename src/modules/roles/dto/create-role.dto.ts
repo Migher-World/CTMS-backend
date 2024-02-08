@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateRoleDto {
   @IsNotEmpty()
@@ -6,4 +6,10 @@ export class CreateRoleDto {
 
   @IsNotEmpty()
   description: string;
+
+  @IsOptional()
+  permissionsId: string[];
+
+  @IsOptional()
+  requireTraining: boolean;
 }

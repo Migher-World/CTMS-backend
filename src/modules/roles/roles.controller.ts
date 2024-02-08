@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Put, Param, Get } from '@nestjs/common';
+import { Controller, Post, Body, Put, Param, Get, Delete } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { AddPermissionsToRoleDto, UpdateRoleDto } from './dto/update-role.dto';
@@ -20,9 +20,14 @@ export class RolesController {
     return resolveResponse(this.rolesService.findAllByCompanyId(company.id));
   }
 
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return resolveResponse(this.rolesService.findOne(id));
+  }
+
   @Post()
   async create(@Body() createRoleDto: CreateRoleDto, @CurrentCompany() company: ICompany) {
-    return resolveResponse(this.rolesService.create({ ...createRoleDto, companyId: company.id }));
+    return resolveResponse(this.rolesService.create(createRoleDto, company), 'Role Created');
   }
 
   @Put('update-permissions')
@@ -33,5 +38,15 @@ export class RolesController {
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
     return resolveResponse(this.rolesService.update(id, updateRoleDto));
+  }
+
+  @Put('remove-permissions')
+  async removePermissionsFromRole(@Body() removePermissionsFromRoleDto: AddPermissionsToRoleDto) {
+    return resolveResponse(this.rolesService.removePermissionsFromRole(removePermissionsFromRoleDto), 'Role Permissions Removed');
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    return resolveResponse(this.rolesService.remove(id));
   }
 }

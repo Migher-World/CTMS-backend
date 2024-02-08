@@ -5,35 +5,39 @@ import { BasicService } from '../../shared/services/basic-service.service';
 import { Permission } from '../permissions/entities/permission.entity';
 import { AddPermissionsToRoleDto } from './dto/update-role.dto';
 import { Role } from './entities/role.entity';
+import { CreateRoleDto } from './dto/create-role.dto';
+import { ICompany } from '../companies/interfaces/company.interface';
 
 @Injectable()
 export class RolesService extends BasicService<Role> {
-  constructor(
-    @InjectRepository(Role) private readonly roleRepo: Repository<Role>,
-  ) {
+  constructor(@InjectRepository(Role) private readonly roleRepo: Repository<Role>) {
     super(roleRepo, 'Roles');
+  }
+
+  async create(createRoleDto: CreateRoleDto, company: ICompany) {
+    const { permissionsId } = createRoleDto;
+    const permissions = await this.resolveRelationships(permissionsId, Permission);
+    return super.create({ ...createRoleDto, permissions, companyId: company.id });
   }
 
   async addPermissionsToRole(addPermissionsToRoleDto: AddPermissionsToRoleDto) {
     const { roleId, permissionsId } = addPermissionsToRoleDto;
     const role = await this.findOne(roleId);
 
-    const permissions = await this.resolveRelationships(
-      permissionsId,
-      Permission,
-    );
-    // for (const permissionId of permissionsId) {
-    //   const permission = await getRepository(Permission).findOne(permissionId);
-    //   if (!permission) {
-    //     continue;
-    //   }
-    //   permissions.push(permission);
-    // }
+    const permissions = await this.resolveRelationships(permissionsId, Permission);
     role.permissions = permissions;
     return this.roleRepo.save(role);
   }
 
   async findAllByCompanyId(companyId: string) {
     return this.roleRepo.find({ where: { companyId } });
+  }
+
+  async removePermissionsFromRole(removePermissionsFromRoleDto: AddPermissionsToRoleDto) {
+    const { roleId, permissionsId } = removePermissionsFromRoleDto;
+    const role = await this.findOne(roleId);
+    const permissions = await this.resolveRelationships(permissionsId, Permission);
+    role.permissions = role.permissions.filter((permission) => !permissions.includes(permission));
+    return this.roleRepo.save(role);
   }
 }
