@@ -11,7 +11,7 @@ export class CreateEmailDto {
   receiverEmail: string;
 
   @IsOptional()
-  senderEmail?: string = 'info@spottr.com';
+  senderEmail?: string = 'info@ctms.com';
 
   @IsOptional()
   replyTo?: string;

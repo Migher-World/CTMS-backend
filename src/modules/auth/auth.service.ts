@@ -22,8 +22,6 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private userRepo: Repository<User>,
-    @InjectRepository(EmailEntity)
-    private emailRepo: Repository<EmailEntity>,
     private jwtService: JwtService,
     private usersService: UsersService,
     private companyService: CompaniesService,
@@ -118,9 +116,7 @@ export class AuthService {
       },
       receiverEmail: email,
     }
-    const createEmail = this.emailRepo.create(createEmailDto)
-    const sendEmail = await this.emailRepo.save(createEmail);
-    this.eventEmitter.emit(AppEvents.SEND_EMAIl, sendEmail)
+    this.eventEmitter.emit(AppEvents.SEND_EMAIl, createEmailDto)
   }
 
   async resetPassword(resetPasswordDto: ResetPasswordDto) {

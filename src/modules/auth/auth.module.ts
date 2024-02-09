@@ -28,7 +28,6 @@ dotenv.config();
     PassportModule.register({
       defaultStrategy: 'jwt',
     }),
-    TypeOrmModule.forFeature([EmailEntity]),
     UsersModule,
     CompaniesModule,
   ],
