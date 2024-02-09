@@ -23,6 +23,7 @@ export class CreateEmailDto {
 
   error?: string;
 
+  @IsOptional()
   attachments?: {
     filename: string;
     content?: any;

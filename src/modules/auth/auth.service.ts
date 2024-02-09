@@ -111,7 +111,8 @@ export class AuthService {
     // Send mail
     const createEmailDto: CreateEmailDto = {
       subject: 'Confirm OTP',
-      template: `Your OTP is ${otp}`,
+      template: 'otp.pug',
+      //template: `Your OTP is ${otp}`,
       metaData: {
         code: otp,
       },
