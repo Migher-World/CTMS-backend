@@ -13,7 +13,7 @@ export class BudgetsService extends BasicService<Budget> {
   }
   async create(createBudgetDto: CreateBudgetDto): Promise<Budget> {
     // let {trialName} = createBudgetDto
-    const createBudget = await this.budgetRepo.create({...createBudgetDto})
+    const createBudget = this.budgetRepo.create({...createBudgetDto})
     const budget = await this.budgetRepo.save(createBudget);
     return budget;
   }
@@ -33,7 +33,9 @@ export class BudgetsService extends BasicService<Budget> {
     const budget = await this.findBudget(budgetId);
 
     if (budget){
-      const updateBudget =  await this.budgetRepo.update(budgetId,updateBudgetDto);
+      Object.assign(budget, updateBudgetDto)
+      //const updateBudget =  await this.budgetRepo.update(budgetId,updateBudgetDto);
+      const updateBudget =  await this.budgetRepo.save(budget)
       return updateBudget
     }
   }

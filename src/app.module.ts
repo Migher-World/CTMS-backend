@@ -18,6 +18,10 @@ import { CompanyMiddleware } from './shared/middlewares/company.middleware';
 import { PermissionGroupsModule } from './modules/permission-groups/permission-groups.module';
 import { PatientsModule } from './modules/patients/patients.module';
 import { IssuesModule } from './modules/issues/issues.module';
+import { ContractModule } from './modules/contract/contract.module';
+import { InvoicesModule } from './modules/invoices/invoices.module';
+import { TrialsModule } from './modules/trials/trials.module';
+import { BudgetsModule } from './modules/budgets/budgets.module';
 const mg = require('nodemailer-mailgun-transport');
 
 @Module({
@@ -58,6 +62,10 @@ const mg = require('nodemailer-mailgun-transport');
     CompaniesModule,
     PatientsModule,
     IssuesModule,
+    ContractModule,
+    InvoicesModule,
+    TrialsModule,
+    BudgetsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
