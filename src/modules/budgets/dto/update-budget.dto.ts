@@ -22,4 +22,10 @@ export class UpdateBudgetDto extends PartialType(CreateBudgetDto) {
     @IsNotEmpty()
     @IsOptional()
     budgetDescription: string;
+
+    @IsOptional()
+    additionalInformation: string;
+
+    @IsOptional()
+    attachment: [];
 }

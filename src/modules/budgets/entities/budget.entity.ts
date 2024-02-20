@@ -35,4 +35,10 @@ export class Budget extends AbstractEntity implements IBudget{
 
     @Column()
     budgetDescription: string;
+
+    @Column()
+    additionalInformation: string;
+
+    @Column('simple-array')
+    attachment: [];
 }

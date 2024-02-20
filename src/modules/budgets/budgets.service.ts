@@ -8,43 +8,43 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class BudgetsService extends BasicService<Budget> {
-  constructor(@InjectRepository(Budget) private budgetRepo: Repository<Budget>) {
+  constructor(
+    @InjectRepository(Budget) private budgetRepo: Repository<Budget>) {
     super(budgetRepo, 'Budgets');
   }
   async create(createBudgetDto: CreateBudgetDto): Promise<Budget> {
-    // let {trialName} = createBudgetDto
-    const createBudget = this.budgetRepo.create({...createBudgetDto})
+    const createBudget = this.budgetRepo.create({ ...createBudgetDto });
     const budget = await this.budgetRepo.save(createBudget);
     return budget;
   }
 
-  async findBudgets(){
-    const budgets = await this.budgetRepo.find()
+  async findBudgets(): Promise<Budget[]> {
+    const budgets = await this.budgetRepo.find();
     return budgets;
   }
 
-  async findBudget(budgetId: string) {
-    const id = budgetId
-    const budget = await this.budgetRepo.findOne({where: {id}});
+  async findBudget(budgetId: string): Promise<Budget> {
+    const id = budgetId;
+    const budget = await this.budgetRepo.findOne({ where: { id } });
     return budget;
   }
 
-  async updateBudget(budgetId: string, updateBudgetDto: UpdateBudgetDto) {
+  async updateBudget(budgetId: string, updateBudgetDto: UpdateBudgetDto): Promise<Budget> {
     const budget = await this.findBudget(budgetId);
 
-    if (budget){
-      Object.assign(budget, updateBudgetDto)
+    if (budget) {
+      Object.assign(budget, updateBudgetDto);
       //const updateBudget =  await this.budgetRepo.update(budgetId,updateBudgetDto);
-      const updateBudget =  await this.budgetRepo.save(budget)
-      return updateBudget
+      const updateBudget = await this.budgetRepo.save(budget);
+      return updateBudget;
     }
   }
 
   async deleteBudget(budgetId: string) {
     const budget = await this.findBudget(budgetId);
 
-    if (budget){
-      await this.budgetRepo.delete(budgetId)
+    if (budget) {
+      await this.budgetRepo.delete(budgetId);
     }
   }
 }

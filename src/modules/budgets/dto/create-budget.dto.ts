@@ -33,4 +33,10 @@ export class CreateBudgetDto {
     @IsNotEmpty()
     @IsOptional()
     budgetDescription: string;
+
+    @IsOptional()
+    additionalInformation: string;
+
+    @IsOptional()
+    attachment: [];
 }
