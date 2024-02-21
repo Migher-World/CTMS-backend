@@ -18,7 +18,7 @@ export class Cloudinary implements IStorage {
     return secure_url;
   }
 
-  async uploadFile(path: string, body: Buffer): Promise<string> {
+  async uploadFile(path: string, body?: Buffer): Promise<string> {
     const options = {
       use_filename: true,
       unique_filename: false,

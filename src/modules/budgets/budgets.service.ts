@@ -5,15 +5,26 @@ import { BasicService } from 'src/shared/services/basic-service.service';
 import { Budget } from './entities/budget.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Cloudinary } from 'src/shared/plugins/cloud-storage/cloudinary';
 
 @Injectable()
 export class BudgetsService extends BasicService<Budget> {
   constructor(
-    @InjectRepository(Budget) private budgetRepo: Repository<Budget>) {
+    @InjectRepository(Budget) 
+    private budgetRepo: Repository<Budget>,
+    private cloudinary: Cloudinary) {
     super(budgetRepo, 'Budgets');
   }
-  async create(createBudgetDto: CreateBudgetDto): Promise<Budget> {
-    const createBudget = this.budgetRepo.create({ ...createBudgetDto });
+  async createBudget(createBudgetDto: CreateBudgetDto): Promise<Budget> {
+    const {attachments} = createBudgetDto;
+    const uploadedAttachments = await Promise.all(
+      attachments.map(async(attachment) =>{
+        const {path} = attachment;
+        const uploadedFile = await this.cloudinary.uploadFile(path);
+        return uploadedFile
+      })
+    )
+    const createBudget = this.budgetRepo.create({ ...createBudgetDto,  attachments: uploadedAttachments });
     const budget = await this.budgetRepo.save(createBudget);
     return budget;
   }

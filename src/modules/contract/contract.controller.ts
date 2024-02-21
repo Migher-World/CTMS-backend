@@ -10,7 +10,7 @@ export class ContractController {
 
   @Post()
   create(@Body() createContractDto: CreateContractDto) {
-    return resolveResponse(this.contractService.create(createContractDto), 'Contract Created');
+    return resolveResponse(this.contractService.createContract(createContractDto), 'Contract Created');
   }
 
   @Get()

@@ -40,5 +40,5 @@ export class UpdateContractDto extends PartialType(CreateContractDto) {
     paymentSchedule: string;
 
     @IsOptional()
-    attachements: [];
+    attachements: Array<Express.Multer.File>;
 }

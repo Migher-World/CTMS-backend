@@ -5,17 +5,28 @@ import { BasicService } from 'src/shared/services/basic-service.service';
 import { Contract } from './entities/contract.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Cloudinary } from 'src/shared/plugins/cloud-storage/cloudinary';
 
 @Injectable()
-export class ContractService  extends BasicService<Contract>{
+export class ContractService extends BasicService<Contract>{
   constructor( 
-    @InjectRepository(Contract) private contractRepo: Repository<Contract>){
+    @InjectRepository(Contract)
+    private contractRepo: Repository<Contract>,
+    private cloudinary: Cloudinary){
       super(contractRepo, 'Contracts');
     }
 
-  async create(createContractDto: CreateContractDto): Promise<Contract> {
-    const createContract = this.contractRepo.create({...createContractDto});
-    const contract = await this.contractRepo.save(createContract);
+  async createContract(createContractDto: CreateContractDto): Promise<Contract> {
+    const {attachments} = createContractDto;
+    const uploadedAttachments = await Promise.all(
+      attachments.map(async(attachment) =>{
+        const {path} = attachment;
+        const uploadedFile = await this.cloudinary.uploadFile(path);
+        return uploadedFile
+      })
+    )
+    const createdContract = this.contractRepo.create({...createContractDto, attachments: uploadedAttachments});
+    const contract = await this.contractRepo.save(createdContract);
     return contract;
   }
 

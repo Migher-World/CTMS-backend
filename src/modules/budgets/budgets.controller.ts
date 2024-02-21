@@ -10,7 +10,7 @@ export class BudgetsController {
 
   @Post()
   create(@Body() createBudgetDto: CreateBudgetDto) {
-    return resolveResponse(this.budgetsService.create(createBudgetDto), 'Budget Created');
+    return resolveResponse(this.budgetsService.createBudget(createBudgetDto), 'Budget Created');
   }
 
   @Get()
