@@ -18,5 +18,6 @@ export interface IBudget {
     equipmentAndSuppliesFees: string;
     budgetDescription: string;
     additionalInformation: string;
-    attachments: Array<string>;
+   // attachments: Array<string>;
+   attachments: string;
 }

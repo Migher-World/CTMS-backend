@@ -22,10 +22,14 @@ import { ContractModule } from './modules/contract/contract.module';
 import { InvoicesModule } from './modules/invoices/invoices.module';
 import { TrialsModule } from './modules/trials/trials.module';
 import { BudgetsModule } from './modules/budgets/budgets.module';
+import { MulterModule } from '@nestjs/platform-express';
 const mg = require('nodemailer-mailgun-transport');
 
 @Module({
   imports: [
+    MulterModule.register({
+      dest:`./uploads`,
+    }),
     GlobalModule,
     EventEmitterModule.forRoot(),
     ScheduleModule.forRoot(),

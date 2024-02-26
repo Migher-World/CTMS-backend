@@ -15,15 +15,20 @@ export class BudgetsService extends BasicService<Budget> {
     private cloudinary: Cloudinary) {
     super(budgetRepo, 'Budgets');
   }
-  async createBudget(createBudgetDto: CreateBudgetDto): Promise<Budget> {
-    const {attachments} = createBudgetDto;
-    const uploadedAttachments = await Promise.all(
-      attachments.map(async(attachment) =>{
-        const {path} = attachment;
-        const uploadedFile = await this.cloudinary.uploadFile(path);
-        return uploadedFile
-      })
-    )
+  async createBudget(createBudgetDto: CreateBudgetDto, attachments: Express.Multer.File): Promise<Budget> {
+    console.log(attachments)
+    const fileUrl = attachments.path;
+    console.log(fileUrl)
+    const uploadedAttachments = await this.cloudinary.uploadFile(fileUrl)
+    console.log(uploadedAttachments)
+    // const uploadedAttachments = await Promise.all(
+    //   attachments.map(async(attachment) =>{
+    //     const {path} = attachment.originalname
+    //     const uploadedFile = await this.cloudinary.uploadFile(path);
+    //     console.log(uploadedFile)
+    //     return uploadedFile
+    //   })
+    // )
     const createBudget = this.budgetRepo.create({ ...createBudgetDto,  attachments: uploadedAttachments });
     const budget = await this.budgetRepo.save(createBudget);
     return budget;
