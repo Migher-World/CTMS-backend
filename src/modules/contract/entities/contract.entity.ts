@@ -47,7 +47,4 @@ export class Contract extends AbstractEntity implements IContract{
 
     @Column()
     paymentSchedule: string;
-
-    @Column('simple-array')
-    attachments: Array<string>;
 }

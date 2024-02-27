@@ -39,7 +39,4 @@ export class CreateContractDto {
 
     @IsNotEmpty()
     paymentSchedule: string;
-
-    @IsOptional()
-    attachments: Array<Express.Multer.File>;
 }

@@ -17,5 +17,4 @@ export interface IContract {
     insuranceRequirement: string;
     contractValue: string;
     paymentSchedule: string;
-    attachments: Array<string>;
 }

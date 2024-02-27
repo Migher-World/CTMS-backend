@@ -3,17 +3,14 @@ import { BudgetsService } from './budgets.service';
 import { CreateBudgetDto } from './dto/create-budget.dto';
 import { UpdateBudgetDto } from './dto/update-budget.dto';
 import { resolveResponse } from 'src/shared/resolvers';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('budgets')
 export class BudgetsController {
   constructor(private readonly budgetsService: BudgetsService) {}
 
   @Post()
-  @UseInterceptors(FileInterceptor('attachments'))
-  create(@Body() createBudgetDto: CreateBudgetDto, @UploadedFile() attachments: Express.Multer.File ) {
-    // console.log(attachments)
-    return resolveResponse(this.budgetsService.createBudget(createBudgetDto, attachments), 'Budget Created');
+  create(@Body() createBudgetDto: CreateBudgetDto) {
+    return resolveResponse(this.budgetsService.createBudget(createBudgetDto), 'Budget Created');
   }
 
   @Get()

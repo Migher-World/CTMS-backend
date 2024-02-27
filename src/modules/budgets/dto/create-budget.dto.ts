@@ -36,8 +36,4 @@ export class CreateBudgetDto {
 
     @IsOptional()
     additionalInformation: string;
-
-    @IsOptional()
-   // attachments: Array<Express.Multer.File>;
-   attachments: Express.Multer.File;
 }
