@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthPayload, LoginDto, RegisterDto, RequestResetPasswordDto, ResetPasswordDto, SetPasswordDto } from './auth.dto';
 import { JwtService } from '@nestjs/jwt';
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import { UsersService } from '../users/users.service';
 import { AppDataSource } from '../../config/db.config';
 import { Helper } from '../../shared/helpers';
@@ -12,15 +13,20 @@ import { CompaniesService } from '../companies/companies.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CacheService } from '../cache/cache.service';
+import { AppEvents } from 'src/constants';
+import { EmailEntity } from 'src/shared/alerts/emails/entities/email.entity';
+import { CreateEmailDto } from 'src/shared/alerts/emails/dto/create-email.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User) private userRepo: Repository<User>,
+    @InjectRepository(User)
+    private userRepo: Repository<User>,
     private jwtService: JwtService,
     private usersService: UsersService,
     private companyService: CompaniesService,
     private cacheService: CacheService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
   async signUp(credentials: RegisterDto) {
     const transaction = await AppDataSource.transaction(async (manager) => {
@@ -101,6 +107,16 @@ export class AuthService {
     await this.cacheService.set(email, otp, 600);
 
     // Send mail
+    const createEmailDto: CreateEmailDto = {
+      subject: 'Confirm OTP',
+      template: 'otp.pug',
+      //template: `Your OTP is ${otp}`,
+      metaData: {
+        code: otp,
+      },
+      receiverEmail: email,
+    }
+    this.eventEmitter.emit(AppEvents.SEND_EMAIl, createEmailDto)
   }
 
   async resetPassword(resetPasswordDto: ResetPasswordDto) {
