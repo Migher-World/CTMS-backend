@@ -47,4 +47,7 @@ export class Contract extends AbstractEntity implements IContract{
 
     @Column()
     paymentSchedule: string;
+
+    @Column({default: 'draft'})
+    status: string;
 }

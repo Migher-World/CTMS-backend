@@ -39,4 +39,7 @@ export class CreateContractDto {
 
     @IsNotEmpty()
     paymentSchedule: string;
+
+    @IsOptional()
+    status: string;
 }

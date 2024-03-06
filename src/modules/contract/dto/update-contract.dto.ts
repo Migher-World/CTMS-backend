@@ -39,4 +39,7 @@ export class UpdateContractDto extends PartialType(CreateContractDto) {
     @IsNotEmpty()
     @IsOptional()
     paymentSchedule: string;
+
+    @IsOptional()
+    status: string;
 }
