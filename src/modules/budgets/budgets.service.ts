@@ -1,0 +1,51 @@
+import { Injectable } from '@nestjs/common';
+import { CreateBudgetDto } from './dto/create-budget.dto';
+import { UpdateBudgetDto } from './dto/update-budget.dto';
+import { BasicService } from 'src/shared/services/basic-service.service';
+import { Budget } from './entities/budget.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+@Injectable()
+export class BudgetsService extends BasicService<Budget> {
+  constructor(
+    @InjectRepository(Budget) 
+    private budgetRepo: Repository<Budget>) {
+    super(budgetRepo, 'Budgets');
+  }
+  async createBudget(createBudgetDto: CreateBudgetDto): Promise<Budget> {
+    const createBudget = this.budgetRepo.create({ ...createBudgetDto});
+    const budget = await this.budgetRepo.save(createBudget);
+    return budget;
+  }
+
+  async findBudgets(): Promise<Budget[]> {
+    const budgets = await this.budgetRepo.find();
+    return budgets;
+  }
+
+  async findBudget(budgetId: string): Promise<Budget> {
+    const id = budgetId;
+    const budget = await this.budgetRepo.findOne({ where: { id } });
+    return budget;
+  }
+
+  async updateBudget(budgetId: string, updateBudgetDto: UpdateBudgetDto): Promise<Budget> {
+    const budget = await this.findBudget(budgetId);
+
+    if (budget) {
+      Object.assign(budget, updateBudgetDto);
+      //const updateBudget =  await this.budgetRepo.update(budgetId,updateBudgetDto);
+      const updateBudget = await this.budgetRepo.save(budget);
+      return updateBudget;
+    }
+  }
+
+  async deleteBudget(budgetId: string) {
+    const budget = await this.findBudget(budgetId);
+
+    if (budget) {
+      await this.budgetRepo.delete(budgetId);
+    }
+  }
+}
