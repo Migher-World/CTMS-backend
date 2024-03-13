@@ -36,8 +36,8 @@ export class ContractService extends BasicService<Contract>{
 
     if(contract){
       Object.assign(contract, updateContractDto);
-      const updateContract = await this.contractRepo.save(contract);
-      return updateContract;
+      const updatedContract = await this.contractRepo.save(contract);
+      return updatedContract;
     }
   }
 
