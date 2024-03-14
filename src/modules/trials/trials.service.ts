@@ -10,17 +10,18 @@ import { Company } from '../companies/entities/company.entity';
 
 @Injectable()
 export class TrialsService extends BasicService<Trial> {
-  constructor(@InjectRepository(Trial) 
+  constructor(@InjectRepository(Trial)
   private readonly trialRepo: Repository<Trial>,
+  @InjectRepository(Company)
   private readonly companyRepo: Repository<Company>){
-    super(trialRepo, 'Trials')
+    super(trialRepo, 'Trials');
   }
 
   async createTrial(createTrialDto: CreateTrialDto, companyId:string ): Promise<Trial> {
-    const company = await this.companyRepo.find({where: {id: companyId}})
+    const companies = await this.companyRepo.find({where: {id: companyId}})
     const createdTrial = await this.trialRepo.create({
       ...createTrialDto,
-      site: company.find((company) => company.id),
+      site: companies.find((company) => company.id),
     });
     const trial = await this.trialRepo.save(createdTrial);
     return trial;

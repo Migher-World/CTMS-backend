@@ -1,4 +1,6 @@
-import { IsNotEmpty, IsOptional } from "class-validator";
+import { IsEnum, IsNotEmpty, IsOptional } from "class-validator";
+import { ContractStatus } from "../interfaces/contract.interface";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateContractDto {
     @IsNotEmpty()
@@ -40,6 +42,8 @@ export class CreateContractDto {
     @IsNotEmpty()
     paymentSchedule: string;
 
-    @IsOptional()
-    status: string;
+    @IsNotEmpty()
+    @IsEnum(ContractStatus)
+    @ApiProperty({enum: ContractStatus})
+    contractStatus: ContractStatus;
 }
