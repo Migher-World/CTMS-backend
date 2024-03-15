@@ -21,7 +21,8 @@ export class TrialsService extends BasicService<Trial> {
     const companies = await this.companyRepo.find({where: {id: companyId}})
     const createdTrial = await this.trialRepo.create({
       ...createTrialDto,
-      site: companies.find((company) => company.id),
+      site: companies.find((company) => company.name),
+      companyId: companyId,
     });
     const trial = await this.trialRepo.save(createdTrial);
     return trial;
@@ -32,6 +33,7 @@ export class TrialsService extends BasicService<Trial> {
     query.where('trial.companyId = :companyId', {companyId});
     return this.paginate(query, pagination);
   }
+
 
   async findTrial(trialId: string) {
     const id = trialId
