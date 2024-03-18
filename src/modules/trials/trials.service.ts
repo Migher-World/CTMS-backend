@@ -18,10 +18,10 @@ export class TrialsService extends BasicService<Trial> {
   }
 
   async createTrial(createTrialDto: CreateTrialDto, companyId:string ): Promise<Trial> {
-    const companies = await this.companyRepo.find({where: {id: companyId}})
+    const companies = await this.companyRepo.findOne({where: {id: companyId}})
     const createdTrial = await this.trialRepo.create({
       ...createTrialDto,
-      site: companies.find((company) => company.name),
+      site: companies,
       companyId: companyId,
     });
     const trial = await this.trialRepo.save(createdTrial);
