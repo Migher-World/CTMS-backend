@@ -53,11 +53,11 @@ export class Trial extends AbstractEntity implements ITrial{
     @Column({ enum: RecuitmentPlan, type: 'enum' })
     recruitmentPlan: RecuitmentPlan;
 
-    @Column()
-    inclusionCriteria: string;
+    @Column('simple-array')
+    inclusionCriteria: string[];
     
-    @Column()
-    exclusionCriteria: string;
+    @Column('simple-array')
+    exclusionCriteria: string[];
 
     @Column()
     irbSubmissionDate: string;

@@ -39,8 +39,8 @@ export interface ITrial {
     allocatedAmount: string;
     regulatoryCompliance: RegulatoryCompliance;
     recruitmentPlan: RecuitmentPlan;
-    inclusionCriteria: string; //make an array of string
-    exclusionCriteria: string;
+    inclusionCriteria: string[];
+    exclusionCriteria: string[];
     irbSubmissionDate: string;
     //irbApprovalDocument: string;
 }

@@ -1,6 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateTrialDto } from './create-trial.dto';
-import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsArray, IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
 import { AgeGroup, BudgetCategory, ProtocolDetails, RecuitmentPlan, RegulatoryCompliance } from '../interfaces/trials.interface';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -8,34 +8,36 @@ export class UpdateTrialDto extends PartialType(CreateTrialDto) {
     @IsNotEmpty()
     @IsEnum(AgeGroup)
     @ApiProperty({enum: AgeGroup})
-    ageGroup: AgeGroup;
+    ageGroup?: AgeGroup;
 
     @IsNotEmpty()
     @IsEnum(BudgetCategory)
     @ApiProperty({enum: BudgetCategory})
-    budgetCategory: BudgetCategory;
+    budgetCategory?: BudgetCategory;
 
     @IsNotEmpty()
     @IsEnum(ProtocolDetails)
     @ApiProperty({enum: ProtocolDetails})
-    protocolDetails: ProtocolDetails;
+    protocolDetails?: ProtocolDetails;
 
     @IsNotEmpty()
     @IsEnum(RegulatoryCompliance)
     @ApiProperty({enum: RegulatoryCompliance})
-    regulatoryCompliance: RegulatoryCompliance;
+    regulatoryCompliance?: RegulatoryCompliance;
 
     @IsNotEmpty()
     @IsEnum(RecuitmentPlan)
     @ApiProperty({enum: RecuitmentPlan})
-    recruitmentPlan: RecuitmentPlan;
+    recruitmentPlan?: RecuitmentPlan;
 
     @IsNotEmpty()
     @IsOptional()
-    inclusionCriteria: string;
+    @IsArray()
+    inclusionCriteria?: string[];
     
     @IsNotEmpty()
     @IsOptional()
-    exclusionCriteria: string;
+    @IsArray()
+    exclusionCriteria?: string[];
 
 }
