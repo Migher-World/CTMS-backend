@@ -1,6 +1,6 @@
 import { AbstractEntity } from "src/shared/entities/abstract-entity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
-import { IContract } from "../interfaces/contract.interface";
+import { ContractStatus, IContract } from "../interfaces/contract.interface";
 import { Trial } from "src/modules/trials/entities/trial.entity";
 
 @Entity('contracts')
@@ -48,6 +48,6 @@ export class Contract extends AbstractEntity implements IContract{
     @Column()
     paymentSchedule: string;
 
-    @Column({default: 'draft'})
-    status: string;
+    @Column({type: 'enum', enum: ContractStatus})
+    contractStaus: ContractStatus;
 }

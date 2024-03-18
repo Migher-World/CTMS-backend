@@ -9,27 +9,32 @@ export class ContractController {
   constructor(private readonly contractService: ContractService) {}
 
   @Post()
-  create(@Body() createContractDto: CreateContractDto) {
+  async create(@Body() createContractDto: CreateContractDto) {
     return resolveResponse(this.contractService.createContract(createContractDto), 'Contract Created');
   }
 
   @Get()
-  findAll() {
+  async getContracts() {
     return resolveResponse(this.contractService.findContracts(), 'Contracts Found');
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async getContract(@Param('id') id: string) {
     return resolveResponse(this.contractService.findContract(id), 'Contract Found');
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateContractDto: UpdateContractDto) {
+  async updateContract(@Param('id') id: string, @Body() updateContractDto: UpdateContractDto) {
     return resolveResponse(this.contractService.updateContract(id, updateContractDto), 'Contract Updated');
   }
 
+  @Patch('update-status/:id')
+  async updateContractStatus(@Param('id') id: string, @Body() updateContractDto: UpdateContractDto) {
+    return resolveResponse(this.contractService.updateContractStatus(id, updateContractDto), 'Contract Updated');
+  }
+
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return resolveResponse(this.contractService.deleteContract(id), 'Contract deleted');
   }
 }

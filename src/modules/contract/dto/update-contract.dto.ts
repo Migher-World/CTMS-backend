@@ -1,6 +1,8 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateContractDto } from './create-contract.dto';
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
+import { ContractStatus } from '../interfaces/contract.interface';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateContractDto extends PartialType(CreateContractDto) {
     @IsNotEmpty()
@@ -42,4 +44,9 @@ export class UpdateContractDto extends PartialType(CreateContractDto) {
 
     @IsOptional()
     status: string;
+
+    @IsNotEmpty()
+    @IsEnum(ContractStatus)
+    @ApiProperty({enum: ContractStatus})
+    contractStatus: ContractStatus;
 }

@@ -36,8 +36,8 @@ export class ContractService extends BasicService<Contract>{
 
     if(contract){
       Object.assign(contract, updateContractDto);
-      const updateContract = await this.contractRepo.save(contract);
-      return updateContract;
+      const updatedContract = await this.contractRepo.save(contract);
+      return updatedContract;
     }
   }
 
@@ -49,12 +49,11 @@ export class ContractService extends BasicService<Contract>{
     }
   }
 
-  async signContract(contractId: string, updateContractDto: UpdateContractDto) {
+  async updateContractStatus(contractId: string, updateContractDto: UpdateContractDto) {
     const contract = await this.findContract(contractId);
-    const {status} = updateContractDto;
 
     if(contract){
-      Object.assign(contract, {status: 'signed'})
+      Object.assign(contract, updateContractDto)
       const signedContract = await this.contractRepo.save(contract);
       return signedContract
     }
