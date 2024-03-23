@@ -47,6 +47,10 @@ export class CreateTrialDto {
     siteInvestigator: string;
 
     @IsNotEmpty()
+    @IsOptional()
+    trackingNumber: string;
+
+    @IsNotEmpty()
     allocatedAmount: string;
 
     @IsNotEmpty()
