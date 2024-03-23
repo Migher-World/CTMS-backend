@@ -36,6 +36,15 @@ export class Trial extends AbstractEntity implements ITrial{
     site: Company;
 
     @Column()
+    siteName: string;
+
+    @Column()
+    siteLocation: string;
+
+    @Column()
+    siteInvestigator: string;
+
+    @Column()
     gender: 'male' | 'female';
 
     @Column({ enum: AgeGroup, type: 'enum' })
