@@ -22,6 +22,8 @@ import { ContractModule } from './modules/contract/contract.module';
 import { InvoicesModule } from './modules/invoices/invoices.module';
 import { TrialsModule } from './modules/trials/trials.module';
 import { BudgetsModule } from './modules/budgets/budgets.module';
+import { FraudPreventionModule } from './modules/fraud-prevention/fraud-prevention.module';
+
 const mg = require('nodemailer-mailgun-transport');
 
 @Module({
@@ -66,6 +68,7 @@ const mg = require('nodemailer-mailgun-transport');
     InvoicesModule,
     TrialsModule,
     BudgetsModule,
+    FraudPreventionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
