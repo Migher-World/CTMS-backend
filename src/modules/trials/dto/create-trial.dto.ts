@@ -35,6 +35,22 @@ export class CreateTrialDto {
     budgetCategory: BudgetCategory;
 
     @IsNotEmpty()
+    @IsOptional()
+    siteName: string;
+
+    @IsNotEmpty()
+    @IsOptional()
+    siteLocation: string;
+
+    @IsNotEmpty()
+    @IsOptional()
+    siteInvestigator: string;
+
+    @IsNotEmpty()
+    @IsOptional()
+    trackingNumber: string;
+
+    @IsNotEmpty()
     allocatedAmount: string;
 
     @IsNotEmpty()

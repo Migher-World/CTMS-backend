@@ -33,6 +33,9 @@ export interface ITrial {
     objectives: string;
     companyId: string;
     site: ICompany;
+    siteName: string;
+    siteLocation: string;
+    siteInvestigator:string;
     gender: 'male' | 'female';
     ageGroup: AgeGroup;
     budgetCategory: BudgetCategory;
@@ -42,5 +45,6 @@ export interface ITrial {
     inclusionCriteria: string[];
     exclusionCriteria: string[];
     irbSubmissionDate: string;
+    trackingNumber: string;
     //irbApprovalDocument: string;
 }
