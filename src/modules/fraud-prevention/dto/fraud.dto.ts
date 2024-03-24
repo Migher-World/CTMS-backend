@@ -62,17 +62,17 @@ export class CreateFraudDto {
 export class UpdateFraudDto extends PartialType(CreateFraudDto){
     @IsNotEmpty()
     @IsOptional()
-    witnessName: string;
+    witnessName?: string;
 
     @IsNotEmpty()
     @IsOptional()
-    witnessContact: string;
+    witnessContact?: string;
 
     @IsNotEmpty()
     @IsOptional()
-    relevantInformation: string;
+    relevantInformation?: string;
     
     @IsNotEmpty()
     @IsOptional()
-    actionTaken: string;
+    actionTaken?: string;
 }

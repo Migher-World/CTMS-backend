@@ -97,16 +97,15 @@ export class FraudPreventionService extends BasicService<FraudPrevention> {
 
   // Dismissal
   async createDismissal (createDismissalDto: CreateDismissalDto) {
-    const createdDismissal = await this.fraudRepo.create({...createDismissalDto});
+    const createdDismissal = await this.dismissalRepo.create({...createDismissalDto});
 
-    const dismissal = await this.fraudRepo.save(createDismissalDto);
+    const dismissal = await this.dismissalRepo.save(createDismissalDto);
     return dismissal;
   }
 
-  async findDismissals(pagination: BasicPaginationDto) {
-   const query = this.suspiciousRepo.createQueryBuilder('dismissals');
-
-   return this.paginate(query,pagination);
+  async findDismissals() {
+   const dismissals = await this.dismissalRepo.find();
+   return dismissals;
   }
 
   async findOneDismissal(dismissalId: string) {
