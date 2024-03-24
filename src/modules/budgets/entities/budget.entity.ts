@@ -10,7 +10,7 @@ export class Budget extends AbstractEntity implements IBudget{
     trial: Trial;
 
     @Column()
-    trialName: string;
+    trialId: string;
 
     @Column()
     currency: Currency;

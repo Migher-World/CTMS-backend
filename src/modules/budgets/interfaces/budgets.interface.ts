@@ -7,7 +7,6 @@ export enum Currency {
 
 export interface IBudget {
     id: string;
-    trialName: string;
     trial: ITrial;
     currency: Currency;
     totalBudget: string;

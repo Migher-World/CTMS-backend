@@ -3,7 +3,7 @@ import { Currency } from "../interfaces/budgets.interface";
 
 export class CreateBudgetDto {
     @IsNotEmpty()
-    trialName: string;
+    trialId: string;
 
     @IsNotEmpty()
     @IsEnum(Currency)

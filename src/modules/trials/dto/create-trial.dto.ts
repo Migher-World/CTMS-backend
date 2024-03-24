@@ -1,4 +1,4 @@
-import { IsArray, IsEnum, IsNotEmpty, IsOptional } from "class-validator";
+import { IsArray, IsEnum, IsNotEmpty, IsOptional, IsUUID } from "class-validator";
 import { AgeGroup, BudgetCategory, ProtocolDetails, RecruitmentPlan, RegulatoryCompliance } from "../interfaces/trials.interface";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -21,6 +21,10 @@ export class CreateTrialDto {
     objectives: string;
 
     @IsNotEmpty()
+    @IsUUID()
+    siteId: string;
+
+    @IsNotEmpty()
     @ApiProperty({ example: 'male' })
     gender: 'male' | 'female';
 
@@ -33,10 +37,6 @@ export class CreateTrialDto {
     @IsEnum(BudgetCategory)
     @ApiProperty({enum: BudgetCategory})
     budgetCategory: BudgetCategory;
-
-    @IsNotEmpty()
-    @IsOptional()
-    siteName: string;
 
     @IsNotEmpty()
     @IsOptional()

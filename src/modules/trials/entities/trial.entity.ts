@@ -1,9 +1,17 @@
-import { AbstractEntity } from "src/shared/entities/abstract-entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
-import { AgeGroup, BudgetCategory, ITrial, ProtocolDetails, RecruitmentPlan, RegulatoryCompliance } from "../interfaces/trials.interface";
-import { Budget } from "src/modules/budgets/entities/budget.entity";
-import { Contract } from "src/modules/contract/entities/contract.entity";
-import { Company } from "src/modules/companies/entities/company.entity";
+import { AbstractEntity } from 'src/shared/entities/abstract-entity';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import {
+  AgeGroup,
+  BudgetCategory,
+  ITrial,
+  ProtocolDetails,
+  RecruitmentPlan,
+  RegulatoryCompliance,
+} from '../interfaces/trials.interface';
+import { Budget } from 'src/modules/budgets/entities/budget.entity';
+import { Contract } from 'src/modules/contract/entities/contract.entity';
+import { Company } from 'src/modules/companies/entities/company.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity('trials')
 export class Trial extends AbstractEntity implements ITrial {
@@ -28,24 +36,25 @@ export class Trial extends AbstractEntity implements ITrial {
   @Column()
   objectives: string;
 
-  @Column({ nullable: true })
+  @Column()
   companyId: string;
+
+  @ManyToOne(() => Company)
+  @JoinColumn()
+  company: Company;
+
+  @Column({ nullable: true })
+  siteId: string;
 
   @ManyToOne(() => Company, (company) => company.trials, { eager: true })
   @JoinColumn()
   site: Company;
 
   @Column()
-  siteName: string;
-
-  @Column()
   siteLocation: string;
 
   @Column()
   siteInvestigator: string;
-
-  @Column()
-  trackingNumber: string;
 
   @Column()
   gender: 'male' | 'female';
@@ -72,5 +81,18 @@ export class Trial extends AbstractEntity implements ITrial {
   exclusionCriteria: string[];
 
   @Column()
-  irbSubmissionDate: string;
+  irbSubmissionDate: Date;
+
+  @Column()
+  trackingNumber: string;
+
+  @Column()
+  irbApprovalDocument: string;
+
+  @Column()
+  createdById: string;
+
+  @ManyToOne(() => User)
+  @JoinColumn()
+  createdBy: User;
 }

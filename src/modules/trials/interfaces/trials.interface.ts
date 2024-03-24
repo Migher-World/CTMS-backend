@@ -12,7 +12,6 @@ export enum AgeGroup{
 
 export enum BudgetCategory{
     EMERGENCY = 'Emergency',
-
 }
 
 export enum RegulatoryCompliance{
@@ -31,9 +30,10 @@ export interface ITrial {
     endDate: string;
     protocolDetails: ProtocolDetails;
     objectives: string;
-    companyId: string;
+    siteId: string;
     site: ICompany;
-    siteName: string;
+    companyId: string;
+    company: ICompany;
     siteLocation: string;
     siteInvestigator:string;
     gender: 'male' | 'female';
@@ -44,7 +44,7 @@ export interface ITrial {
     recruitmentPlan: RecruitmentPlan;
     inclusionCriteria: string[];
     exclusionCriteria: string[];
-    irbSubmissionDate: string;
+    irbSubmissionDate: Date;
     trackingNumber: string;
-    //irbApprovalDocument: string;
+    irbApprovalDocument: string;
 }

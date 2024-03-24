@@ -6,25 +6,23 @@ import { Trial } from './entities/trial.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BasicPaginationDto } from 'src/shared/dto/basic-pagination.dto';
-import { Company } from '../companies/entities/company.entity';
+import { User } from '../users/entities/user.entity';
+import { ICompany } from '../companies/interfaces/company.interface';
 
 @Injectable()
 export class TrialsService extends BasicService<Trial> {
-  constructor(@InjectRepository(Trial)
-  private readonly trialRepo: Repository<Trial>,
-  @InjectRepository(Company)
-  private readonly companyRepo: Repository<Company>){
+  constructor(
+    @InjectRepository(Trial)
+    private readonly trialRepo: Repository<Trial>,
+  ) {
     super(trialRepo, 'Trials');
   }
 
-  async createTrial(createTrialDto: CreateTrialDto, companyId:string ): Promise<Trial> {
-    let {siteName} = createTrialDto;
-    // const companies = await this.companyRepo.findOne({where: {id: companyId}})
-    const site = await this.companyRepo.findOne({where: {name: siteName }})
-    const createdTrial = await this.trialRepo.create({
+  async createTrial(createTrialDto: CreateTrialDto, user: User, company: ICompany): Promise<Trial> {
+    const createdTrial = this.trialRepo.create({
       ...createTrialDto,
-      site: site,
-      companyId: companyId,
+      createdById: user.id,
+      companyId: company.id,
     });
     const trial = await this.trialRepo.save(createdTrial);
     return trial;
@@ -32,21 +30,20 @@ export class TrialsService extends BasicService<Trial> {
 
   async findTrials(pagination: BasicPaginationDto, companyId: string) {
     const query = this.trialRepo.createQueryBuilder('trial');
-    query.where('trial.companyId = :companyId', {companyId});
+    query.where('trial.companyId = :companyId', { companyId });
     return this.paginate(query, pagination);
   }
 
-
   async findTrial(trialId: string) {
-    const id = trialId
-    const trial = await this.trialRepo.findOne({where: {id}});
+    const id = trialId;
+    const trial = await this.trialRepo.findOne({ where: { id } });
     return trial;
   }
 
   async updateTrial(trialId: string, updateTrialDto: UpdateTrialDto) {
     const trial = await this.findTrial(trialId);
 
-    if (trial){
+    if (trial) {
       Object.assign(trial, updateTrialDto);
       const updatedTrial = await this.trialRepo.save(trial);
       return updatedTrial;
@@ -56,7 +53,7 @@ export class TrialsService extends BasicService<Trial> {
   async deleteTrial(trialId: string) {
     const trial = await this.findTrial(trialId);
 
-    if (trial){
+    if (trial) {
       await this.trialRepo.delete(trialId);
     }
   }
