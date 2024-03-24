@@ -11,8 +11,8 @@ export interface IBudget {
     trial: ITrial;
     currency: Currency;
     totalBudget: string;
-    startDate: string;
-    endDate: string;
+    startDate: Date;
+    endDate: Date;
     siteFees: string;
     personnelFees: string;
     equipmentAndSuppliesFees: string;

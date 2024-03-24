@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsOptional } from "class-validator";
+import { IsDateString, IsEnum, IsNotEmpty, IsOptional } from "class-validator";
 import { Currency } from "../interfaces/budgets.interface";
 
 export class CreateBudgetDto {
@@ -13,9 +13,11 @@ export class CreateBudgetDto {
     totalBudget: string;
 
     @IsNotEmpty()
+    @IsDateString()
     startDate: string;
 
     @IsNotEmpty()
+    @IsDateString()
     endDate: string;
 
     @IsNotEmpty()
