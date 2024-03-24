@@ -21,19 +21,15 @@ export class CreateBudgetDto {
     endDate: string;
 
     @IsNotEmpty()
-    @IsOptional()
     siteFees: string;
 
     @IsNotEmpty()
-    @IsOptional()
     personnelFees: string;
 
     @IsNotEmpty()
-    @IsOptional()
     equipmentAndSuppliesFees: string;
 
     @IsNotEmpty()
-    @IsOptional()
     budgetDescription: string;
 
     @IsOptional()
