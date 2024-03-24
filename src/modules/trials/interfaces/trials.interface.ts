@@ -20,7 +20,7 @@ export enum RegulatoryCompliance{
     UNCOMPLIED = 'Uncomplied',
 }
 
-export enum RecuitmentPlan{
+export enum RecruitmentPlan{
     FULL_TIME = 'Full Time',
     PART_TIME = 'Part Time',
 }
@@ -41,7 +41,7 @@ export interface ITrial {
     budgetCategory: BudgetCategory;
     allocatedAmount: string;
     regulatoryCompliance: RegulatoryCompliance;
-    recruitmentPlan: RecuitmentPlan;
+    recruitmentPlan: RecruitmentPlan;
     inclusionCriteria: string[];
     exclusionCriteria: string[];
     irbSubmissionDate: string;

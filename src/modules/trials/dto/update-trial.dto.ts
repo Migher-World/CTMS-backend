@@ -1,7 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateTrialDto } from './create-trial.dto';
 import { IsArray, IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
-import { AgeGroup, BudgetCategory, ProtocolDetails, RecuitmentPlan, RegulatoryCompliance } from '../interfaces/trials.interface';
+import { AgeGroup, BudgetCategory, ProtocolDetails, RecruitmentPlan, RegulatoryCompliance } from '../interfaces/trials.interface';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateTrialDto extends PartialType(CreateTrialDto) {
@@ -30,10 +30,10 @@ export class UpdateTrialDto extends PartialType(CreateTrialDto) {
     regulatoryCompliance?: RegulatoryCompliance;
 
     @IsNotEmpty()
-    @IsEnum(RecuitmentPlan)
+    @IsEnum(RecruitmentPlan)
     @IsOptional()
-    @ApiProperty({enum: RecuitmentPlan})
-    recruitmentPlan?: RecuitmentPlan;
+    @ApiProperty({enum: RecruitmentPlan})
+    recruitmentPlan?: RecruitmentPlan;
 
     @IsNotEmpty()
     @IsOptional()
