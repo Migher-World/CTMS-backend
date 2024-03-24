@@ -3,7 +3,12 @@ import { BudgetsService } from './budgets.service';
 import { CreateBudgetDto } from './dto/create-budget.dto';
 import { UpdateBudgetDto } from './dto/update-budget.dto';
 import { resolveResponse } from 'src/shared/resolvers';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Headers } from '../../shared/decorators/headers.decorator';
 
+@ApiTags('Budgets')
+@ApiBearerAuth()
+@Headers()
 @Controller('budgets')
 export class BudgetsController {
   constructor(private readonly budgetsService: BudgetsService) {}

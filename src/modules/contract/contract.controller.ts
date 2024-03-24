@@ -3,7 +3,12 @@ import { ContractService } from './contract.service';
 import { CreateContractDto } from './dto/create-contract.dto';
 import { UpdateContractDto } from './dto/update-contract.dto';
 import { resolveResponse } from 'src/shared/resolvers';
+import { Headers } from '../../shared/decorators/headers.decorator';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Contracts')
+@ApiBearerAuth()
+@Headers()
 @Controller('contract')
 export class ContractController {
   constructor(private readonly contractService: ContractService) {}
