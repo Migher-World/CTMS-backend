@@ -10,7 +10,7 @@ export class AppService {
 
   async uploadFile(file: Express.Multer.File, company: ICompany): Promise<string> {
     const fileUrl = await Helper.cloudinaryUpload(file, {
-      folder: `${company.name}_${company.id}`.toLowerCase().replace(/\s/g, '_'),
+      folder: `${company.name}_${company.type}`.toLowerCase().replace(/\s/g, '_'),
       public_id: `company_${Helper.randString(3, 3, 2)}`,
     });
     return fileUrl;
