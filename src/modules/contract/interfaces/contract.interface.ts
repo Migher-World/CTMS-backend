@@ -11,7 +11,7 @@ export enum ContractStatus {
 
 export interface IContract {
     id: string;
-    trialName: string;
+    trialId: string;
     contractTitle: string;
     effectiveDate: string;
     expirationDate: string;

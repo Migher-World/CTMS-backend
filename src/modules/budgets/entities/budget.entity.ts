@@ -10,7 +10,7 @@ export class Budget extends AbstractEntity implements IBudget{
     trial: Trial;
 
     @Column()
-    trialName: string;
+    trialId: string;
 
     @Column()
     currency: Currency;
@@ -19,10 +19,10 @@ export class Budget extends AbstractEntity implements IBudget{
     totalBudget: string;
 
     @Column()
-    startDate: string;
+    startDate: Date;
 
     @Column()
-    endDate: string;
+    endDate: Date;
 
     @Column()
     siteFees: string;

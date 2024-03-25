@@ -12,7 +12,6 @@ export enum AgeGroup{
 
 export enum BudgetCategory{
     EMERGENCY = 'Emergency',
-
 }
 
 export enum RegulatoryCompliance{
@@ -20,7 +19,7 @@ export enum RegulatoryCompliance{
     UNCOMPLIED = 'Uncomplied',
 }
 
-export enum RecuitmentPlan{
+export enum RecruitmentPlan{
     FULL_TIME = 'Full Time',
     PART_TIME = 'Part Time',
 }
@@ -31,9 +30,10 @@ export interface ITrial {
     endDate: string;
     protocolDetails: ProtocolDetails;
     objectives: string;
-    companyId: string;
+    siteId: string;
     site: ICompany;
-    siteName: string;
+    companyId: string;
+    company: ICompany;
     siteLocation: string;
     siteInvestigator:string;
     gender: 'male' | 'female';
@@ -41,10 +41,10 @@ export interface ITrial {
     budgetCategory: BudgetCategory;
     allocatedAmount: string;
     regulatoryCompliance: RegulatoryCompliance;
-    recruitmentPlan: RecuitmentPlan;
+    recruitmentPlan: RecruitmentPlan;
     inclusionCriteria: string[];
     exclusionCriteria: string[];
-    irbSubmissionDate: string;
+    irbSubmissionDate: Date;
     trackingNumber: string;
-    //irbApprovalDocument: string;
+    irbApprovalDocument: string;
 }

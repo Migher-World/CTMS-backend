@@ -5,7 +5,8 @@ import { faker } from '@faker-js/faker';
 import * as tokenGen from 'otp-generator';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
-import { BadRequestException } from '@nestjs/common';
+import { CloudStorage } from '../plugins/cloud-storage';
+import { Cloudinary } from '../plugins/cloud-storage/cloudinary';
 
 class SlugifyOptions {
   lower: boolean;
@@ -138,6 +139,13 @@ export class Helper {
       EUR: '€',
     };
     return currencies[currency];
+  }
+
+  static async cloudinaryUpload(file: Express.Multer.File, options?: Record<string, unknown>) {
+    const storage = new CloudStorage(new Cloudinary());
+    const { path } = file;
+    const fileUrl = await storage.uploadFile(path, undefined, options);
+    return fileUrl;
   }
 
   static getInitials(name: string, length = 2): string {

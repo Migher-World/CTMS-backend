@@ -9,7 +9,8 @@ import { BasicPaginationDto } from 'src/shared/dto/basic-pagination.dto';
 import { CurrentCompany } from 'src/shared/decorators/current-company.decorator';
 import { Company } from '../companies/entities/company.entity';
 import { ICompany } from '../companies/interfaces/company.interface';
-
+import { CurrentUser } from '../../shared/decorators/current-user.decorator';
+import { User } from '../users/entities/user.entity';
 
 @ApiTags('Trials')
 @ApiBearerAuth()
@@ -19,9 +20,8 @@ export class TrialsController {
   constructor(private readonly trialsService: TrialsService) {}
 
   @Post()
-  create(@Req() request, @Body() createTrialDto: CreateTrialDto) {
-    const companyId = request.headers['x-company-id'];
-    return resolveResponse(this.trialsService.createTrial(createTrialDto, companyId), 'Trial Created');
+  create(@Body() createTrialDto: CreateTrialDto, @CurrentUser() user: User, @CurrentCompany() company: ICompany) {
+    return resolveResponse(this.trialsService.createTrial(createTrialDto, user, company), 'Trial Created');
   }
 
   @Get()
@@ -36,7 +36,7 @@ export class TrialsController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTrialDto: UpdateTrialDto) {
-    return resolveResponse(this.trialsService.updateTrial(id, updateTrialDto))
+    return resolveResponse(this.trialsService.updateTrial(id, updateTrialDto));
   }
 
   @Delete(':id')

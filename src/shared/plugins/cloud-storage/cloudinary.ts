@@ -1,6 +1,6 @@
 import { v2 } from 'cloudinary';
-import env from '../../../config/env.config';
 import { IStorage } from './IStorage';
+import env from '../../../config/env.config';
 
 export class Cloudinary implements IStorage {
   private cloudinary;
@@ -18,11 +18,12 @@ export class Cloudinary implements IStorage {
     return secure_url;
   }
 
-  async uploadFile(path: string, body?: Buffer): Promise<string> {
+  async uploadFile(path: string, body?: Buffer, option?: Record<string, unknown>): Promise<string> {
     const options = {
       use_filename: true,
       unique_filename: false,
       overwrite: true,
+      ...option,
     };
     const { secure_url } = await this.cloudinary.uploader.upload(path, options);
     return secure_url;
