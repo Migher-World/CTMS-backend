@@ -5,12 +5,12 @@ import { Trial } from "src/modules/trials/entities/trial.entity";
 
 @Entity('contracts')
 export class Contract extends AbstractEntity implements IContract{
-    @Column()
-    trialName: string;
-
     @ManyToOne(()=> Trial, trial => trial.contracts)
     @JoinColumn()
     trial: Trial;
+
+    @Column()
+    trialId: string;
 
     @Column()
     contractTitle: string;
