@@ -6,6 +6,8 @@ import { AssignRoleDto } from './dto/assign-role.dto';
 import { resolveResponse } from '../../shared/resolvers';
 import { Headers } from '../../shared/decorators/headers.decorator';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { CurrentCompany } from '../../shared/decorators/current-company.decorator';
+import { ICompany } from '../companies/interfaces/company.interface';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -22,9 +24,9 @@ export class UsersController {
     return resolveResponse(this.usersService.create(createUserDto, companyId), 'Account Created');
   }
 
-  @Get()
-  async findUsers() {
-    return resolveResponse(this.usersService.findUsers(), 'All Users Found');
+@Get()
+  async findUsers(@CurrentCompany() company: ICompany){
+    return resolveResponse(this.usersService.findUsers(company), 'All Users Found');
   }
 
   @Get(':id')
