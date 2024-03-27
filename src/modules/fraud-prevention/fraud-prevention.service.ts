@@ -9,6 +9,8 @@ import { Dismissal } from './entities/dismissal.entity';
 import { BasicPaginationDto } from 'src/shared/dto/basic-pagination.dto';
 import { CreateSuspiciousDto, UpdateSuspicipusDto } from './dto/suspicious.dto';
 import { CreateDismissalDto, UpdateDismissalDto } from './dto/dismissal.dto';
+import { User } from '../users/entities/user.entity';
+import { Trial } from '../trials/entities/trial.entity';
 
 @Injectable()
 export class FraudPreventionService extends BasicService<FraudPrevention> {
@@ -16,12 +18,19 @@ export class FraudPreventionService extends BasicService<FraudPrevention> {
     @InjectRepository(FraudPrevention) private readonly fraudRepo: Repository<FraudPrevention>,
     @InjectRepository(Suspicious) private readonly suspiciousRepo: Repository<Suspicious>,
     @InjectRepository(Dismissal) private readonly dismissalRepo: Repository<Dismissal>,
+    @InjectRepository(Trial) private readonly trialRepo: Repository<Trial>,
   ){
     super(fraudRepo, 'Frauds');
   }
 
-  async createFraud (createFraudDto: CreateFraudDto) {
-    const createdFraud = await this.fraudRepo.create({...createFraudDto});
+  async createFraud (createFraudDto: CreateFraudDto, user: User) {
+    let {trialId} = createFraudDto;
+    const trial = await this.trialRepo.findOne({where: {id: trialId}});
+    const createdFraud = await this.fraudRepo.create({
+      ...createFraudDto,
+      createdById: user.id,
+      trial, 
+    });
 
     const fraud = await this.fraudRepo.save(createdFraud);
     return fraud;
@@ -58,8 +67,14 @@ export class FraudPreventionService extends BasicService<FraudPrevention> {
   }
 
   //Suspicious
-  async createSuspicious (createSuspiciousDto: CreateSuspiciousDto) {
-    const createdSuspicious = await this.fraudRepo.create({...createSuspiciousDto});
+  async createSuspicious (createSuspiciousDto: CreateSuspiciousDto,  user: User) {
+    let {trialId} = createSuspiciousDto;
+    const trial = await this.trialRepo.findOne({where: {id: trialId}});
+    const createdSuspicious = await this.fraudRepo.create({
+      ...createSuspiciousDto,
+      createdById: user.id,
+      trial, 
+    });
 
     const suspicious = await this.fraudRepo.save(createdSuspicious);
     return suspicious;

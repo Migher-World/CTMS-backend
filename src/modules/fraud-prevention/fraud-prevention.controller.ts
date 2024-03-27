@@ -5,19 +5,26 @@ import { resolveResponse } from 'src/shared/resolvers';
 import { CreateSuspiciousDto, UpdateSuspicipusDto } from './dto/suspicious.dto';
 import { CreateDismissalDto, UpdateDismissalDto } from './dto/dismissal.dto';
 import { BasicPaginationDto } from 'src/shared/dto/basic-pagination.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Headers } from 'src/shared/decorators/headers.decorator';
+import { CurrentUser } from 'src/shared/decorators/current-user.decorator';
+import { User } from '../users/entities/user.entity';
 
+@ApiTags('Fraud-Prevention')
+@ApiBearerAuth()
+@Headers()
 @Controller('fraud-prevention')
 export class FraudPreventionController {
   constructor(private readonly fraudPreventionService: FraudPreventionService) {}
 
   @Post('fraud')
-  async createFraud(@Body() createFraudDto: CreateFraudDto) {
-    return resolveResponse(this.fraudPreventionService.createFraud(createFraudDto), 'Fraud Created')
+  async createFraud(@Body() createFraudDto: CreateFraudDto, @CurrentUser() user: User) {
+    return resolveResponse(this.fraudPreventionService.createFraud(createFraudDto, user), 'Fraud Created')
   }
 
   @Post('suspicious')
-  async createSuspicious(@Body() createSuspiciousDto: CreateSuspiciousDto) {
-    return resolveResponse(this.fraudPreventionService.createSuspicious(createSuspiciousDto), 'Suspicious created')
+  async createSuspicious(@Body() createSuspiciousDto: CreateSuspiciousDto,  @CurrentUser() user: User) {
+    return resolveResponse(this.fraudPreventionService.createSuspicious(createSuspiciousDto, user), 'Suspicious created')
   }
 
   @Post('dismissal')

@@ -1,51 +1,64 @@
-import { AbstractEntity } from "src/shared/entities/abstract-entity";
-import { Column, Entity } from "typeorm";
-import { IFraud, SecurityLevel, Category, FaultNature } from "../interfaces/fraud-prevention.interfaces";
+import { AbstractEntity } from 'src/shared/entities/abstract-entity';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { IFraud, SecurityLevel, Category, FaultNature } from '../interfaces/fraud-prevention.interfaces';
+import { User } from 'src/modules/users/entities/user.entity';
+import { Trial } from 'src/modules/trials/entities/trial.entity';
 
 @Entity('frauds')
 export class FraudPrevention extends AbstractEntity implements IFraud {
-    @Column({enum: SecurityLevel, type:'enum'})
-    securityLevel: SecurityLevel;
+  @Column({ enum: SecurityLevel, type: 'enum' })
+  securityLevel: SecurityLevel;
 
-    @Column()
-    reporterName: string;
+  @Column()
+  reporterName: string;
 
-    @Column()
-    reporterEmail: string;
+  @Column()
+  reporterEmail: string;
 
-    @Column()
-    reporterContact: string;
+  @Column()
+  reporterContact: string;
 
-    @Column({enum: Category, type:'enum'})
-    category: Category;
+  @Column({ enum: Category, type: 'enum' })
+  category: Category;
 
-    @Column()
-    date: string;
+  @Column()
+  date: string;
 
-    @Column()
-    time: string;
+  @Column()
+  time: string;
 
-    @Column()
-    participantId: string;
+  @Column()
+  participantId: string;
 
-    @Column()
-    trialId: string;
+  @Column()
+  trialId: string;
 
-    @Column()
-    details: string;
+  @ManyToOne(() => Trial)
+  @JoinColumn()
+  trial: Trial;
 
-    @Column({enum: FaultNature, type:'enum'})
-    natureOfFraud: FaultNature;
+  @Column()
+  details: string;
 
-    @Column()
-    witnessName: string;
+  @Column({ enum: FaultNature, type: 'enum' })
+  natureOfFraud: FaultNature;
 
-    @Column()
-    witnessContact: string;
+  @Column()
+  witnessName: string;
 
-    @Column()
-    relevantInformation: string;
-    
-    @Column()
-    actionTaken: string;
+  @Column()
+  witnessContact: string;
+
+  @Column()
+  relevantInformation: string;
+
+  @Column()
+  actionTaken: string;
+
+  @Column()
+  createdById: string;
+
+  @ManyToOne(() => User)
+  @JoinColumn()
+  createdBy: User;
 }

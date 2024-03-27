@@ -1,3 +1,5 @@
+import { ITrial } from "src/modules/trials/interfaces/trials.interface";
+
 export enum SecurityLevel{
     LOW = 'Low',
     MODERATE = 'Moderate',
@@ -26,6 +28,7 @@ export interface IFraud {
     time: string;
     participantId: string;
     trialId: string;
+    trial: ITrial;
     details: string;
     natureOfFraud: FaultNature;
     witnessName: string;
@@ -45,6 +48,7 @@ export interface ISuspicious{
     time: string;
     participantId: string;
     trialId: string;
+    trial: ITrial;
     details: string;
     natureOfFraud: FaultNature;
     witnessName: string;
