@@ -86,7 +86,7 @@ export class Trial extends AbstractEntity implements ITrial {
   @Column()
   trackingNumber: string;
 
-  @Column()
+  @Column({nullable: true})
   irbApprovalDocument: string;
 
   @Column()
