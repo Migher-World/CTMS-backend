@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
 import { Helper } from '../../../shared/helpers';
-import { IssueStatus } from '../entities/issues.entity';
+import { IssueSeverity, IssueStatus } from '../entities/issues.entity';
 
 export class CreateIssueDto {
   @IsNotEmpty()
@@ -15,6 +15,11 @@ export class CreateIssueDto {
   @IsNotEmpty()
   @IsEnum(IssueStatus)
   status: IssueStatus;
+
+  @IsOptional()
+  @IsEnum(IssueSeverity)
+  @ApiPropertyOptional({ example: IssueSeverity.LOW })
+  severity: IssueSeverity;
 
   @IsOptional()
   @ApiPropertyOptional({ type: String, description: Helper.faker.string.uuid() })

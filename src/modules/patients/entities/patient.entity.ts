@@ -5,9 +5,6 @@ import { EnrollmentStatus, IPatient } from "../interfaces/patient.interface";
 @Entity('patients')
 export class Patient extends AbstractEntity implements IPatient {
     @Column()
-    name: string;
-
-    @Column()
     patientId: string;
 
     @Column({type: 'timestamp'})

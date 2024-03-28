@@ -28,3 +28,17 @@ export class CreateCompanyDto {
   @ApiPropertyOptional({ example: Helper.faker.company.buzzPhrase() })
   industry: string;
 }
+
+export class FilterCompanyDto {
+  @IsOptional()
+  @ApiPropertyOptional({ example: Helper.faker.company.buzzPhrase() })
+  industry: string;
+
+  @IsOptional()
+  @IsEnum(CompanyType)
+  type: CompanyType;
+
+  // @IsOptional()
+  // @ApiPropertyOptional({ example: Helper.faker.company.name() })
+  // name: string;
+}

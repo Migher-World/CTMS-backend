@@ -4,7 +4,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateContractDto {
     @IsNotEmpty()
-    trianId: string;
+    trialId: string;
 
     @IsNotEmpty()
     contractTitle: string;
