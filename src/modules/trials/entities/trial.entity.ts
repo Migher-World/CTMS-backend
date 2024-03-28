@@ -81,7 +81,7 @@ export class Trial extends AbstractEntity implements ITrial {
   exclusionCriteria: string[];
 
   @Column()
-  irbSubmissionDate: Date;
+  irbSubmissionDate: string;
 
   @Column()
   trackingNumber: string;
