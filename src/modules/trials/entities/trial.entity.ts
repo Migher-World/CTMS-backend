@@ -80,13 +80,13 @@ export class Trial extends AbstractEntity implements ITrial {
   @Column('simple-array')
   exclusionCriteria: string[];
 
-  @Column()
+  @Column({ nullable: true })
   irbSubmissionDate: string;
 
   @Column()
   trackingNumber: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   irbApprovalDocument: string;
 
   @Column()
