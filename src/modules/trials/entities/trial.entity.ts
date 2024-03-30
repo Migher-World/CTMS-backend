@@ -12,6 +12,8 @@ import { Budget } from 'src/modules/budgets/entities/budget.entity';
 import { Contract } from 'src/modules/contract/entities/contract.entity';
 import { Company } from 'src/modules/companies/entities/company.entity';
 import { User } from '../../users/entities/user.entity';
+import { FraudPrevention } from 'src/modules/fraud-prevention/entities/fraud.entity';
+import { Suspicious } from 'src/modules/fraud-prevention/entities/suspicious.entity';
 
 @Entity('trials')
 export class Trial extends AbstractEntity implements ITrial {
@@ -81,7 +83,7 @@ export class Trial extends AbstractEntity implements ITrial {
   exclusionCriteria: string[];
 
   @Column()
-  irbSubmissionDate: Date;
+  irbSubmissionDate: string;
 
   @Column()
   trackingNumber: string;

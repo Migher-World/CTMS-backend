@@ -1,7 +1,6 @@
 import { AbstractEntity } from 'src/shared/entities/abstract-entity';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { Category, FaultNature, ISuspicious, SecurityLevel } from '../interfaces/fraud-prevention.interfaces';
-import { Trial } from 'src/modules/trials/entities/trial.entity';
 import { User } from 'src/modules/users/entities/user.entity';
 
 @Entity('suspicious')
@@ -32,10 +31,6 @@ export class Suspicious extends AbstractEntity implements ISuspicious {
 
   @Column()
   trialId: string;
-
-  @ManyToOne(() => Trial)
-  @JoinColumn()
-  trial: Trial;
 
   @Column()
   details: string;

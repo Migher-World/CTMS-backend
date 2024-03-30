@@ -28,7 +28,6 @@ export interface IFraud {
     time: string;
     participantId: string;
     trialId: string;
-    trial: ITrial;
     details: string;
     natureOfFraud: FaultNature;
     witnessName: string;
@@ -48,7 +47,6 @@ export interface ISuspicious{
     time: string;
     participantId: string;
     trialId: string;
-    trial: ITrial;
     details: string;
     natureOfFraud: FaultNature;
     witnessName: string;

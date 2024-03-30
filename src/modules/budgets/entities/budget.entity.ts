@@ -19,10 +19,10 @@ export class Budget extends AbstractEntity implements IBudget{
     totalBudget: string;
 
     @Column()
-    startDate: Date;
+    startDate: string;
 
     @Column()
-    endDate: Date;
+    endDate: string;
 
     @Column()
     siteFees: string;

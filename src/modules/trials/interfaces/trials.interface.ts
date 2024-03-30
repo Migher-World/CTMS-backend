@@ -44,7 +44,7 @@ export interface ITrial {
     recruitmentPlan: RecruitmentPlan;
     inclusionCriteria: string[];
     exclusionCriteria: string[];
-    irbSubmissionDate: Date;
+    irbSubmissionDate: string;
     trackingNumber: string;
     irbApprovalDocument: string;
 }
