@@ -46,5 +46,5 @@ export interface ITrial {
     exclusionCriteria: string[];
     irbSubmissionDate: string;
     trackingNumber: string;
-    irbApprovalDocument: string;
+    //irbApprovalDocument: string;
 }
