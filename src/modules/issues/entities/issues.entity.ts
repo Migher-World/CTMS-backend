@@ -9,6 +9,12 @@ export enum IssueStatus {
   DONE = 'DONE',
 }
 
+export enum IssueSeverity {
+  LOW = 'LOW',
+  MEDIUM = 'MEDIUM',
+  HIGH = 'HIGH',
+}
+
 @Entity('issues')
 export class Issue extends AbstractEntity {
   @Column()
@@ -19,6 +25,9 @@ export class Issue extends AbstractEntity {
 
   @Column({ type: 'enum', enum: IssueStatus, default: IssueStatus.OPEN })
   status: IssueStatus;
+
+  @Column({ type: 'enum', enum: IssueSeverity, default: IssueSeverity.LOW })
+  severity: IssueSeverity;
 
   @ManyToOne(() => User, { nullable: true, eager: true })
   @JoinColumn()

@@ -8,6 +8,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { AssignRoleDto } from './dto/assign-role.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ICompany } from '../companies/interfaces/company.interface';
 
 @Injectable()
 export class UsersService extends BasicService<User> {
@@ -38,7 +39,7 @@ export class UsersService extends BasicService<User> {
     }
   }
 
-  async create(createUserDto: CreateUserDto, companyId:string) {
+  async create(createUserDto: CreateUserDto, companyId: string) {
     let { password, setPassword } = createUserDto;
 
     await this.checkDuplicate(createUserDto);
@@ -46,11 +47,11 @@ export class UsersService extends BasicService<User> {
     if (!password) {
       password = Helper.randString(3, 2, 6);
       setPassword = false;
-    }else{
-      setPassword = true
+    } else {
+      setPassword = true;
     }
 
-    const response = this.userRepo.create({ ...createUserDto, password, setPassword,companyId });
+    const response = this.userRepo.create({ ...createUserDto, password, setPassword, companyId });
 
     const user = await this.userRepo.save(response);
     return user;
@@ -62,23 +63,22 @@ export class UsersService extends BasicService<User> {
     if (isEmailExist) {
       throw new BadRequestException('Email exists');
     }
-
   }
-  async findUsers(){
-    const users = await this.userRepo.find();
+  async findUsers(company: ICompany) {
+    const users = await this.userRepo.find({ where: { companyId: company.id } });
     return users;
   }
 
-  async findUser(userId: string){
-    const id = userId
-    const user = await this.userRepo.findOne({where: {id}});
+  async findUser(userId: string) {
+    const id = userId;
+    const user = await this.userRepo.findOne({ where: { id } });
     return user;
   }
 
-  async updateUser(userId: string, updateUserDto: UpdateUserDto){
+  async updateUser(userId: string, updateUserDto: UpdateUserDto) {
     const user = await this.findUser(userId);
 
-    if (user){
+    if (user) {
       const updatedUser = await this.userRepo.update(userId, updateUserDto);
       return updatedUser;
     }
@@ -87,8 +87,8 @@ export class UsersService extends BasicService<User> {
   async deleteUser(userId: string) {
     const user = await this.findUser(userId);
 
-    if (user){
-      await this.userRepo.delete(userId)
+    if (user) {
+      await this.userRepo.delete(userId);
     }
   }
 

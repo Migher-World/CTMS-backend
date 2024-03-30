@@ -9,6 +9,8 @@ import * as siteRoles from '../../json/site-roles.json';
 import * as sponsorRoles from '../../json/sponsor-roles.json';
 import * as vendorRoles from '../../json/vendor-roles.json';
 import { IRole } from '../roles/interface/role.interface';
+import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
+import { FilterCompanyDto } from './dto/create-company.dto';
 
 @Injectable()
 export class CompaniesService extends BasicService<Company> {
@@ -27,6 +29,23 @@ export class CompaniesService extends BasicService<Company> {
     });
     const roles = await this.roleService.bulkCreate(rolesJson);
     return roles;
+  }
+
+  async findAll(pagination: BasicPaginationDto, filter: FilterCompanyDto) {
+    const {industry, type} = filter;
+    const query = this.companyRepository.createQueryBuilder('company');
+    if (type) {
+      query.andWhere('company.type = :type', { type: filter.type });
+    }
+
+    if (industry) {
+      query.andWhere('company.industry = :industry', { industry: filter.industry });
+    }
+
+    // if(name) {
+    //   query.andWhere('company.name ILIKE :name', { name: `%${name}%` });
+    // }
+    return this.paginate(query, pagination);
   }
 
   async prepareRoles(companyType: CompanyType) {

@@ -11,7 +11,6 @@ export enum EnrollmentStatus {
 }
 
 export interface IPatient {
-    name: string;
     patientId: string;
     enrollmentDate: string;
     enrollmentStatus: EnrollmentStatus;
