@@ -20,6 +20,7 @@ export class IssuesService extends BasicService<Issue> {
   }
 
   async create(payload: CreateIssueDto, company: ICompany, user: User): Promise<Issue> {
+    delete payload.assignedToId;
     const issue = this.issueRepo.create({
       ...payload,
       companyId: company.id,

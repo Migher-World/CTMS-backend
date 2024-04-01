@@ -29,7 +29,7 @@ export class Issue extends AbstractEntity {
   @Column({ type: 'enum', enum: IssueSeverity, default: IssueSeverity.LOW })
   severity: IssueSeverity;
 
-  @ManyToOne(() => User, { nullable: true, eager: true })
+  @ManyToOne(() => User, { eager: true })
   @JoinColumn()
   assignedTo: User;
 
