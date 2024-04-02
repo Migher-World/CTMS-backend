@@ -1,4 +1,4 @@
-import { IsArray, IsEnum, IsNotEmpty, IsOptional, IsUUID } from "class-validator";
+import { IsArray, IsDateString, IsEnum, IsNotEmpty, IsOptional, IsUUID } from "class-validator";
 import { AgeGroup, BudgetCategory, ProtocolDetails, RecruitmentPlan, RegulatoryCompliance } from "../interfaces/trials.interface";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -69,6 +69,7 @@ export class CreateTrialDto {
     exclusionCriteria: string[];
 
     @IsNotEmpty()
+    @IsDateString()
     irbSubmissionDate: string;
 
     @IsOptional()

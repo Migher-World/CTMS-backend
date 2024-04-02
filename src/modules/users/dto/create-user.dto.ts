@@ -13,11 +13,15 @@ export class CreateUserDto {
   @IsEmail()
   email: string;
 
+  @IsNotEmpty()
   @IsOptional()
   phoneNumber: string;
 
   @IsOptional()
   password: string;
+
+  @IsNotEmpty()
+  roleId: string;
 
   @IsOptional()
   @Type(() => CreateClientDto)
