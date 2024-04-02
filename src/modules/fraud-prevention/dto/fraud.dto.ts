@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsOptional } from "class-validator";
-import { Category, FaultNature, SecurityLevel } from "../interfaces/fraud-prevention.interfaces";
+import { ActivityStatus, Category, FaultNature, SecurityLevel } from "../interfaces/fraud-prevention.interfaces";
 import { ApiProperty, PartialType } from "@nestjs/swagger";
 
 export class CreateFraudDto {
@@ -21,6 +21,11 @@ export class CreateFraudDto {
     @IsEnum(Category)
     @ApiProperty({enum: Category})
     category: Category;
+
+    @IsNotEmpty()
+    @IsEnum(ActivityStatus)
+    @ApiProperty({enum: ActivityStatus})
+    status: ActivityStatus;
 
     @IsNotEmpty()
     date: string;
@@ -74,4 +79,21 @@ export class UpdateFraudDto extends PartialType(CreateFraudDto){
     @IsNotEmpty()
     @IsOptional()
     actionTaken?: string;
+}
+
+export class FilterFraudDto extends PartialType(CreateFraudDto){
+    @IsOptional()
+    @IsEnum(Category)
+    @ApiProperty({enum: Category})
+    category: Category;
+
+    @IsOptional()
+    @IsEnum(SecurityLevel)
+    @ApiProperty({enum: SecurityLevel})
+    securityLevel: SecurityLevel;
+
+    @IsOptional()
+    @IsEnum(ActivityStatus)
+    @ApiProperty({enum: ActivityStatus})
+    status: ActivityStatus;
 }

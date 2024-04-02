@@ -1,13 +1,13 @@
 import { BasicService } from 'src/shared/services/basic-service.service';
 import { FraudPrevention } from './entities/fraud.entity';
-import { CreateFraudDto, UpdateFraudDto } from './dto/fraud.dto';
+import { CreateFraudDto, FilterFraudDto, UpdateFraudDto } from './dto/fraud.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Suspicious } from './entities/suspicious.entity';
 import { Injectable } from '@nestjs/common';
 import { Dismissal } from './entities/dismissal.entity';
 import { BasicPaginationDto } from 'src/shared/dto/basic-pagination.dto';
-import { CreateSuspiciousDto, UpdateSuspicipusDto } from './dto/suspicious.dto';
+import { CreateSuspiciousDto, FilterSuspiciousDto, UpdateSuspicipusDto } from './dto/suspicious.dto';
 import { CreateDismissalDto, UpdateDismissalDto } from './dto/dismissal.dto';
 import { User } from '../users/entities/user.entity';
 
@@ -31,9 +31,12 @@ export class FraudPreventionService extends BasicService<FraudPrevention> {
     return fraud;
   }
 
-  async findFrauds(pagination: BasicPaginationDto) {
-   const query = this.fraudRepo.createQueryBuilder('fraud');
+  async findFrauds(pagination: BasicPaginationDto, filterOptions?: FilterFraudDto) {
+    if (filterOptions){
+      return this.fraudRepo.findBy(filterOptions)
+    }
 
+   const query = this.fraudRepo.createQueryBuilder('fraud');
    return this.paginate(query,pagination);
   }
 
@@ -72,9 +75,11 @@ export class FraudPreventionService extends BasicService<FraudPrevention> {
     return suspicious;
   }
 
-  async findSuspicious(pagination: BasicPaginationDto) {
+  async findSuspicious(pagination: BasicPaginationDto, filterOptions?: FilterSuspiciousDto) {
+    if(filterOptions){
+      return this.suspiciousRepo.findBy(filterOptions)
+    }
    const query = this.suspiciousRepo.createQueryBuilder('suspicious');
-
    return this.paginate(query,pagination);
   }
 

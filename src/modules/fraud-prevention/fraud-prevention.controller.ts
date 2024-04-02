@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { FraudPreventionService } from './fraud-prevention.service';
-import { CreateFraudDto, UpdateFraudDto } from './dto/fraud.dto';
+import { CreateFraudDto, FilterFraudDto, UpdateFraudDto } from './dto/fraud.dto';
 import { resolveResponse } from 'src/shared/resolvers';
-import { CreateSuspiciousDto, UpdateSuspicipusDto } from './dto/suspicious.dto';
+import { CreateSuspiciousDto, FilterSuspiciousDto, UpdateSuspicipusDto } from './dto/suspicious.dto';
 import { CreateDismissalDto, UpdateDismissalDto } from './dto/dismissal.dto';
 import { BasicPaginationDto } from 'src/shared/dto/basic-pagination.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -33,13 +33,13 @@ export class FraudPreventionController {
   }
 
   @Get('fraud')
-  async getFrauds(@Query() pagination: BasicPaginationDto) {
-    return resolveResponse(this.fraudPreventionService.findFrauds(pagination), 'All fraud');
+  async getFrauds(@Query() pagination: BasicPaginationDto, @Query() filterOptions?: FilterFraudDto) {
+    return resolveResponse(this.fraudPreventionService.findFrauds(pagination, filterOptions), 'All fraud');
   }
 
   @Get('suspicious')
-  async getSuspicious(@Query() pagination: BasicPaginationDto) {
-    return resolveResponse(this.fraudPreventionService.findSuspicious(pagination), 'All suspicious');
+  async getSuspicious(@Query() pagination: BasicPaginationDto, @Query() filterOptions?: FilterSuspiciousDto) {
+    return resolveResponse(this.fraudPreventionService.findSuspicious(pagination, filterOptions), 'All suspicious');
   }
 
   @Get('dismissal')

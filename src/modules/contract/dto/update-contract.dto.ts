@@ -5,47 +5,46 @@ import { ContractStatus } from '../interfaces/contract.interface';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateContractDto extends PartialType(CreateContractDto) {
-    @IsNotEmpty()
+    @IsOptional()
     contractTitle: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     effectiveDate: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     expirationDate: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     organization: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     serviceProvider: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     description: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     paymentTerms: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     terminationClause: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     confidentiality: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     insuranceRequirement: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     contractValue: string;
 
-    @IsNotEmpty()
     @IsOptional()
     paymentSchedule: string;
 
     @IsOptional()
     status: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsEnum(ContractStatus)
     @ApiProperty({enum: ContractStatus})
     contractStatus: ContractStatus;
