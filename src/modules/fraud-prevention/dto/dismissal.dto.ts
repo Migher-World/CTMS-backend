@@ -32,22 +32,23 @@ export class CreateDismissalDto {
     @IsNotEmpty()
     dismissalReason: string;
 
-    @IsNotEmpty()
+    @IsOptional()
+    supportingEvidence: string;
+
     @IsOptional()
     actionTaken: string;  
 }
 
 export class UpdateDismissalDto extends PartialType(CreateDismissalDto) {
-    @IsNotEmpty()
+    @IsOptional()
     description: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     summary: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     dismissalReason: string;
 
-    @IsNotEmpty()
     @IsOptional()
     actionTaken: string;  
 }

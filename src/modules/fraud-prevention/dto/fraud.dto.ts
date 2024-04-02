@@ -42,19 +42,18 @@ export class CreateFraudDto {
     @ApiProperty({enum: FaultNature})
     natureOfFraud: FaultNature;
 
-    @IsNotEmpty()
     @IsOptional()
     witnessName: string;
 
-    @IsNotEmpty()
     @IsOptional()
     witnessContact: string;
 
-    @IsNotEmpty()
     @IsOptional()
     relevantInformation: string;
+
+    @IsOptional()
+    documents: string;
     
-    @IsNotEmpty()
     @IsOptional()
     actionTaken: string;
 }

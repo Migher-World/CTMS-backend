@@ -42,41 +42,35 @@ export class CreateSuspiciousDto {
     @ApiProperty({enum: FaultNature})
     natureOfFraud: FaultNature;
 
-    @IsNotEmpty()
     @IsOptional()
     witnessName: string;
 
-    @IsNotEmpty()
     @IsOptional()
     witnessContact: string;
 
-    @IsNotEmpty()
     @IsOptional()
     relevantInformation: string;
+
+    @IsOptional()
+    documents: string;
     
-    @IsNotEmpty()
     @IsOptional()
     actionTaken: string;
 }
 
 export class UpdateSuspicipusDto extends PartialType(CreateSuspiciousDto){
-    @IsNotEmpty()
     @IsOptional()
     details: string;
     
-    @IsNotEmpty()
     @IsOptional()
     witnessName: string;
 
-    @IsNotEmpty()
     @IsOptional()
     witnessContact: string;
 
-    @IsNotEmpty()
     @IsOptional()
     relevantInformation: string;
     
-    @IsNotEmpty()
     @IsOptional()
     actionTaken: string;
 }

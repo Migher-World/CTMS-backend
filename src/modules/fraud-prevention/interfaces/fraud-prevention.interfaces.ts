@@ -1,3 +1,4 @@
+import { Status } from "cloudinary";
 import { ITrial } from "src/modules/trials/interfaces/trials.interface";
 
 export enum SecurityLevel{
@@ -18,6 +19,11 @@ export enum FaultNature{
     OTHERS = 'Others'
 }
 
+export enum ActivityStatus{
+    PENDING = 'Pending',
+    RESOLVED = 'Resolved',
+    UNDER_INVESTIGATION = 'Under Investigation',
+}
 export interface IFraud {
     securityLevel: SecurityLevel;
     reporterName: string;
@@ -33,8 +39,9 @@ export interface IFraud {
     witnessName: string;
     witnessContact: string;
     relevantInformation: string;
-    // documents: string;
+    documents: string;
     actionTaken: string;
+    status: ActivityStatus;
 }
 
 export interface ISuspicious{
@@ -52,8 +59,9 @@ export interface ISuspicious{
     witnessName: string;
     witnessContact: string;
     relevantInformation: string;
-    // documents: string;
+    documents: string;
     actionTaken: string;
+    status: ActivityStatus;
 }
 
 export interface IDismissal{
@@ -63,7 +71,7 @@ export interface IDismissal{
     description: string;
     summary: string;
     natureOfFraud: FaultNature;
-    // supportingEvidence: string;
+    supportingEvidence: string;
     participantId: string;
     participantsDetail: string;
     dismissalReason: string;

@@ -33,4 +33,7 @@ export class Dismissal extends AbstractEntity implements IDismissal{
 
     @Column()
     actionTaken: string;
+
+    @Column()
+    supportingEvidence: string;
 }

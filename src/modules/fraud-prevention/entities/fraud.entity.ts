@@ -1,6 +1,6 @@
 import { AbstractEntity } from "src/shared/entities/abstract-entity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
-import { IFraud, SecurityLevel, Category, FaultNature } from "../interfaces/fraud-prevention.interfaces";
+import { IFraud, SecurityLevel, Category, FaultNature, ActivityStatus } from "../interfaces/fraud-prevention.interfaces";
 import { User } from "src/modules/users/entities/user.entity";
 
 @Entity('frauds')
@@ -41,11 +41,17 @@ export class FraudPrevention extends AbstractEntity implements IFraud {
     @Column()
     witnessName: string;
 
+    @Column({enum: ActivityStatus, type: 'enum'})
+    status: ActivityStatus;
+
     @Column()
     witnessContact: string;
 
     @Column()
     relevantInformation: string;
+
+    @Column()
+    documents: string;
     
     @Column()
     actionTaken: string;
