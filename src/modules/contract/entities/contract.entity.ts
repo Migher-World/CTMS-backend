@@ -49,5 +49,5 @@ export class Contract extends AbstractEntity implements IContract{
     paymentSchedule: string;
 
     @Column({type: 'enum', enum: ContractStatus})
-    contractStaus: ContractStatus;
+    contractStatus: ContractStatus;
 }

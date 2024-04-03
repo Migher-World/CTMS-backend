@@ -14,6 +14,7 @@ export class CreateUserDto {
   email: string;
 
   @IsNotEmpty()
+  @IsOptional()
   phoneNumber: string;
 
   @IsOptional()
@@ -22,7 +23,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   roleId: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @Type(() => CreateClientDto)
   client: CreateClientDto
 

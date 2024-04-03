@@ -39,15 +39,12 @@ export class CreateTrialDto {
     budgetCategory: BudgetCategory;
 
     @IsNotEmpty()
-    @IsOptional()
     siteLocation: string;
 
     @IsNotEmpty()
-    @IsOptional()
     siteInvestigator: string;
 
     @IsNotEmpty()
-    @IsOptional()
     trackingNumber: string;
 
     @IsNotEmpty()
@@ -64,16 +61,17 @@ export class CreateTrialDto {
     recruitmentPlan: RecruitmentPlan;
 
     @IsNotEmpty()
-    @IsOptional()
     @IsArray()
     inclusionCriteria: string[];
     
     @IsNotEmpty()
-    @IsOptional()
     @IsArray()
     exclusionCriteria: string[];
 
     @IsNotEmpty()
     @IsDateString()
     irbSubmissionDate: string;
+
+    @IsOptional()
+    irbApprovalDocument: string;
 }

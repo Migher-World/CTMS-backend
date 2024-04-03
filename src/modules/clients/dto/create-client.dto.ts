@@ -3,15 +3,12 @@ import { Category, ClientType } from '../interfaces/clients.interface';
 
 export class CreateClientDto {
   @IsNotEmpty()
-  @IsOptional()
   name: string;
 
   @IsNotEmpty()
-  @IsOptional()
   clientEmail: string;
 
   @IsNotEmpty()
-  @IsOptional()
   contactPerson: string;
 
   @IsNotEmpty()

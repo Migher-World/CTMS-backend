@@ -24,5 +24,5 @@ export interface IContract {
     insuranceRequirement: string;
     contractValue: string;
     paymentSchedule: string;
-    contractStaus: ContractStatus;
+    contractStatus: ContractStatus;
 }
