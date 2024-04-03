@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { BasicService } from '../../shared/services/basic-service.service';
 import { Issue, IssueStatus } from './entities/issues.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,6 +9,7 @@ import { CreateIssueDto, FilterIssueDto, UpdateIssueDto } from './dto/issue.dto'
 import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
 import { CreateCommentDto } from './dto/comment.dto';
 import { Comment } from './entities/comment.entity';
+import { AppDataSource } from '../../config/db.config';
 
 @Injectable()
 export class IssuesService extends BasicService<Issue> {
@@ -20,6 +21,12 @@ export class IssuesService extends BasicService<Issue> {
   }
 
   async create(payload: CreateIssueDto, company: ICompany, user: User): Promise<Issue> {
+    // const assignedTo = await AppDataSource.getRepository(User).findOne({
+    //   where: { email: payload.assignedToId },
+    // });
+    // if (!assignedTo) {
+    //   throw new BadRequestException('Assigned user not found');
+    // }
     delete payload.assignedToId;
     const issue = this.issueRepo.create({
       ...payload,

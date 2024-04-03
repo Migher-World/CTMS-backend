@@ -45,3 +45,9 @@ export class FilterIssueDto {
   @ApiPropertyOptional({ type: String, description: Helper.faker.string.uuid() })
   authorId: string;
 }
+
+export class UpdateIssueStatusDto {
+  @IsNotEmpty()
+  @IsEnum(IssueStatus)
+  status: IssueStatus;
+}
