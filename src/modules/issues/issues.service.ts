@@ -21,13 +21,12 @@ export class IssuesService extends BasicService<Issue> {
   }
 
   async create(payload: CreateIssueDto, company: ICompany, user: User): Promise<Issue> {
-    // const assignedTo = await AppDataSource.getRepository(User).findOne({
-    //   where: { email: payload.assignedToId },
-    // });
-    // if (!assignedTo) {
-    //   throw new BadRequestException('Assigned user not found');
-    // }
-    delete payload.assignedToId;
+    const assignedTo = await AppDataSource.getRepository(User).findOne({
+      where: { email: payload.assignedToId },
+    });
+    if (!assignedTo) {
+      throw new BadRequestException('Assigned user not found');
+    }
     const issue = this.issueRepo.create({
       ...payload,
       companyId: company.id,
