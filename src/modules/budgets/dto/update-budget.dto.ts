@@ -20,7 +20,4 @@ export class UpdateBudgetDto extends PartialType(CreateBudgetDto) {
 
     @IsOptional()
     additionalInformation: string;
-
-    @IsOptional()
-    attachment:  Array<Express.Multer.File>;
 }
