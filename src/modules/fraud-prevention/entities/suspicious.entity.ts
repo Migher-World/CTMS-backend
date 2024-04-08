@@ -44,22 +44,22 @@ export class Suspicious extends AbstractEntity implements ISuspicious {
   @Column({ enum: FaultNature, type: 'enum' })
   natureOfFraud: FaultNature;
 
-  @Column()
+  @Column({ nullable: true })
   witnessName: string;
 
   @Column({ enum: ActivityStatus, type: 'enum' })
   status: ActivityStatus;
 
-  @Column()
+  @Column({ nullable: true })
   witnessContact: string;
 
-  @Column()
+  @Column({ nullable: true })
   relevantInformation: string;
 
-  @Column()
+  @Column({ nullable: true })
   actionTaken: string;
 
-  @Column()
+  @Column({ nullable: true })
   documents: string;
 
   @Column()

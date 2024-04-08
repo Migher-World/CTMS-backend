@@ -22,18 +22,18 @@ export class Dismissal extends AbstractEntity implements IDismissal{
     @Column({enum: FaultNature, type: 'enum'})
     natureOfFraud: FaultNature;
 
-    @Column()
+    @Column({ nullable: true })
     participantId: string;
 
-    @Column()
+    @Column({ nullable: true })
     participantsDetail: string;
 
-    @Column()
+    @Column({ nullable: true })
     dismissalReason: string;
 
-    @Column()
+    @Column({ nullable: true })
     actionTaken: string;
 
-    @Column()
+    @Column({ nullable: true })
     supportingEvidence: string;
 }

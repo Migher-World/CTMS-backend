@@ -23,13 +23,13 @@ export class CreateDismissalDto {
     @ApiProperty({enum: FaultNature})
     natureOfFraud: FaultNature;
 
-    @IsNotEmpty()
+    @IsOptional()
     participantId: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     participantsDetail: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     dismissalReason: string;
 
     @IsOptional()
