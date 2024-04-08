@@ -53,7 +53,7 @@ export class IssuesService extends BasicService<Issue> {
   }
 
   async findSingleIssue(id: string): Promise<Issue> {
-    return this.findOne(id, 'id', ['comments']);
+    return this.findOne(id);
   }
 
   async update(id: string, payload: UpdateIssueDto): Promise<Issue> {
@@ -73,7 +73,7 @@ export class IssuesService extends BasicService<Issue> {
   }
 
   async createComment(payload: CreateCommentDto, author: User) {
-    const issue = await this.findOne(payload.issueId);
+    await this.findOne(payload.issueId);
     const comment = this.commentRepo.create({
       ...payload,
       authorId: author.id,
