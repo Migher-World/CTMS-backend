@@ -33,7 +33,7 @@ export class CreateSuspiciousDto {
     @IsNotEmpty()
     time: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     participantId: string;
 
     @IsNotEmpty()

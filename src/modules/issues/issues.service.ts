@@ -53,7 +53,7 @@ export class IssuesService extends BasicService<Issue> {
   }
 
   async findSingleIssue(id: string): Promise<Issue> {
-    return this.findOne(id);
+    return this.findOne(id, 'id', ['comments']);
   }
 
   async update(id: string, payload: UpdateIssueDto): Promise<Issue> {

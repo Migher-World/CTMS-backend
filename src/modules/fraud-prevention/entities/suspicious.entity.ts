@@ -1,6 +1,12 @@
 import { AbstractEntity } from 'src/shared/entities/abstract-entity';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { ActivityStatus, Category, FaultNature, ISuspicious, SecurityLevel } from '../interfaces/fraud-prevention.interfaces';
+import {
+  ActivityStatus,
+  Category,
+  FaultNature,
+  ISuspicious,
+  SecurityLevel,
+} from '../interfaces/fraud-prevention.interfaces';
 import { User } from 'src/modules/users/entities/user.entity';
 
 @Entity('suspicious')
@@ -26,7 +32,7 @@ export class Suspicious extends AbstractEntity implements ISuspicious {
   @Column()
   time: string;
 
-  @Column()
+  @Column({ nullable: true })
   participantId: string;
 
   @Column()
@@ -41,7 +47,7 @@ export class Suspicious extends AbstractEntity implements ISuspicious {
   @Column()
   witnessName: string;
 
-  @Column({enum: ActivityStatus, type: 'enum'})
+  @Column({ enum: ActivityStatus, type: 'enum' })
   status: ActivityStatus;
 
   @Column()
