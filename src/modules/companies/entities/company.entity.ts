@@ -1,8 +1,8 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 import { AbstractEntity } from '../../../shared/entities/abstract-entity';
 import { CompanyType, ICompany } from '../interfaces/company.interface';
-import { User } from 'src/modules/users/entities/user.entity';
-import { Trial } from 'src/modules/trials/entities/trial.entity';
+import { User } from '../../users/entities/user.entity';
+import { Trial } from '../../trials/entities/trial.entity';
 
 @Entity('companies')
 export class Company extends AbstractEntity implements ICompany {
@@ -27,9 +27,9 @@ export class Company extends AbstractEntity implements ICompany {
   @Column({ nullable: true })
   industry: string;
 
-  @OneToMany(() => User, user => user.company)
+  @OneToMany(() => User, (user) => user.company)
   users: User[];
 
-  @OneToMany(()=> Trial, (trial)=> trial.site)
+  @OneToMany(() => Trial, (trial) => trial.site)
   trials: Trial[];
 }

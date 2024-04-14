@@ -5,9 +5,11 @@ import { UpdatePermissionGroupDto } from './dto/update-permission-group.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { resolveResponse } from '../../shared/resolvers';
 import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
+import { Headers } from '../../shared/decorators/headers.decorator';
 
 @ApiTags('Permission Groups')
 @ApiBearerAuth()
+@Headers()
 @Controller('permission-groups')
 export class PermissionGroupsController {
   constructor(private readonly permissionGroupsService: PermissionGroupsService) {}

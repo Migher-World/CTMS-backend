@@ -1,7 +1,7 @@
-import { AbstractEntity } from "src/shared/entities/abstract-entity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { IFraud, SecurityLevel, Category, FaultNature, ActivityStatus } from "../interfaces/fraud-prevention.interfaces";
-import { User } from "src/modules/users/entities/user.entity";
+import { AbstractEntity } from "../../../shared/entities/abstract-entity";
+import { User } from "../../users/entities/user.entity";
 
 @Entity('frauds')
 export class FraudPrevention extends AbstractEntity implements IFraud {

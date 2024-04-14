@@ -1,7 +1,7 @@
-import { AbstractEntity } from "src/shared/entities/abstract-entity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { ContractStatus, IContract } from "../interfaces/contract.interface";
-import { Trial } from "src/modules/trials/entities/trial.entity";
+import { AbstractEntity } from "../../../shared/entities/abstract-entity";
+import { Trial } from "../../trials/entities/trial.entity";
 
 @Entity('contracts')
 export class Contract extends AbstractEntity implements IContract{

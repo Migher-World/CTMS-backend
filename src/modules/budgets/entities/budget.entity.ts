@@ -1,7 +1,7 @@
-import { AbstractEntity } from "src/shared/entities/abstract-entity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { Currency, IBudget } from "../interfaces/budgets.interface";
-import { Trial } from "src/modules/trials/entities/trial.entity";
+import { AbstractEntity } from "../../../shared/entities/abstract-entity";
+import { Trial } from "../../trials/entities/trial.entity";
 
 @Entity('budgets')
 export class Budget extends AbstractEntity implements IBudget{

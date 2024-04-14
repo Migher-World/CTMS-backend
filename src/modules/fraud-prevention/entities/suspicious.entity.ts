@@ -1,4 +1,3 @@
-import { AbstractEntity } from 'src/shared/entities/abstract-entity';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import {
   ActivityStatus,
@@ -7,7 +6,8 @@ import {
   ISuspicious,
   SecurityLevel,
 } from '../interfaces/fraud-prevention.interfaces';
-import { User } from 'src/modules/users/entities/user.entity';
+import { AbstractEntity } from '../../../shared/entities/abstract-entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity('suspicious')
 export class Suspicious extends AbstractEntity implements ISuspicious {

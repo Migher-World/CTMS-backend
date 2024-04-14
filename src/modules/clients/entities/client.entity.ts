@@ -1,7 +1,7 @@
-import { AbstractEntity } from 'src/shared/entities/abstract-entity';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { Category, ClientType, IClient } from '../interfaces/clients.interface';
-import { User } from 'src/modules/users/entities/user.entity';
+import { AbstractEntity } from '../../../shared/entities/abstract-entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity('clients')
 export class Client extends AbstractEntity implements IClient {

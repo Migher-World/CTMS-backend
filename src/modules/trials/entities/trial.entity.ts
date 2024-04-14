@@ -1,4 +1,3 @@
-import { AbstractEntity } from 'src/shared/entities/abstract-entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import {
   AgeGroup,
@@ -8,12 +7,11 @@ import {
   RecruitmentPlan,
   RegulatoryCompliance,
 } from '../interfaces/trials.interface';
-import { Budget } from 'src/modules/budgets/entities/budget.entity';
-import { Contract } from 'src/modules/contract/entities/contract.entity';
-import { Company } from 'src/modules/companies/entities/company.entity';
 import { User } from '../../users/entities/user.entity';
-import { FraudPrevention } from 'src/modules/fraud-prevention/entities/fraud.entity';
-import { Suspicious } from 'src/modules/fraud-prevention/entities/suspicious.entity';
+import { AbstractEntity } from '../../../shared/entities/abstract-entity';
+import { Company } from '../../companies/entities/company.entity';
+import { Contract } from '../../contract/entities/contract.entity';
+import { Budget } from '../../budgets/entities/budget.entity';
 
 @Entity('trials')
 export class Trial extends AbstractEntity implements ITrial {

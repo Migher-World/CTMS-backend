@@ -1,6 +1,6 @@
-import { AbstractEntity } from "src/shared/entities/abstract-entity";
 import { Column, Entity } from "typeorm";
 import { FaultNature, IDismissal } from "../interfaces/fraud-prevention.interfaces";
+import { AbstractEntity } from "../../../shared/entities/abstract-entity";
 
 @Entity('dismissals')
 export class Dismissal extends AbstractEntity implements IDismissal{
