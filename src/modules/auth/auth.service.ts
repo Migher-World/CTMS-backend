@@ -61,6 +61,8 @@ export class AuthService {
       const payload: AuthPayload = { id: user.id };
       const token = this.jwtService.sign(payload);
 
+      const userWithPermissions = Helper.formatPermissions(user);
+
       return { user, token };
     });
 
@@ -74,7 +76,8 @@ export class AuthService {
       if (user && (await user.comparePassword(password))) {
         const payload: AuthPayload = { id: user.id };
         const token = this.jwtService.sign(payload);
-        return { user: user.toJSON(), token };
+        const userWithPermissions = Helper.formatPermissions(user);
+        return { user: userWithPermissions, token };
       }
       throw new UnauthorizedException('Invalid Credentials');
     } catch (error) {

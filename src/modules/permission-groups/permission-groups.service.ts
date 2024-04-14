@@ -12,4 +12,10 @@ export class PermissionGroupsService extends BasicService<PermissionGroup> {
   ) {
     super(permissionGroupRepo, 'Permission groups');
   }
+
+  async list() {
+    const query = this.permissionGroupRepo.createQueryBuilder('permissionGroup');
+    query.leftJoinAndSelect('permissionGroup.permissions', 'permissions');
+    return await query.getMany();
+  }
 }

@@ -8,6 +8,7 @@ import * as dotenv from 'dotenv';
 import { User } from '../users/entities/user.entity';
 import { AuthPayload } from './auth.dto';
 import env from '../../config/env.config';
+import { Helper } from '../../shared/helpers';
 
 dotenv.config();
 
@@ -23,10 +24,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: AuthPayload) {
     const { id } = payload;
     // console.log('hello');
-    const user = await this.userRepo.find({ where: { id } });
+    const user = await this.userRepo.findOne({
+      where: { id },
+    });
+
     if (!user) {
       throw new UnauthorizedException();
     }
-    return user;
+    const userWithPermissions = Helper.formatPermissions(user);
+    return userWithPermissions;
   }
 }

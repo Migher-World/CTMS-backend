@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import { CloudStorage } from '../plugins/cloud-storage';
 import { Cloudinary } from '../plugins/cloud-storage/cloudinary';
+import { User } from '../../modules/users/entities/user.entity';
 
 class SlugifyOptions {
   lower: boolean;
@@ -152,5 +153,20 @@ export class Helper {
     const names = name.split(' ');
     const initials = names.map((n) => n[0]);
     return initials.join('').substr(0, length);
+  }
+
+  static formatPermissions(user: User) {
+    const permissions = user.role.permissions.reduce((acc, permission) => {
+      const { permissionGroup } = permission;
+      if (!acc[permissionGroup.name]) {
+        acc[permissionGroup.name] = [];
+      }
+      delete permission.permissionGroup;
+      acc[permissionGroup.name].push(permission);
+      return acc;
+    }, {});
+    delete user.role.permissions;
+    const userWithPermissions = { ...user, permissions };
+    return userWithPermissions;
   }
 }
