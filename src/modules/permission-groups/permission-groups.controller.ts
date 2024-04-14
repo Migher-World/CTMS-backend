@@ -14,10 +14,10 @@ import { Headers } from '../../shared/decorators/headers.decorator';
 export class PermissionGroupsController {
   constructor(private readonly permissionGroupsService: PermissionGroupsService) {}
 
-  @Post()
-  create(@Body() createPermissionGroupDto: CreatePermissionGroupDto) {
-    return resolveResponse(this.permissionGroupsService.create(createPermissionGroupDto), 'Permission Group Created');
-  }
+  // @Post()
+  // create(@Body() createPermissionGroupDto: CreatePermissionGroupDto) {
+  //   return resolveResponse(this.permissionGroupsService.create(createPermissionGroupDto), 'Permission Group Created');
+  // }
 
   @Get()
   findAll(@Query() pagination: BasicPaginationDto) {
@@ -34,16 +34,16 @@ export class PermissionGroupsController {
     return resolveResponse(this.permissionGroupsService.findOne(id));
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updatePermissionGroupDto: UpdatePermissionGroupDto) {
-    return resolveResponse(
-      this.permissionGroupsService.update(id, updatePermissionGroupDto),
-      'Permission Group Updated',
-    );
-  }
+  // @Put(':id')
+  // update(@Param('id') id: string, @Body() updatePermissionGroupDto: UpdatePermissionGroupDto) {
+  //   return resolveResponse(
+  //     this.permissionGroupsService.update(id, updatePermissionGroupDto),
+  //     'Permission Group Updated',
+  //   );
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return resolveResponse(this.permissionGroupsService.remove(id), 'Permission Group Deleted');
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return resolveResponse(this.permissionGroupsService.remove(id), 'Permission Group Deleted');
+  // }
 }
