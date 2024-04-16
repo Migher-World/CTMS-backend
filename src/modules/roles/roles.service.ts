@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BasicService } from '../../shared/services/basic-service.service';
 import { Permission } from '../permissions/entities/permission.entity';
-import { AddPermissionsToRoleDto } from './dto/update-role.dto';
+import { AddPermissionsToRoleDto, UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './entities/role.entity';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { ICompany } from '../companies/interfaces/company.interface';
@@ -18,6 +18,12 @@ export class RolesService extends BasicService<Role> {
     const { permissionsId } = createRoleDto;
     const permissions = await this.resolveRelationships(permissionsId, Permission);
     return super.create({ ...createRoleDto, permissions, companyId: company.id });
+  }
+
+  async update(id: string, updateRoleDto: UpdateRoleDto) {
+    const { permissionsId } = updateRoleDto;
+    const permissions = await this.resolveRelationships(permissionsId, Permission);
+    return super.update(id, { ...updateRoleDto, permissions });
   }
 
   async addPermissionsToRole(addPermissionsToRoleDto: AddPermissionsToRoleDto) {
