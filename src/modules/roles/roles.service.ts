@@ -23,7 +23,9 @@ export class RolesService extends BasicService<Role> {
   async update(id: string, updateRoleDto: UpdateRoleDto) {
     const { permissionsId } = updateRoleDto;
     const permissions = await this.resolveRelationships(permissionsId, Permission);
-    return super.update(id, { ...updateRoleDto, permissions });
+    const role = await this.findOne(id);
+    role.permissions = permissions;
+    return this.roleRepo.merge(role, updateRoleDto);
   }
 
   async addPermissionsToRole(addPermissionsToRoleDto: AddPermissionsToRoleDto) {

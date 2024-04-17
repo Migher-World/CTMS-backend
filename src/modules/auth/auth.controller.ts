@@ -41,6 +41,7 @@ export class AuthController {
   }
 
   @Post('set-password')
+  @Public()
   async setPassword(@Body() setPasswordDto: SetPasswordDto){
     return resolveResponse(this.authService.setPassword(setPasswordDto), 'Password set')
   }

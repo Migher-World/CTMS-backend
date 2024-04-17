@@ -24,7 +24,7 @@ export class UsersController {
     return resolveResponse(this.usersService.create(createUserDto, companyId), 'Account Created');
   }
 
-@Get()
+  @Get()
   async findUsers(@CurrentCompany() company: ICompany){
     return resolveResponse(this.usersService.findUsers(company), 'All Users Found');
   }
