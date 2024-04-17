@@ -1,7 +1,8 @@
 import { Permission } from './../../permissions/entities/permission.entity';
-import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { AbstractEntity } from '../../../shared/entities/abstract-entity';
+import { Company } from '../../companies/entities/company.entity';
 
 @Entity('roles')
 export class Role extends AbstractEntity {
@@ -22,6 +23,10 @@ export class Role extends AbstractEntity {
 
   @Column()
   companyId: string;
+
+  @ManyToOne(() => Company)
+  @JoinColumn()
+  company: Company;
 
   @Column({ default: false })
   requireTraining: boolean;

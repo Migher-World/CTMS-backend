@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Put, Param, Get, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Put, Param, Get, Delete, Query } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { AddPermissionsToRoleDto, UpdateRoleDto } from './dto/update-role.dto';
@@ -7,6 +7,7 @@ import { resolveResponse } from '../../shared/resolvers';
 import { CurrentCompany } from '../../shared/decorators/current-company.decorator';
 import { Headers } from '../../shared/decorators/headers.decorator';
 import { ICompany } from '../companies/interfaces/company.interface';
+import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
 
 @ApiTags('Roles')
 @ApiBearerAuth()
@@ -16,8 +17,8 @@ export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
   @Get()
-  async findAll(@CurrentCompany() company: ICompany) {
-    return resolveResponse(this.rolesService.findAllByCompanyId(company.id));
+  async findAll(@Query() pagination: BasicPaginationDto, @CurrentCompany() company: ICompany) {
+    return resolveResponse(this.rolesService.findAllByCompanyId(pagination, company));
   }
 
   @Get(':id')
@@ -42,7 +43,10 @@ export class RolesController {
 
   @Put('remove-permissions')
   async removePermissionsFromRole(@Body() removePermissionsFromRoleDto: AddPermissionsToRoleDto) {
-    return resolveResponse(this.rolesService.removePermissionsFromRole(removePermissionsFromRoleDto), 'Role Permissions Removed');
+    return resolveResponse(
+      this.rolesService.removePermissionsFromRole(removePermissionsFromRoleDto),
+      'Role Permissions Removed',
+    );
   }
 
   @Delete(':id')

@@ -7,6 +7,7 @@ import { AddPermissionsToRoleDto, UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './entities/role.entity';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { ICompany } from '../companies/interfaces/company.interface';
+import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
 
 @Injectable()
 export class RolesService extends BasicService<Role> {
@@ -38,8 +39,12 @@ export class RolesService extends BasicService<Role> {
     return this.roleRepo.save(role);
   }
 
-  async findAllByCompanyId(companyId: string) {
-    return this.roleRepo.find({ where: { companyId } });
+  async findAllByCompanyId(pagination: BasicPaginationDto, company: ICompany) {
+    const query = this.roleRepo.createQueryBuilder('role').leftJoinAndSelect('role.company', 'company');
+    if (company) {
+      query.andWhere('role.companyId = :companyId', { company: company.id });
+    }
+    return this.paginate(query, pagination);
   }
 
   async removePermissionsFromRole(removePermissionsFromRoleDto: AddPermissionsToRoleDto) {
