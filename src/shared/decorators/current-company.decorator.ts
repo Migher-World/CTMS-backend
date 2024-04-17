@@ -6,6 +6,10 @@ export const CurrentCompany = createParamDecorator(
         if(req.user && req.user.companyId !== req.company.id) {
             throw new BadRequestException('Company not found');
         }
+        const userRole = req.user.role.name;
+        if(userRole === 'individual admin') {
+            return undefined;
+        }
         return req.company;
     },
 );

@@ -9,6 +9,7 @@ import { User } from './entities/user.entity';
 import { AssignRoleDto } from './dto/assign-role.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ICompany } from '../companies/interfaces/company.interface';
+import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
 
 @Injectable()
 export class UsersService extends BasicService<User> {
@@ -64,9 +65,12 @@ export class UsersService extends BasicService<User> {
       throw new BadRequestException('Email exists');
     }
   }
-  async findUsers(company: ICompany) {
-    const users = await this.userRepo.find({ where: { companyId: company.id } });
-    return users;
+  async findUsers(pagination: BasicPaginationDto, company: ICompany) {
+    const query = this.userRepo.createQueryBuilder('user');
+    if(company) {
+      query.andWhere('user.companyId = :companyId', { companyId: company.id });
+    }
+    return this.paginate(query, pagination);
   }
 
   async findUser(userId: string) {

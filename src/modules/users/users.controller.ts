@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, Patch, Delete, Header, Req } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Patch, Delete, Query, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -8,6 +8,7 @@ import { Headers } from '../../shared/decorators/headers.decorator';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CurrentCompany } from '../../shared/decorators/current-company.decorator';
 import { ICompany } from '../companies/interfaces/company.interface';
+import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -25,8 +26,8 @@ export class UsersController {
   }
 
   @Get()
-  async findUsers(@CurrentCompany() company: ICompany){
-    return resolveResponse(this.usersService.findUsers(company), 'All Users Found');
+  async findUsers(@Query() pagination: BasicPaginationDto, @CurrentCompany() company: ICompany){
+    return resolveResponse(this.usersService.findUsers(pagination, company), 'All Users Found');
   }
 
   @Get(':id')
