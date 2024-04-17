@@ -32,11 +32,20 @@ export class FraudPreventionService extends BasicService<FraudPrevention> {
   }
 
   async findFrauds(pagination: BasicPaginationDto, filterOptions?: FilterFraudDto) {
-    if (filterOptions){
-      return this.fraudRepo.findBy(filterOptions)
+    const {securityLevel, category, status} = filterOptions;
+    const query = this.fraudRepo.createQueryBuilder('fraud');
+
+    if (securityLevel){
+      query.andWhere('fraud.securityLevel = :securityLevel', {securityLevel: filterOptions.securityLevel});
     }
 
-   const query = this.fraudRepo.createQueryBuilder('fraud');
+    if (category){
+      query.andWhere('fraud.category = :category', {category: filterOptions.category});
+    }
+
+    if (status){
+      query.andWhere('fraud.status = :status', {status: filterOptions.status});
+    }
    return this.paginate(query,pagination);
   }
 
@@ -76,10 +85,20 @@ export class FraudPreventionService extends BasicService<FraudPrevention> {
   }
 
   async findSuspicious(pagination: BasicPaginationDto, filterOptions?: FilterSuspiciousDto) {
-    if(filterOptions){
-      return this.suspiciousRepo.findBy(filterOptions)
+    const {securityLevel, category, status} = filterOptions;
+    const query = this.suspiciousRepo.createQueryBuilder('suspicious');
+
+    if (securityLevel){
+      query.andWhere('suspicious.securityLevel = :securityLevel', {securityLevel: filterOptions.securityLevel});
     }
-   const query = this.suspiciousRepo.createQueryBuilder('suspicious');
+
+    if (category){
+      query.andWhere('suspicious.category = :category', {category: filterOptions.category});
+    }
+
+    if (status){
+      query.andWhere('suspicious.status = :status', {status: filterOptions.status});
+    }
    return this.paginate(query,pagination);
   }
 
