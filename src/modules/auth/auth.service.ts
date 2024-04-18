@@ -47,7 +47,9 @@ export class AuthService {
           : credentials.company;
 
       const company = await manager.save<Company>(manager.create<Company>(Company, companyDto));
+
       const roles = await this.companyService.createCompanyDefaultRoles(company);
+      
       const user = await manager.save<User>(
         manager.create<User>(User, {
           ...credentials,
@@ -63,7 +65,7 @@ export class AuthService {
 
       const userWithPermissions = Helper.formatPermissions(user);
 
-      return { user, token };
+      return { userWithPermissions, token };
     });
 
     return transaction;

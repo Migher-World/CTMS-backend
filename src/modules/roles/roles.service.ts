@@ -42,7 +42,7 @@ export class RolesService extends BasicService<Role> {
   async findAllByCompanyId(pagination: BasicPaginationDto, company: ICompany) {
     const query = this.roleRepo.createQueryBuilder('role').leftJoinAndSelect('role.company', 'company');
     if (company) {
-      query.andWhere('role.companyId = :companyId', { company: company.id });
+      query.andWhere('role.companyId = :companyId', { companyId: company.id });
     }
     return this.paginate(query, pagination);
   }
