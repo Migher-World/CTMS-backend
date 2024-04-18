@@ -10,12 +10,18 @@ import { AssignRoleDto } from './dto/assign-role.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ICompany } from '../companies/interfaces/company.interface';
 import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
+import { CacheService } from '../cache/cache.service';
+import { CreateEmailDto } from '../../shared/alerts/emails/dto/create-email.dto';
+import { AppEvents } from '../../constants';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class UsersService extends BasicService<User> {
   constructor(
     @InjectRepository(User) private userRepo: Repository<User>, // private jwtService: JwtService,
     private readonly rolesService: RolesService,
+    private cacheService: CacheService,
+    private readonly eventEmitter: EventEmitter2,
   ) {
     super(userRepo, 'Users');
   }
@@ -41,13 +47,25 @@ export class UsersService extends BasicService<User> {
   }
 
   async create(createUserDto: CreateUserDto, companyId: string) {
-    let { password, setPassword } = createUserDto;
+    let { password, setPassword, email } = createUserDto;
 
     await this.checkDuplicate(createUserDto);
 
     if (!password) {
       password = Helper.randString(3, 2, 6);
       setPassword = false;
+      const otp = await Helper.generateToken();
+
+      await this.cacheService.set(email, otp, 60 * 60 * 24);
+
+      const emailDto: CreateEmailDto = {
+        receiverEmail: email,
+        subject: 'Complete your registration',
+        template: 'setPassword',
+        metaData: { code: otp, email },
+      };
+
+      this.eventEmitter.emit(AppEvents.SEND_EMAIl, emailDto)
     } else {
       setPassword = true;
     }
@@ -67,7 +85,7 @@ export class UsersService extends BasicService<User> {
   }
   async findUsers(pagination: BasicPaginationDto, company: ICompany) {
     const query = this.userRepo.createQueryBuilder('user');
-    if(company) {
+    if (company) {
       query.andWhere('user.companyId = :companyId', { companyId: company.id });
     }
     return this.paginate(query, pagination);

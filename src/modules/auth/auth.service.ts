@@ -88,7 +88,13 @@ export class AuthService {
   }
 
   async setPassword(setPasswordDto: SetPasswordDto) {
-    const { email, password } = setPasswordDto;
+    const { email, password, code } = setPasswordDto;
+    
+    const storedOtp = await this.cacheService.get(email);
+    if (code != storedOtp) {
+      throw new UnauthorizedException('Invalid OTP');
+    }
+
     const newPassword = await Helper.hash(password);
     const user = await this.userRepo.findOne({ where: { email } });
 

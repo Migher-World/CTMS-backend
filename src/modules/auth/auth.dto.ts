@@ -19,6 +19,9 @@ export class SetPasswordDto {
 
   @IsNotEmpty()
   password: string;
+
+  @IsNotEmpty()
+  code: string;
 }
 
 export class ResetPasswordDto {

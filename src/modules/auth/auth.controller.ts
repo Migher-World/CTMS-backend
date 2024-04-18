@@ -31,11 +31,13 @@ export class AuthController {
   }
 
   @Post('request-reset-password')
+  @Public()
   async requestResetPassword(@Body() requestResetPasswordDto: RequestResetPasswordDto){
     return resolveResponse(this.authService.requestResetPassword(requestResetPasswordDto))
   }
 
   @Post('reset-password')
+  @Public()
   async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
     return resolveResponse(this.authService.resetPassword(resetPasswordDto), 'Reset Password')
   }
