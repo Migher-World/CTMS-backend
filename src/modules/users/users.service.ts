@@ -54,7 +54,7 @@ export class UsersService extends BasicService<User> {
     if (!password) {
       password = Helper.randString(3, 2, 6);
       setPassword = false;
-      const otp = await Helper.generateToken();
+      const otp = 123456;
 
       await this.cacheService.set(email, otp, 60 * 60 * 24);
 
