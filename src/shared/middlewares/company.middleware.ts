@@ -13,9 +13,9 @@ export class CompanyMiddleware implements NestMiddleware {
       throw new BadRequestException('x-company-id header is required');
     }
 
-    const company = await Company.findOne({where:{id: companyId}})
-    if(!company) {
-      throw new BadRequestException('invalid company id')
+    const company = await Company.findOne({ where: { id: companyId } });
+    if (!company) {
+      throw new BadRequestException('invalid company id');
     }
     req.company = company;
 

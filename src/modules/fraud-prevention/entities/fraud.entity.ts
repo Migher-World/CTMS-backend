@@ -1,65 +1,71 @@
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
-import { IFraud, SecurityLevel, Category, FaultNature, ActivityStatus } from "../interfaces/fraud-prevention.interfaces";
-import { AbstractEntity } from "../../../shared/entities/abstract-entity";
-import { User } from "../../users/entities/user.entity";
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import {
+  IFraud,
+  SecurityLevel,
+  Category,
+  FaultNature,
+  ActivityStatus,
+} from '../interfaces/fraud-prevention.interfaces';
+import { AbstractEntity } from '../../../shared/entities/abstract-entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity('frauds')
 export class FraudPrevention extends AbstractEntity implements IFraud {
-    @Column({enum: SecurityLevel, type:'enum'})
-    securityLevel: SecurityLevel;
+  @Column({ enum: SecurityLevel, type: 'enum' })
+  securityLevel: SecurityLevel;
 
-    @Column()
-    reporterName: string;
+  @Column()
+  reporterName: string;
 
-    @Column()
-    reporterEmail: string;
+  @Column()
+  reporterEmail: string;
 
-    @Column()
-    reporterContact: string;
+  @Column()
+  reporterContact: string;
 
-    @Column({enum: Category, type:'enum'})
-    category: Category;
+  @Column({ enum: Category, type: 'enum' })
+  category: Category;
 
-    @Column()
-    date: string;
+  @Column()
+  date: string;
 
-    @Column()
-    time: string;
+  @Column()
+  time: string;
 
-    @Column()
-    participantId: string;
+  @Column()
+  participantId: string;
 
-    @Column()
-    trialId: string;
+  @Column()
+  trialId: string;
 
-    @Column()
-    details: string;
+  @Column()
+  details: string;
 
-    @Column({enum: FaultNature, type:'enum'})
-    natureOfFraud: FaultNature;
+  @Column({ enum: FaultNature, type: 'enum' })
+  natureOfFraud: FaultNature;
 
-    @Column()
-    witnessName: string;
+  @Column()
+  witnessName: string;
 
-    @Column({enum: ActivityStatus, type: 'enum'})
-    status: ActivityStatus;
+  @Column({ enum: ActivityStatus, type: 'enum' })
+  status: ActivityStatus;
 
-    @Column()
-    witnessContact: string;
+  @Column()
+  witnessContact: string;
 
-    @Column()
-    relevantInformation: string;
+  @Column()
+  relevantInformation: string;
 
-    @Column()
-    documents: string;
-    
-    @Column()
-    actionTaken: string;
+  @Column()
+  documents: string;
 
-    @Column()
-    createdById: string;
-  
-    @ManyToOne(() => User)
-    @JoinColumn()
-    createdBy: User;
+  @Column()
+  actionTaken: string;
+
+  @Column()
+  createdById: string;
+
+  @ManyToOne(() => User)
+  @JoinColumn()
+  createdBy: User;
 }

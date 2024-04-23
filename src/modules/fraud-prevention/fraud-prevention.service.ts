@@ -17,14 +17,14 @@ export class FraudPreventionService extends BasicService<FraudPrevention> {
     @InjectRepository(FraudPrevention) private readonly fraudRepo: Repository<FraudPrevention>,
     @InjectRepository(Suspicious) private readonly suspiciousRepo: Repository<Suspicious>,
     @InjectRepository(Dismissal) private readonly dismissalRepo: Repository<Dismissal>,
-  ){
+  ) {
     super(fraudRepo, 'Frauds');
   }
 
-  async createFraud (createFraudDto: CreateFraudDto, user: User) {
+  async createFraud(createFraudDto: CreateFraudDto, user: User) {
     const createdFraud = await this.fraudRepo.create({
       ...createFraudDto,
-      createdById: user.id
+      createdById: user.id,
     });
 
     const fraud = await this.fraudRepo.save(createdFraud);
@@ -32,52 +32,52 @@ export class FraudPreventionService extends BasicService<FraudPrevention> {
   }
 
   async findFrauds(pagination: BasicPaginationDto, filterOptions?: FilterFraudDto) {
-    const {securityLevel, category, status} = filterOptions;
+    const { securityLevel, category, status } = filterOptions;
     const query = this.fraudRepo.createQueryBuilder('fraud');
 
-    if (securityLevel){
-      query.andWhere('fraud.securityLevel = :securityLevel', {securityLevel: filterOptions.securityLevel});
+    if (securityLevel) {
+      query.andWhere('fraud.securityLevel = :securityLevel', { securityLevel: filterOptions.securityLevel });
     }
 
-    if (category){
-      query.andWhere('fraud.category = :category', {category: filterOptions.category});
+    if (category) {
+      query.andWhere('fraud.category = :category', { category: filterOptions.category });
     }
 
-    if (status){
-      query.andWhere('fraud.status = :status', {status: filterOptions.status});
+    if (status) {
+      query.andWhere('fraud.status = :status', { status: filterOptions.status });
     }
-   return this.paginate(query,pagination);
+    return this.paginate(query, pagination);
   }
 
   async findFraud(fraudId: string) {
     const id = fraudId;
-    const fraud = await this.fraudRepo.findOne({where: {id}});
-    return fraud
+    const fraud = await this.fraudRepo.findOne({ where: { id } });
+    return fraud;
   }
 
   async updateFraud(fraudId: string, updateFraudDto: UpdateFraudDto) {
     const fraud = await this.findFraud(fraudId);
 
-    if (fraud){
+    if (fraud) {
       Object.assign(fraud, updateFraudDto);
       const updatedFraud = await this.fraudRepo.save(fraud);
       return updatedFraud;
     }
-}
+  }
 
   async deleteFraud(fraudId: string) {
     const fraud = await this.findFraud(fraudId);
 
-    if (fraud){
+    if (fraud) {
       await this.fraudRepo.delete(fraudId);
     }
   }
 
   //Suspicious
-  async createSuspicious (createSuspiciousDto: CreateSuspiciousDto,  user: User) {
+  async createSuspicious(createSuspiciousDto: CreateSuspiciousDto, user: User) {
     const createdSuspicious = await this.suspiciousRepo.create({
       ...createSuspiciousDto,
-      createdById: user.id
+      createdById: user.id,
     });
 
     const suspicious = await this.suspiciousRepo.save(createdSuspicious);
@@ -85,80 +85,80 @@ export class FraudPreventionService extends BasicService<FraudPrevention> {
   }
 
   async findSuspicious(pagination: BasicPaginationDto, filterOptions?: FilterSuspiciousDto) {
-    const {securityLevel, category, status} = filterOptions;
+    const { securityLevel, category, status } = filterOptions;
     const query = this.suspiciousRepo.createQueryBuilder('suspicious');
 
-    if (securityLevel){
-      query.andWhere('suspicious.securityLevel = :securityLevel', {securityLevel: filterOptions.securityLevel});
+    if (securityLevel) {
+      query.andWhere('suspicious.securityLevel = :securityLevel', { securityLevel: filterOptions.securityLevel });
     }
 
-    if (category){
-      query.andWhere('suspicious.category = :category', {category: filterOptions.category});
+    if (category) {
+      query.andWhere('suspicious.category = :category', { category: filterOptions.category });
     }
 
-    if (status){
-      query.andWhere('suspicious.status = :status', {status: filterOptions.status});
+    if (status) {
+      query.andWhere('suspicious.status = :status', { status: filterOptions.status });
     }
-   return this.paginate(query,pagination);
+    return this.paginate(query, pagination);
   }
 
   async findOneSuspicious(suspiciousId: string) {
     const id = suspiciousId;
-    const suspicious = await this.suspiciousRepo.findOne({where: {id}});
-    return suspicious
+    const suspicious = await this.suspiciousRepo.findOne({ where: { id } });
+    return suspicious;
   }
 
   async updateSuspicious(suspiciousId: string, updateSuspiciousDto: UpdateSuspicipusDto) {
     const suspicious = await this.findOneSuspicious(suspiciousId);
 
-    if (suspicious){
+    if (suspicious) {
       Object.assign(suspicious, updateSuspiciousDto);
       const updatedSuspicious = await this.suspiciousRepo.save(suspicious);
       return updatedSuspicious;
     }
-}
+  }
 
   async deleteSuspicious(suspiciousId: string) {
     const suspicious = await this.findOneSuspicious(suspiciousId);
 
-    if (suspicious){
+    if (suspicious) {
       await this.suspiciousRepo.delete(suspiciousId);
     }
   }
 
   // Dismissal
-  async createDismissal (createDismissalDto: CreateDismissalDto) {
-    const createdDismissal = await this.dismissalRepo.create({...createDismissalDto});
+  async createDismissal(createDismissalDto: CreateDismissalDto) {
+    const createdDismissal = await this.dismissalRepo.create({ ...createDismissalDto });
 
     const dismissal = await this.dismissalRepo.save(createdDismissal);
     return dismissal;
   }
 
   async findDismissals() {
-   const dismissals = await this.dismissalRepo.find();
-   return dismissals;
+    const dismissals = await this.dismissalRepo.find();
+    return dismissals;
   }
 
   async findOneDismissal(dismissalId: string) {
     const id = dismissalId;
-    const dismissal = await this.dismissalRepo.findOne({where: {id}});
-    return dismissal
+    const dismissal = await this.dismissalRepo.findOne({ where: { id } });
+    return dismissal;
   }
 
   async updateDismissal(dismissalId: string, updateDismissalDto: UpdateDismissalDto) {
     const dismissal = await this.findOneDismissal(dismissalId);
 
-    if (dismissal){
+    if (dismissal) {
       Object.assign(dismissal, updateDismissalDto);
       const updatedDismissals = await this.dismissalRepo.save(dismissal);
       return updatedDismissals;
     }
-}
+  }
 
   async deleteDismissal(dismissalId: string) {
     const dismissal = await this.findOneDismissal(dismissalId);
 
-    if (dismissal){
+    if (dismissal) {
       await this.dismissalRepo.delete(dismissalId);
     }
   }

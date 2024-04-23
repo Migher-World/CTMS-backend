@@ -12,5 +12,5 @@ export class AddUserDto {
   @IsNotEmpty()
   @IsOptional()
   @Type(() => CreateClientDto)
-  client: CreateClientDto
+  client: CreateClientDto;
 }

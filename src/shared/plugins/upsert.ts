@@ -38,7 +38,12 @@ export async function TypeOrmUpsert<T>(
 export async function _chunkPromises({ repository, chunkedValues, onConflict }) {
   const promises = [];
   for (let i = 0; i < chunkedValues.length; i++) {
-    let saveQuery = repository.createQueryBuilder().insert().values(chunkedValues[i]).onConflict(onConflict).returning('*');
+    let saveQuery = repository
+      .createQueryBuilder()
+      .insert()
+      .values(chunkedValues[i])
+      .onConflict(onConflict)
+      .returning('*');
 
     saveQuery = saveQuery.execute();
 

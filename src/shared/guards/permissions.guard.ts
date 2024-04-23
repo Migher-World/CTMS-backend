@@ -6,10 +6,10 @@ export class PermissionGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const permissions = this.reflector.getAllAndOverride<string[]>(
-      'permissions',
-      [context.getHandler(), context.getClass()],
-    );
+    const permissions = this.reflector.getAllAndOverride<string[]>('permissions', [
+      context.getHandler(),
+      context.getClass(),
+    ]);
     if (!permissions) {
       return true;
     }
@@ -22,10 +22,7 @@ export class PermissionGuard implements CanActivate {
 
     console.log('user permissions is', user);
     // return true;
-    const hasPermission = () =>
-      user.permissions.some((permission) =>
-        permissions.includes(permission.name),
-      );
+    const hasPermission = () => user.permissions.some((permission) => permissions.includes(permission.name));
 
     console.log('has role is', hasPermission());
     // console.log('user prmissions is', user.permissions);

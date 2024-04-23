@@ -1,4 +1,4 @@
-import { IUser } from "src/modules/users/interfaces/user.interface";
+import { IUser } from 'src/modules/users/interfaces/user.interface';
 
 export enum Category {
   Test = 'Test',

@@ -1,23 +1,14 @@
 import { createClient } from 'redis';
 import { commandOptions, RedisClientType } from '@redis/client';
 import { RedisClusterClientOptions } from '@redis/client/dist/lib/cluster';
-import {
-  ICache,
-  ICacheSetCommand,
-  IIncrByCommand,
-  ISetTtlCommand,
-} from './ICache';
+import { ICache, ICacheSetCommand, IIncrByCommand, ISetTtlCommand } from './ICache';
 import { ILogger } from './ILogger';
 export class RedisClient implements ICache {
   protected client: RedisClientType;
 
   private shuttingDown = false;
 
-  constructor(
-    protected name: string,
-    rootNodes: RedisClusterClientOptions[],
-    protected logger: ILogger,
-  ) {
+  constructor(protected name: string, rootNodes: RedisClusterClientOptions[], protected logger: ILogger) {
     const first = rootNodes[0];
     this.client = createClient({
       password: first.password,
@@ -53,11 +44,7 @@ export class RedisClient implements ICache {
   async set<T>(key: string | Buffer, value: T, ttl?: number): Promise<void> {
     if (this.shuttingDown || !key) return;
     try {
-      await this.client.set(
-        key,
-        value as string,
-        ttl !== null ? { EX: ttl } : null,
-      );
+      await this.client.set(key, value as string, ttl !== null ? { EX: ttl } : null);
     } catch (error) {
       this.logger.error(`Error setting key: ${key}`, error);
     }
@@ -105,10 +92,7 @@ export class RedisClient implements ICache {
     try {
       await this.client.hSet(key, field, value as string);
     } catch (error) {
-      this.logger.error(
-        `Error hset for key: ${key}, field: ${field}, value: ${value}`,
-        error,
-      );
+      this.logger.error(`Error hset for key: ${key}, field: ${field}, value: ${value}`, error);
     }
     return null;
   }
@@ -116,11 +100,7 @@ export class RedisClient implements ICache {
     if (this.shuttingDown || !key || !field) return null;
     try {
       const getAsBuffer = Buffer.isBuffer(key);
-      const result = await this.client.hGet(
-        commandOptions({ returnBuffers: getAsBuffer }),
-        key,
-        field,
-      );
+      const result = await this.client.hGet(commandOptions({ returnBuffers: getAsBuffer }), key, field);
       return result as T;
     } catch (error) {
       this.logger.error(`Error hget for key: ${key}, field: ${field}`, error);
@@ -129,15 +109,10 @@ export class RedisClient implements ICache {
   }
 
   async hmget<T>(key: string | Buffer, fields: string[]): Promise<T[]> {
-    if (this.shuttingDown || !key || fields?.length === 0)
-      return fields?.map(() => null);
+    if (this.shuttingDown || !key || fields?.length === 0) return fields?.map(() => null);
     try {
       const getAsBuffer = Buffer.isBuffer(key);
-      const cached = await this.client.hmGet(
-        commandOptions({ returnBuffers: getAsBuffer }),
-        key,
-        fields,
-      );
+      const cached = await this.client.hmGet(commandOptions({ returnBuffers: getAsBuffer }), key, fields);
       return cached as T[];
     } catch (error) {
       this.logger.error(`Error getting fields: ${fields}`, error);
@@ -150,10 +125,7 @@ export class RedisClient implements ICache {
     if (this.shuttingDown || !key) return null;
     try {
       const getAsBuffer = Buffer.isBuffer(key);
-      const result = await this.client.hGetAll(
-        commandOptions({ returnBuffers: getAsBuffer }),
-        key,
-      );
+      const result = await this.client.hGetAll(commandOptions({ returnBuffers: getAsBuffer }), key);
       if (JSON.stringify(result) == '{}') return null;
       return result as T;
     } catch (error) {
@@ -194,9 +166,7 @@ export class RedisClient implements ICache {
     if (this.shuttingDown) {
       return keys?.map(() => null) || [];
     }
-    return await Promise.all(
-      keys.map((key: string | Buffer) => this.getTtl(key)),
-    );
+    return await Promise.all(keys.map((key: string | Buffer) => this.getTtl(key)));
   }
   async del(key: string | Buffer): Promise<void> {
     if (this.shuttingDown || !key) return null;
@@ -217,18 +187,11 @@ export class RedisClient implements ICache {
     try {
       await Promise.all(
         commands.map((command: ICacheSetCommand) =>
-          this.client.set(
-            command.key,
-            command.value,
-            command.ttl !== null ? { EX: command.ttl } : null,
-          ),
+          this.client.set(command.key, command.value, command.ttl !== null ? { EX: command.ttl } : null),
         ),
       );
     } catch (error) {
-      this.logger.error(
-        `Error setting keys: ${commands.map((command) => command.key)}`,
-        error,
-      );
+      this.logger.error(`Error setting keys: ${commands.map((command) => command.key)}`, error);
     }
   }
 
@@ -244,16 +207,9 @@ export class RedisClient implements ICache {
   async msetTtl(commands: ISetTtlCommand[]): Promise<void> {
     if (this.shuttingDown || !commands) return;
     try {
-      await Promise.all(
-        commands.map((command: ISetTtlCommand) =>
-          this.client.expire(command.key, command.value),
-        ),
-      );
+      await Promise.all(commands.map((command: ISetTtlCommand) => this.client.expire(command.key, command.value)));
     } catch (error) {
-      this.logger.error(
-        `Error setting ttl for keys: ${commands.map((command) => command.key)}`,
-        error,
-      );
+      this.logger.error(`Error setting ttl for keys: ${commands.map((command) => command.key)}`, error);
     }
     return null;
   }
@@ -262,10 +218,7 @@ export class RedisClient implements ICache {
     if (this.shuttingDown || !key) return null;
     try {
       const getAsBuffer = Buffer.isBuffer(key);
-      const cached = await this.client.get(
-        commandOptions({ returnBuffers: getAsBuffer }),
-        key,
-      );
+      const cached = await this.client.get(commandOptions({ returnBuffers: getAsBuffer }), key);
 
       return cached as T;
     } catch (error) {
@@ -276,14 +229,10 @@ export class RedisClient implements ICache {
   }
 
   async mget<T>(keys: string[] | Buffer[]): Promise<T[]> {
-    if (this.shuttingDown || !keys || keys?.length === 0)
-      return keys?.map(() => null);
+    if (this.shuttingDown || !keys || keys?.length === 0) return keys?.map(() => null);
     try {
       const getAsBuffer = Buffer.isBuffer(keys[0]);
-      const cached = await this.client.mGet(
-        commandOptions({ returnBuffers: getAsBuffer }),
-        keys,
-      );
+      const cached = await this.client.mGet(commandOptions({ returnBuffers: getAsBuffer }), keys);
       return cached as T[];
     } catch (error) {
       this.logger.error(`Error getting keys: ${keys}`, error);
@@ -313,10 +262,7 @@ export class RedisClient implements ICache {
         }),
       );
     } catch (error) {
-      this.logger.error(
-        `Error incrementing keys: ${commands.map((command) => command.key)}`,
-        error,
-      );
+      this.logger.error(`Error incrementing keys: ${commands.map((command) => command.key)}`, error);
     }
 
     return commands.map(() => null);
@@ -327,10 +273,7 @@ export class RedisClient implements ICache {
     try {
       await this.client.zAdd(key, { score, value });
     } catch (error) {
-      this.logger.error(
-        `Error zAdd for key: ${key}, score: ${score}, value: ${value}`,
-        error,
-      );
+      this.logger.error(`Error zAdd for key: ${key}, score: ${score}, value: ${value}`, error);
     }
     return null;
   }
@@ -339,10 +282,7 @@ export class RedisClient implements ICache {
     try {
       return await this.client.zCount(key, min, max);
     } catch (error) {
-      this.logger.error(
-        `Error zCount for key: ${key}, min: ${min}, max: ${max}`,
-        error,
-      );
+      this.logger.error(`Error zCount for key: ${key}, min: ${min}, max: ${max}`, error);
     }
     return null;
   }
@@ -360,34 +300,18 @@ export class RedisClient implements ICache {
   async zRemRangeByScore(key: string, min: number, max: number): Promise<void> {
     if (this.shuttingDown || !key) return null;
     try {
-      await this.client.sendCommand([
-        'ZREMRANGEBYSCORE',
-        key,
-        `${min}`,
-        `${max}`,
-      ]);
+      await this.client.sendCommand(['ZREMRANGEBYSCORE', key, `${min}`, `${max}`]);
     } catch (error) {
-      this.logger.error(
-        `Error zRemRangeByScore for key: ${key}, min: ${min}, max: ${max}`,
-        error,
-      );
+      this.logger.error(`Error zRemRangeByScore for key: ${key}, min: ${min}, max: ${max}`, error);
     }
   }
 
   async zRevRange(key: string, start: number, stop: number): Promise<string[]> {
     if (this.shuttingDown || !key) return null;
     try {
-      return await this.client.sendCommand([
-        'ZREVRANGE',
-        key,
-        `${start}`,
-        `${stop}`,
-      ]);
+      return await this.client.sendCommand(['ZREVRANGE', key, `${start}`, `${stop}`]);
     } catch (error) {
-      this.logger.error(
-        `Error zRevRange for key: ${key}, start: ${start}, stop: ${stop}`,
-        error,
-      );
+      this.logger.error(`Error zRevRange for key: ${key}, start: ${start}, stop: ${stop}`, error);
     }
 
     return null;
@@ -396,40 +320,20 @@ export class RedisClient implements ICache {
   async zRange(key: string, start: number, stop: number): Promise<string[]> {
     if (this.shuttingDown || !key) return null;
     try {
-      return await this.client.sendCommand([
-        'ZRANGE',
-        key,
-        `${start}`,
-        `${stop}`,
-      ]);
+      return await this.client.sendCommand(['ZRANGE', key, `${start}`, `${stop}`]);
     } catch (error) {
-      this.logger.error(
-        `Error zRange for key: ${key}, start: ${start}, stop: ${stop}`,
-        error,
-      );
+      this.logger.error(`Error zRange for key: ${key}, start: ${start}, stop: ${stop}`, error);
     }
 
     return null;
   }
 
-  async zRangeByScore(
-    key: string,
-    min: number,
-    max: number,
-  ): Promise<string[]> {
+  async zRangeByScore(key: string, min: number, max: number): Promise<string[]> {
     if (this.shuttingDown || !key) return null;
     try {
-      return await this.client.sendCommand([
-        'ZRANGEBYSCORE',
-        key,
-        `${min}`,
-        `${max}`,
-      ]);
+      return await this.client.sendCommand(['ZRANGEBYSCORE', key, `${min}`, `${max}`]);
     } catch (error) {
-      this.logger.error(
-        `Error zRangeByScore for key: ${key}, min: ${min}, max: ${max}`,
-        error,
-      );
+      this.logger.error(`Error zRangeByScore for key: ${key}, min: ${min}, max: ${max}`, error);
     }
 
     return null;

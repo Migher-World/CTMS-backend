@@ -31,10 +31,14 @@ dotenv.config();
     UsersModule,
     CompaniesModule,
   ],
-  providers: [AuthService, JwtStrategy, {
-    provide: APP_GUARD,
-    useClass: JWTGuard,
-  },],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    {
+      provide: APP_GUARD,
+      useClass: JWTGuard,
+    },
+  ],
   controllers: [AuthController],
   exports: [PassportModule, JwtStrategy, JwtModule],
 })

@@ -8,6 +8,6 @@ import { Comment } from './entities/comment.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Issue, Comment])],
   controllers: [IssuesController],
-  providers: [IssuesService]
+  providers: [IssuesService],
 })
 export class IssuesModule {}

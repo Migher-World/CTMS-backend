@@ -11,16 +11,7 @@ export class EmailsConsumer {
   @Process()
   async sendMail(job: Job<EmailEntity>) {
     try {
-      const {
-        subject,
-        metaData,
-        receiverEmail,
-        senderEmail,
-        template,
-        id,
-        replyTo,
-        attachments,
-      } = job.data;
+      const { subject, metaData, receiverEmail, senderEmail, template, id, replyTo, attachments } = job.data;
 
       console.log({ jobdata: job.data });
 
@@ -35,10 +26,7 @@ export class EmailsConsumer {
           context: { ...metaData },
           // context: { ...metaData, moneyFormat: Helper.moneyFormat },
         })
-        .then(
-          async () =>
-            await getRepository(EmailEntity).update(id, { delivered: true }),
-        )
+        .then(async () => await getRepository(EmailEntity).update(id, { delivered: true }))
         .catch(async (emailError) => {
           console.log({ emailError });
           await getRepository(EmailEntity).update(id, { delivered: false });

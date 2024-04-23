@@ -24,7 +24,7 @@ export class CreateUserDto {
 
   @IsOptional()
   @Type(() => CreateClientDto)
-  client: CreateClientDto
+  client: CreateClientDto;
 
   @IsOptional()
   setPassword: boolean;

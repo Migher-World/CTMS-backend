@@ -4,7 +4,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Helper } from '../../../shared/helpers';
 
 export class CreatePatientDto {
-
   @IsNotEmpty()
   @IsEnum(EnrollmentStatus)
   @ApiProperty({ enum: EnrollmentStatus })

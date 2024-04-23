@@ -29,7 +29,7 @@ export class User extends AbstractEntity implements IUser {
   @Column()
   companyId: string;
 
-  @ManyToOne(() => Company, company => company.users)
+  @ManyToOne(() => Company, (company) => company.users)
   @JoinColumn()
   company: Company;
 

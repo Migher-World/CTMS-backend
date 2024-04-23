@@ -17,5 +17,5 @@ export class CreateClientDto {
 
   @IsNotEmpty()
   @IsEnum(ClientType)
-  clientType: ClientType; 
+  clientType: ClientType;
 }

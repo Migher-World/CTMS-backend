@@ -3,20 +3,14 @@ import * as winston from 'winston';
 import { isTest } from '../environment/isTest';
 
 const { format } = winston;
-const { align, colorize, combine, label, prettyPrint, printf, timestamp } =
-  format;
+const { align, colorize, combine, label, prettyPrint, printf, timestamp } = format;
 
 const fileOptions = {
-  filename: `${rootPath}/logs/cache-${new Date()
-    .toISOString()
-    .slice(0, 10)}.log`,
+  filename: `${rootPath}/logs/cache-${new Date().toISOString().slice(0, 10)}.log`,
   format: combine(
     timestamp(),
     align(),
-    printf(
-      (info: any) =>
-        `${info.level}: ${info.label} : ${[info.timestamp]}: ${info.message}`,
-    ),
+    printf((info: any) => `${info.level}: ${info.label} : ${[info.timestamp]}: ${info.message}`),
   ),
 };
 
@@ -28,9 +22,7 @@ class Logger {
     if (isTest()) {
       this.transports.push(new winston.transports.File(fileOptions));
     }
-    this.logger = winston.createLogger(
-      this.logConfiguration(fileName) as winston.LoggerOptions,
-    );
+    this.logger = winston.createLogger(this.logConfiguration(fileName) as winston.LoggerOptions);
   }
 
   public getLogger() {
@@ -49,9 +41,7 @@ class Logger {
         colorize(),
         printf(
           (info: { level: any; label: any; timestamp: any; message: any }) =>
-            `${[info.timestamp]} [${info.level}] ${info.label}: ${
-              info.message
-            }`,
+            `${[info.timestamp]} [${info.level}] ${info.label}: ${info.message}`,
         ),
       ),
     };

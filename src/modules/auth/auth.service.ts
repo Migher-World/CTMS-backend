@@ -1,5 +1,12 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthPayload, LoginDto, RegisterDto, RequestResetPasswordDto, ResetPasswordDto, SetPasswordDto } from './auth.dto';
+import {
+  AuthPayload,
+  LoginDto,
+  RegisterDto,
+  RequestResetPasswordDto,
+  ResetPasswordDto,
+  SetPasswordDto,
+} from './auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import { UsersService } from '../users/users.service';
@@ -30,7 +37,7 @@ export class AuthService {
   ) {}
   async signUp(credentials: RegisterDto) {
     const transaction = await AppDataSource.transaction(async (manager) => {
-      let { password, setPassword,email, phoneNumber } = credentials;
+      let { password, setPassword, email, phoneNumber } = credentials;
 
       await this.usersService.checkDuplicate({ email, phoneNumber });
 
@@ -42,7 +49,7 @@ export class AuthService {
       const company = await manager.save<Company>(manager.create<Company>(Company, companyDto));
 
       const roles = await this.companyService.createCompanyDefaultRoles(company);
-      
+
       const user = await manager.save<User>(
         manager.create<User>(User, {
           ...credentials,
@@ -82,7 +89,7 @@ export class AuthService {
   //     const company = await queryRunner.manager.save<Company>(queryRunner.manager.create<Company>(Company, companyDto));
 
   //     const roles = await this.companyService.createCompanyDefaultRoles(company);
-      
+
   //     const user = await queryRunner.manager.save<User>(
   //       queryRunner.manager.create<User>(User, {
   //         ...credentials,
@@ -127,7 +134,7 @@ export class AuthService {
 
   async setPassword(setPasswordDto: SetPasswordDto) {
     const { email, password, code } = setPasswordDto;
-    
+
     const storedOtp = await this.cacheService.get(email);
     if (code != storedOtp) {
       throw new UnauthorizedException('Invalid OTP');
@@ -148,7 +155,7 @@ export class AuthService {
 
   async requestResetPassword(requestResetPasswordDto: RequestResetPasswordDto) {
     const { email } = requestResetPasswordDto;
-    const isEmailExist = await this.userRepo.findOne({ where: { email } })
+    const isEmailExist = await this.userRepo.findOne({ where: { email } });
     // Generate otp
     const otp = await Helper.generateToken();
 
@@ -164,8 +171,8 @@ export class AuthService {
         code: otp,
       },
       receiverEmail: email,
-    }
-    this.eventEmitter.emit(AppEvents.SEND_EMAIl, createEmailDto)
+    };
+    this.eventEmitter.emit(AppEvents.SEND_EMAIl, createEmailDto);
   }
 
   async resetPassword(resetPasswordDto: ResetPasswordDto) {

@@ -6,10 +6,8 @@ import { Trial } from './entities/trial.entity';
 import { Company } from '../companies/entities/company.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Trial])
-  ],
+  imports: [TypeOrmModule.forFeature([Trial])],
   controllers: [TrialsController],
-  providers: [TrialsService,],
+  providers: [TrialsService],
 })
 export class TrialsModule {}

@@ -12,7 +12,7 @@ export class EmailEntity extends AbstractEntity {
   @Column()
   receiverEmail: string;
 
-  @Column({default: 'info@spottr.com'})
+  @Column({ default: 'info@spottr.com' })
   senderEmail: string;
 
   @Column({ nullable: true })

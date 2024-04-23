@@ -32,7 +32,7 @@ export class CompaniesService extends BasicService<Company> {
   }
 
   async findAll(pagination: BasicPaginationDto, filter: FilterCompanyDto) {
-    const {industry, type} = filter;
+    const { industry, type } = filter;
     const query = this.companyRepository.createQueryBuilder('company');
     if (type) {
       query.andWhere('company.type = :type', { type: filter.type });

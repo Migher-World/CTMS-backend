@@ -4,18 +4,18 @@ import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
 import { Category, ClientType } from '../interfaces/clients.interface';
 
 export class UpdateClientDto extends PartialType(CreateClientDto) {
-    @IsOptional()
-    name: string;
-  
-    @IsOptional()
-    clientEmail: string;
-  
-    @IsOptional()
-    contactPerson: string;
-  
-    @IsEnum(Category)
-    category: Category;
-  
-    @IsEnum(ClientType)
-    clientType: ClientType; 
+  @IsOptional()
+  name: string;
+
+  @IsOptional()
+  clientEmail: string;
+
+  @IsOptional()
+  contactPerson: string;
+
+  @IsEnum(Category)
+  category: Category;
+
+  @IsEnum(ClientType)
+  clientType: ClientType;
 }

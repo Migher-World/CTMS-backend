@@ -9,12 +9,13 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class BudgetsService extends BasicService<Budget> {
   constructor(
-    @InjectRepository(Budget) 
-    private budgetRepo: Repository<Budget>) {
+    @InjectRepository(Budget)
+    private budgetRepo: Repository<Budget>,
+  ) {
     super(budgetRepo, 'Budgets');
   }
   async createBudget(createBudgetDto: CreateBudgetDto): Promise<Budget> {
-    const createBudget = this.budgetRepo.create({ ...createBudgetDto});
+    const createBudget = this.budgetRepo.create({ ...createBudgetDto });
     const budget = await this.budgetRepo.save(createBudget);
     return budget;
   }

@@ -7,10 +7,8 @@ import { Dismissal } from './entities/dismissal.entity';
 import { Suspicious } from './entities/suspicious.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([FraudPrevention, Dismissal, Suspicious])
-  ],
+  imports: [TypeOrmModule.forFeature([FraudPrevention, Dismissal, Suspicious])],
   controllers: [FraudPreventionController],
-  providers: [FraudPreventionService]
+  providers: [FraudPreventionService],
 })
 export class FraudPreventionModule {}

@@ -9,7 +9,10 @@ export class Permission extends BasicEntity {
   @ManyToMany(() => Role, (role) => role.permissions, { cascade: true })
   roles: Role[];
 
-  @ManyToOne(() => PermissionGroup, (permissionGroup) => permissionGroup.permissions, { eager: true, onDelete: 'CASCADE'})
+  @ManyToOne(() => PermissionGroup, (permissionGroup) => permissionGroup.permissions, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   permissionGroup: PermissionGroup;
 

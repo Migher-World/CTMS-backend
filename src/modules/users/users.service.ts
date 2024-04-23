@@ -65,7 +65,7 @@ export class UsersService extends BasicService<User> {
         metaData: { code: otp, email },
       };
 
-      this.eventEmitter.emit(AppEvents.SEND_EMAIl, emailDto)
+      this.eventEmitter.emit(AppEvents.SEND_EMAIl, emailDto);
     } else {
       setPassword = true;
     }

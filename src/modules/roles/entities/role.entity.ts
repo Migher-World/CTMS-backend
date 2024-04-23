@@ -17,7 +17,7 @@ export class Role extends AbstractEntity {
 
   @ManyToMany(() => Permission, (permission) => permission.roles, {
     eager: true,
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE',
   })
   @JoinTable()
   permissions: Permission[];

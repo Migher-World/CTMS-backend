@@ -32,19 +32,19 @@ export class AuthController {
 
   @Post('request-reset-password')
   @Public()
-  async requestResetPassword(@Body() requestResetPasswordDto: RequestResetPasswordDto){
-    return resolveResponse(this.authService.requestResetPassword(requestResetPasswordDto))
+  async requestResetPassword(@Body() requestResetPasswordDto: RequestResetPasswordDto) {
+    return resolveResponse(this.authService.requestResetPassword(requestResetPasswordDto));
   }
 
   @Post('reset-password')
   @Public()
   async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
-    return resolveResponse(this.authService.resetPassword(resetPasswordDto), 'Reset Password')
+    return resolveResponse(this.authService.resetPassword(resetPasswordDto), 'Reset Password');
   }
 
   @Post('set-password')
   @Public()
-  async setPassword(@Body() setPasswordDto: SetPasswordDto){
-    return resolveResponse(this.authService.setPassword(setPasswordDto), 'Password set')
+  async setPassword(@Body() setPasswordDto: SetPasswordDto) {
+    return resolveResponse(this.authService.setPassword(setPasswordDto), 'Password set');
   }
 }

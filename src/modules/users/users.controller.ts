@@ -26,7 +26,7 @@ export class UsersController {
   }
 
   @Get()
-  async findUsers(@Query() pagination: BasicPaginationDto, @CurrentCompany() company: ICompany){
+  async findUsers(@Query() pagination: BasicPaginationDto, @CurrentCompany() company: ICompany) {
     return resolveResponse(this.usersService.findUsers(pagination, company), 'All Users Found');
   }
 

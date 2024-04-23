@@ -1,49 +1,49 @@
-import { IsEnum, IsNotEmpty, IsOptional } from "class-validator";
-import { ContractStatus } from "../interfaces/contract.interface";
-import { ApiProperty } from "@nestjs/swagger";
+import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
+import { ContractStatus } from '../interfaces/contract.interface';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateContractDto {
-    @IsNotEmpty()
-    trialId: string;
+  @IsNotEmpty()
+  trialId: string;
 
-    @IsNotEmpty()
-    contractTitle: string;
+  @IsNotEmpty()
+  contractTitle: string;
 
-    @IsNotEmpty()
-    effectiveDate: string;
+  @IsNotEmpty()
+  effectiveDate: string;
 
-    @IsNotEmpty()
-    expirationDate: string;
+  @IsNotEmpty()
+  expirationDate: string;
 
-    @IsNotEmpty()
-    organization: string;
+  @IsNotEmpty()
+  organization: string;
 
-    @IsNotEmpty()
-    serviceProvider: string;
+  @IsNotEmpty()
+  serviceProvider: string;
 
-    @IsNotEmpty()
-    description: string;
+  @IsNotEmpty()
+  description: string;
 
-    @IsNotEmpty()
-    paymentTerms: string;
+  @IsNotEmpty()
+  paymentTerms: string;
 
-    @IsNotEmpty()
-    terminationClause: string;
+  @IsNotEmpty()
+  terminationClause: string;
 
-    @IsNotEmpty()
-    confidentiality: string;
+  @IsNotEmpty()
+  confidentiality: string;
 
-    @IsNotEmpty()
-    insuranceRequirement: string;
+  @IsNotEmpty()
+  insuranceRequirement: string;
 
-    @IsNotEmpty()
-    contractValue: string;
+  @IsNotEmpty()
+  contractValue: string;
 
-    @IsNotEmpty()
-    paymentSchedule: string;
+  @IsNotEmpty()
+  paymentSchedule: string;
 
-    @IsNotEmpty()
-    @IsEnum(ContractStatus)
-    @ApiProperty({enum: ContractStatus})
-    contractStatus: ContractStatus;
+  @IsNotEmpty()
+  @IsEnum(ContractStatus)
+  @ApiProperty({ enum: ContractStatus })
+  contractStatus: ContractStatus;
 }

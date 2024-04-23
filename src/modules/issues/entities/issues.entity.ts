@@ -50,6 +50,6 @@ export class Issue extends AbstractEntity {
   @Column()
   companyId: string;
 
-  @Column({ nullable: true})
+  @Column({ nullable: true })
   attachment: string;
 }

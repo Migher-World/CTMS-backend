@@ -7,34 +7,35 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class ContractService extends BasicService<Contract>{
-  constructor( 
+export class ContractService extends BasicService<Contract> {
+  constructor(
     @InjectRepository(Contract)
-    private contractRepo: Repository<Contract>){
-      super(contractRepo, 'Contracts');
-    }
+    private contractRepo: Repository<Contract>,
+  ) {
+    super(contractRepo, 'Contracts');
+  }
 
   async createContract(createContractDto: CreateContractDto): Promise<Contract> {
-    const createdContract = this.contractRepo.create({...createContractDto});
+    const createdContract = this.contractRepo.create({ ...createContractDto });
     const contract = await this.contractRepo.save(createdContract);
     return contract;
   }
 
   async findContracts(): Promise<Contract[]> {
-   const contract = await this.contractRepo.find();
+    const contract = await this.contractRepo.find();
     return contract;
   }
 
   async findContract(contractId: string): Promise<Contract> {
-    const id = contractId
-    const contract = await this.contractRepo.findOne({where: {id}});
+    const id = contractId;
+    const contract = await this.contractRepo.findOne({ where: { id } });
     return contract;
   }
 
   async updateContract(contractId: string, updateContractDto: UpdateContractDto) {
     const contract = await this.findContract(contractId);
 
-    if(contract){
+    if (contract) {
       Object.assign(contract, updateContractDto);
       const updatedContract = await this.contractRepo.save(contract);
       return updatedContract;
@@ -44,7 +45,7 @@ export class ContractService extends BasicService<Contract>{
   async deleteContract(contractId: string) {
     const contract = await this.findContract(contractId);
 
-    if (contract){
+    if (contract) {
       await this.contractRepo.delete(contractId);
     }
   }
@@ -52,10 +53,10 @@ export class ContractService extends BasicService<Contract>{
   async updateContractStatus(contractId: string, updateContractDto: UpdateContractDto) {
     const contract = await this.findContract(contractId);
 
-    if(contract){
-      Object.assign(contract, updateContractDto)
+    if (contract) {
+      Object.assign(contract, updateContractDto);
       const signedContract = await this.contractRepo.save(contract);
-      return signedContract
+      return signedContract;
     }
   }
 }

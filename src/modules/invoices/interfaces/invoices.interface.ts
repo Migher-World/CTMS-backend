@@ -1,4 +1,3 @@
 export interface IInvoice {
-    id: string;
-    
+  id: string;
 }

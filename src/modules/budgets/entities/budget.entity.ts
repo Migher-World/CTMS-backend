@@ -1,41 +1,41 @@
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
-import { Currency, IBudget } from "../interfaces/budgets.interface";
-import { AbstractEntity } from "../../../shared/entities/abstract-entity";
-import { Trial } from "../../trials/entities/trial.entity";
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Currency, IBudget } from '../interfaces/budgets.interface';
+import { AbstractEntity } from '../../../shared/entities/abstract-entity';
+import { Trial } from '../../trials/entities/trial.entity';
 
 @Entity('budgets')
-export class Budget extends AbstractEntity implements IBudget{
-    @ManyToOne(()=> Trial, trial => trial.budgets)
-    @JoinColumn()
-    trial: Trial;
+export class Budget extends AbstractEntity implements IBudget {
+  @ManyToOne(() => Trial, (trial) => trial.budgets)
+  @JoinColumn()
+  trial: Trial;
 
-    @Column()
-    trialId: string;
+  @Column()
+  trialId: string;
 
-    @Column()
-    currency: Currency;
+  @Column()
+  currency: Currency;
 
-    @Column()
-    totalBudget: string;
+  @Column()
+  totalBudget: string;
 
-    @Column()
-    startDate: string;
+  @Column()
+  startDate: string;
 
-    @Column()
-    endDate: string;
+  @Column()
+  endDate: string;
 
-    @Column()
-    siteFees: string;
+  @Column()
+  siteFees: string;
 
-    @Column()
-    personnelFees: string;
+  @Column()
+  personnelFees: string;
 
-    @Column()
-    equipmentAndSuppliesFees: string;
+  @Column()
+  equipmentAndSuppliesFees: string;
 
-    @Column()
-    budgetDescription: string;
+  @Column()
+  budgetDescription: string;
 
-    @Column()
-    additionalInformation: string;
+  @Column()
+  additionalInformation: string;
 }

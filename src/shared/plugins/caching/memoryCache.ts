@@ -1,24 +1,13 @@
 import { CacheClass, Cache } from 'memory-cache';
-import {
-  ICache,
-  ICacheSetCommand,
-  IIncrByCommand,
-  ISetTtlCommand,
-} from './ICache';
+import { ICache, ICacheSetCommand, IIncrByCommand, ISetTtlCommand } from './ICache';
 
 const DEFAULT_CACHE_TTL = 15 * 1000;
 
 export class MemoryCache implements ICache {
   protected cache: CacheClass<string, unknown>;
-  protected hashCache: Map<string, Map<string, any>> = new Map<
-    string,
-    Map<string, any>
-  >();
+  protected hashCache: Map<string, Map<string, any>> = new Map<string, Map<string, any>>();
   protected hashKeys: Record<string, boolean> = {};
-  protected zSet: Map<string, Map<number, any>> = new Map<
-    string,
-    Map<number, any>
-  >();
+  protected zSet: Map<string, Map<number, any>> = new Map<string, Map<number, any>>();
 
   ttl: number;
 
@@ -63,13 +52,10 @@ export class MemoryCache implements ICache {
   async hgetAll<T>(key: string | Buffer): Promise<T> {
     const keyToUse = Buffer.isBuffer(key) ? key.toString() : key;
     if (!this.hashCache.has(keyToUse)) return null;
-    return Array.from(this.hashCache.get(keyToUse).entries()).reduce(
-      (acc, [key, value]) => {
-        acc[key] = value;
-        return acc;
-      },
-      {},
-    ) as T;
+    return Array.from(this.hashCache.get(keyToUse).entries()).reduce((acc, [key, value]) => {
+      acc[key] = value;
+      return acc;
+    }, {}) as T;
   }
 
   async get<T>(key: string | Buffer): Promise<T> {
@@ -83,9 +69,7 @@ export class MemoryCache implements ICache {
 
   async mget<T>(keys: string[] | Buffer[]): Promise<T[]> {
     if (this.isShuttingDown) return keys.map(() => null);
-    const values = (await Promise.all(
-      keys.map((key: string | Buffer) => this.get(key)),
-    )) as string[];
+    const values = (await Promise.all(keys.map((key: string | Buffer) => this.get(key)))) as string[];
     for (let i = 0; i < values.length; i++) {
       if (values[i] === null) delete this.ttls[keys[i] as string];
     }
@@ -94,9 +78,7 @@ export class MemoryCache implements ICache {
 
   async hmget<T>(key: string | Buffer, fields: string[]): Promise<T[]> {
     if (this.isShuttingDown) return fields.map(() => null);
-    const values = (await Promise.all(
-      fields.map((field: string) => this.hget(key, field)),
-    )) as string[];
+    const values = (await Promise.all(fields.map((field: string) => this.hget(key, field)))) as string[];
     return values as T[];
   }
   async del(key: string | Buffer): Promise<void> {
@@ -123,11 +105,7 @@ export class MemoryCache implements ICache {
   }
   async mset(commands: ICacheSetCommand[]): Promise<void> {
     if (this.isShuttingDown) return null;
-    await Promise.all(
-      commands.map((command: ICacheSetCommand) =>
-        this.set(command.key, command.value, command.ttl),
-      ),
-    );
+    await Promise.all(commands.map((command: ICacheSetCommand) => this.set(command.key, command.value, command.ttl)));
   }
   async setTtl(key: string | Buffer, ttl: number): Promise<void> {
     if (this.isShuttingDown) return null;
@@ -138,11 +116,7 @@ export class MemoryCache implements ICache {
     this.ttls[keyToUse] = Date.now() + ttl || 0;
   }
   async msetTtl(commands: ISetTtlCommand[]): Promise<void> {
-    await Promise.all(
-      commands.map((command: ISetTtlCommand) =>
-        this.setTtl(command.key, command.value),
-      ),
-    );
+    await Promise.all(commands.map((command: ISetTtlCommand) => this.setTtl(command.key, command.value)));
   }
   async getTtl(key: string | Buffer): Promise<number> {
     if (this.isShuttingDown) return null;
@@ -171,11 +145,7 @@ export class MemoryCache implements ICache {
   }
   async mincrby(commands: IIncrByCommand[]): Promise<number[]> {
     if (this.isShuttingDown) return commands.map(() => null);
-    return Promise.all(
-      commands.map((command: IIncrByCommand) =>
-        this.incrby(command.key, command.value),
-      ),
-    );
+    return Promise.all(commands.map((command: IIncrByCommand) => this.incrby(command.key, command.value)));
   }
 
   zAdd(key: string, score: number, value: string): Promise<void> {
@@ -187,9 +157,7 @@ export class MemoryCache implements ICache {
   }
   zCount(key: string, min: number, max: number): Promise<number> {
     if (!this.zSet.has(key)) return Promise.resolve(0);
-    const count = Array.from(this.zSet.get(key).keys()).filter(
-      (a) => a >= min && a <= max,
-    )?.length;
+    const count = Array.from(this.zSet.get(key).keys()).filter((a) => a >= min && a <= max)?.length;
     return Promise.resolve(count);
   }
 

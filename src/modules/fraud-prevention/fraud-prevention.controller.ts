@@ -19,17 +19,20 @@ export class FraudPreventionController {
 
   @Post('fraud')
   async createFraud(@Body() createFraudDto: CreateFraudDto, @CurrentUser() user: User) {
-    return resolveResponse(this.fraudPreventionService.createFraud(createFraudDto, user), 'Fraud Created')
+    return resolveResponse(this.fraudPreventionService.createFraud(createFraudDto, user), 'Fraud Created');
   }
 
   @Post('suspicious')
-  async createSuspicious(@Body() createSuspiciousDto: CreateSuspiciousDto,  @CurrentUser() user: User) {
-    return resolveResponse(this.fraudPreventionService.createSuspicious(createSuspiciousDto, user), 'Suspicious created')
+  async createSuspicious(@Body() createSuspiciousDto: CreateSuspiciousDto, @CurrentUser() user: User) {
+    return resolveResponse(
+      this.fraudPreventionService.createSuspicious(createSuspiciousDto, user),
+      'Suspicious created',
+    );
   }
 
   @Post('dismissal')
   async createDismissal(@Body() createDismissalDto: CreateDismissalDto) {
-    return resolveResponse(this.fraudPreventionService.createDismissal(createDismissalDto), 'Dismissal Created')
+    return resolveResponse(this.fraudPreventionService.createDismissal(createDismissalDto), 'Dismissal Created');
   }
 
   @Get('fraud')
@@ -49,17 +52,17 @@ export class FraudPreventionController {
 
   @Get('fraud/:id')
   async getFraud(@Param('id') id: string) {
-    return resolveResponse(this.fraudPreventionService.findFraud(id))
+    return resolveResponse(this.fraudPreventionService.findFraud(id));
   }
 
   @Get('suspicious/:id')
   async getOneSuspicious(@Param('id') id: string) {
-    return resolveResponse(this.fraudPreventionService.findOneSuspicious(id))
+    return resolveResponse(this.fraudPreventionService.findOneSuspicious(id));
   }
 
   @Get('dismissal/:id')
   async getOneDismissal(@Param('id') id: string) {
-    return resolveResponse(this.fraudPreventionService.findOneDismissal(id))
+    return resolveResponse(this.fraudPreventionService.findOneDismissal(id));
   }
 
   @Patch('fraud/:id')

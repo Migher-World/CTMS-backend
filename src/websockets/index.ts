@@ -15,8 +15,7 @@ import env from '../config/env.config';
 @WebSocketGateway({
   cors: {},
 })
-export class ListenerGateway
-  implements OnGatewayConnection, OnGatewayDisconnect {
+export class ListenerGateway implements OnGatewayConnection, OnGatewayDisconnect {
   // constructor(private firebaseMessageService: FirebaseMessagingService) {}
 
   @WebSocketServer()
@@ -54,10 +53,7 @@ export class ListenerGateway
       const userExist = this.connectedUsers.indexOf(id);
 
       if (userExist > -1) {
-        this.connectedUsers = [
-          ...this.connectedUsers.slice(0, userExist),
-          ...this.connectedUsers.slice(userExist + 1),
-        ];
+        this.connectedUsers = [...this.connectedUsers.slice(0, userExist), ...this.connectedUsers.slice(userExist + 1)];
       }
       const onlineUsers = [...new Set(this.connectedUsers)];
       this.connectedUsers = onlineUsers;

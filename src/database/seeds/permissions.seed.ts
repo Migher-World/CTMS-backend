@@ -8,8 +8,6 @@ export default class PermissionSeeder {
 
     for (const entity of entities) {
       const repository = connection.getRepository(entity);
-      // Drop the constraints
-      // await repository.query(`ALTER TABLE ${repository.metadata.tableName} DROP CONSTRAINT FK_0971d693e0866736ef2e67381d8;`);
       await repository.query('SET FOREIGN_KEY_CHECKS = 0;');
       await repository.query(`TRUNCATE TABLE ${repository.metadata.tableName};`);
       await repository.query('SET FOREIGN_KEY_CHECKS = 1;');
@@ -17,9 +15,6 @@ export default class PermissionSeeder {
 
     const permissionGroupRepository = connection.getRepository(PermissionGroup);
     const permissionRepository = connection.getRepository(Permission);
-    // await permissionGroupRepository.query(`TRUNCATE TABLE roles_permissions_permissions;`);
-    // await permissionRepository.clear();
-    // await permissionGroupRepository.clear();
 
     const permissionGroups = await permissionGroupRepository.save([
       {
@@ -111,7 +106,31 @@ export default class PermissionSeeder {
         name: 'Fraud',
         description: 'Fraud management',
         slug: 'fraud',
-      }
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3b',
+        name: 'Supply Overview',
+        description: 'Supply Overview management',
+        slug: 'supply-overview',
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3c',
+        name: 'Finance Overview',
+        description: 'Finance Overview management',
+        slug: 'finance-overview',
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3d',
+        name: 'Budget Overview',
+        description: 'Budget Overview management',
+        slug: 'budget-overview',
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3e',
+        name: 'Deliveries',
+        description: 'Deliveries management',
+        slug: 'deliveries',
+      },
     ]);
 
     const permissions = await permissionRepository.save([
@@ -134,6 +153,13 @@ export default class PermissionSeeder {
         name: 'Delete user',
         description: 'Delete user',
         slug: 'delete-user',
+        permissionGroupId: permissionGroups[0].id,
+      },
+      {
+        id: 'af7c1fe6-d669-414e-b066-e9733f0de7a8',
+        name: 'View user',
+        description: 'View user',
+        slug: 'view-user',
         permissionGroupId: permissionGroups[0].id,
       },
       {
@@ -249,34 +275,6 @@ export default class PermissionSeeder {
         permissionGroupId: permissionGroups[6].id,
       },
       {
-        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8bac',
-        name: 'View supply overview',
-        description: 'View supply overview',
-        slug: 'view-supply-overview',
-        permissionGroupId: permissionGroups[6].id,
-      },
-      {
-        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8bad',
-        name: 'View finance overview',
-        description: 'View finance overview',
-        slug: 'view-finance-overview',
-        permissionGroupId: permissionGroups[6].id,
-      },
-      {
-        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8bae',
-        name: 'View budget overview',
-        description: 'View budget overview',
-        slug: 'view-budget-overview',
-        permissionGroupId: permissionGroups[6].id,
-      },
-      {
-        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8baf',
-        name: 'View deliveries',
-        description: 'View deliveries',
-        slug: 'view-deliveries',
-        permissionGroupId: permissionGroups[6].id,
-      },
-      {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8bag',
         name: 'View alerts and notifications',
         description: 'View alerts and notifications',
@@ -291,24 +289,108 @@ export default class PermissionSeeder {
         permissionGroupId: permissionGroups[7].id,
       },
       {
-        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8bai',
-        name: 'View risk management',
-        description: 'View risk management',
-        slug: 'view-risk-management',
+        id: 'ab3b7f72-7541-49d3-ae02-aa70a28e14f0',
+        name: 'Create trial',
+        slug: 'create-trial',
+        description: 'Create trial',
+        permissionGroupId: permissionGroups[8].id,
+      },
+      {
+        id: 'e03f0f34-ce6b-4c38-bc39-5924816acb26',
+        name: 'Update trial',
+        slug: 'update-trial',
+        description: 'Update trial',
+        permissionGroupId: permissionGroups[8].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3k',
+        name: 'Delete trial',
+        slug: 'delete-trial',
+        description: 'Delete trial',
+        permissionGroupId: permissionGroups[8].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3l',
+        name: 'View trial',
+        slug: 'view-trial',
+        description: 'View trial',
+        permissionGroupId: permissionGroups[8].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3m',
+        name: 'Assign trial',
+        slug: 'assign-trial',
+        description: 'Assign trial',
+        permissionGroupId: permissionGroups[8].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3n',
+        name: 'Update risk',
+        slug: 'update-risk',
+        description: 'Update risk',
         permissionGroupId: permissionGroups[9].id,
       },
       {
-        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8baj',
-        name: 'View regulatory compliance',
-        description: 'View regulatory compliance',
-        slug: 'view-regulatory-compliance',
-        permissionGroupId: permissionGroups[10].id,
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3o',
+        name: 'View risk',
+        slug: 'view-risk',
+        description: 'View risk',
+        permissionGroupId: permissionGroups[9].id,
       },
       {
-        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8bak',
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3p',
+        name: 'manage risk',
+        slug: 'manage-risk',
+        description: 'manage risk',
+        permissionGroupId: permissionGroups[9].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3q',
+        name: 'view fraud',
+        slug: 'view-fraud',
+        description: 'view fraud',
+        permissionGroupId: permissionGroups[14].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8bar',
+        name: 'report fraud',
+        slug: 'report-fraud',
+        description: 'report fraud',
+        permissionGroupId: permissionGroups[14].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8bas',
+        name: 'dismiss fraud',
+        slug: 'dismiss-fraud',
+        description: 'dismiss fraud',
+        permissionGroupId: permissionGroups[14].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3r',
+        name: 'Create transactions',
+        slug: 'create-transactions',
+        description: 'Create transactions',
+        permissionGroupId: permissionGroups[11].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3s',
+        name: 'Update transactions',
+        slug: 'update-transactions',
+        description: 'Update transactions',
+        permissionGroupId: permissionGroups[11].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3t',
+        name: 'Delete transactions',
+        slug: 'delete-transactions',
+        description: 'Delete transactions',
+        permissionGroupId: permissionGroups[11].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3u',
         name: 'View transactions',
-        description: 'View transactions',
         slug: 'view-transactions',
+        description: 'View transactions',
         permissionGroupId: permissionGroups[11].id,
       },
       {
@@ -317,6 +399,146 @@ export default class PermissionSeeder {
         description: 'View reports',
         slug: 'view-reports',
         permissionGroupId: permissionGroups[12].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8bam',
+        name: 'Create regulation',
+        slug: 'create-regulation',
+        description: 'Create regulation',
+        permissionGroupId: permissionGroups[10].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8ban',
+        name: 'Update regulation',
+        slug: 'update-regulation',
+        description: 'Update regulation',
+        permissionGroupId: permissionGroups[10].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8bap',
+        name: 'Delete regulation',
+        slug: 'delete-regulation',
+        description: 'Delete regulation',
+        permissionGroupId: permissionGroups[10].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8baq',
+        name: 'View regulation',
+        slug: 'view-regulation',
+        description: 'View regulation',
+        permissionGroupId: permissionGroups[10].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3ba3ba',
+        name: 'Create supply',
+        slug: 'create-supply',
+        description: 'Create supply',
+        permissionGroupId: permissionGroups[15].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3ba3bb',
+        name: 'Update supply',
+        slug: 'update-supply',
+        description: 'Update supply',
+        permissionGroupId: permissionGroups[15].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3ba3bc',
+        name: 'Delete supply',
+        slug: 'delete-supply',
+        description: 'Delete supply',
+        permissionGroupId: permissionGroups[15].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3ba3bd',
+        name: 'View supply',
+        slug: 'view-supply',
+        description: 'View supply',
+        permissionGroupId: permissionGroups[15].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3v',
+        name: 'Create finance',
+        slug: 'create-finance',
+        description: 'Create finance',
+        permissionGroupId: permissionGroups[16].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3w',
+        name: 'Update finance',
+        slug: 'update-finance',
+        description: 'Update finance',
+        permissionGroupId: permissionGroups[16].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3x',
+        name: 'Delete finance',
+        slug: 'delete-finance',
+        description: 'Delete finance',
+        permissionGroupId: permissionGroups[16].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3y',
+        name: 'View finance',
+        slug: 'view-finance',
+        description: 'View finance',
+        permissionGroupId: permissionGroups[16].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3z',
+        name: 'Create budget',
+        slug: 'create-budget',
+        description: 'Create budget',
+        permissionGroupId: permissionGroups[17].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3aa',
+        name: 'Update budget',
+        slug: 'update-budget',
+        description: 'Update budget',
+        permissionGroupId: permissionGroups[17].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3ab',
+        name: 'Delete budget',
+        slug: 'delete-budget',
+        description: 'Delete budget',
+        permissionGroupId: permissionGroups[17].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3ac',
+        name: 'View budget',
+        slug: 'view-budget',
+        description: 'View budget',
+        permissionGroupId: permissionGroups[17].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3ad',
+        name: 'Create deliveries',
+        slug: 'create-deliveries',
+        description: 'Create deliveries',
+        permissionGroupId: permissionGroups[18].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3ae',
+        name: 'Update deliveries',
+        slug: 'update-deliveries',
+        description: 'Update deliveries',
+        permissionGroupId: permissionGroups[18].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3af',
+        name: 'Delete deliveries',
+        slug: 'delete-deliveries',
+        description: 'Delete deliveries',
+        permissionGroupId: permissionGroups[18].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3ag',
+        name: 'View deliveries',
+        slug: 'view-deliveries',
+        description: 'View deliveries',
+        permissionGroupId: permissionGroups[18].id,
       },
     ]);
   }
