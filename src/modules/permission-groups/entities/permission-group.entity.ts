@@ -4,6 +4,6 @@ import { Permission } from '../../permissions/entities/permission.entity';
 
 @Entity('permission_groups')
 export class PermissionGroup extends BasicEntity {
-  @OneToMany(() => Permission, (permission) => permission.permissionGroup)
+  @OneToMany(() => Permission, (permission) => permission.permissionGroup, { onDelete: 'CASCADE' })
   permissions: Permission[];
 }

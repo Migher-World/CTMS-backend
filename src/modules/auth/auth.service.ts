@@ -34,13 +34,6 @@ export class AuthService {
 
       await this.usersService.checkDuplicate({ email, phoneNumber });
 
-      if (!password) {
-        password = Helper.randString(3, 2, 6);
-        setPassword = false;
-      }else{
-        setPassword = true
-      }
-
       const companyDto: CreateCompanyDto =
         credentials.company.type === CompanyType.INDIVIDUAL || credentials.company.type === CompanyType.SPONSOR
           ? { ...credentials.company, name: `${credentials.firstName}: ${credentials.company.type} Company` }
@@ -70,6 +63,51 @@ export class AuthService {
 
     return transaction;
   }
+
+  // async signUp(credentials: RegisterDto) {
+  //   const queryRunner = AppDataSource.createQueryRunner();
+  //   await queryRunner.connect();
+  //   await queryRunner.startTransaction();
+
+  //   try {
+  //     const { password, setPassword, email, phoneNumber } = credentials;
+
+  //     await this.usersService.checkDuplicate({ email, phoneNumber });
+
+  //     const companyDto: CreateCompanyDto =
+  //       credentials.company.type === CompanyType.INDIVIDUAL || credentials.company.type === CompanyType.SPONSOR
+  //         ? { ...credentials.company, name: `${credentials.firstName}: ${credentials.company.type} Company` }
+  //         : credentials.company;
+
+  //     const company = await queryRunner.manager.save<Company>(queryRunner.manager.create<Company>(Company, companyDto));
+
+  //     const roles = await this.companyService.createCompanyDefaultRoles(company);
+      
+  //     const user = await queryRunner.manager.save<User>(
+  //       queryRunner.manager.create<User>(User, {
+  //         ...credentials,
+  //         password,
+  //         setPassword,
+  //         company,
+  //         role: roles.find((role) => role.name.includes('admin')),
+  //       }),
+  //     );
+
+  //     const payload: AuthPayload = { id: user.id };
+  //     const token = this.jwtService.sign(payload);
+
+  //     const userWithPermissions = Helper.formatPermissions(user);
+
+  //     await queryRunner.commitTransaction();
+
+  //     return { userWithPermissions, token };
+  //   } catch (error) {
+  //     await queryRunner.rollbackTransaction();
+  //     throw error;
+  //   } finally {
+  //     await queryRunner.release();
+  //   }
+  // }
 
   async signIn(loginDto: LoginDto) {
     try {

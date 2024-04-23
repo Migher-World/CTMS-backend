@@ -110,7 +110,7 @@ export class UsersService extends BasicService<User> {
     const user = await this.findUser(userId);
 
     if (user) {
-      await this.userRepo.delete(userId);
+      await this.userRepo.softDelete(userId);
     }
   }
 
