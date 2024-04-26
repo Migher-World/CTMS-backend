@@ -38,7 +38,7 @@ export class PatientsController {
 
   @Get()
   getPatientsByCompanyId(@Query() pagination: BasicPaginationDto, @CurrentCompany() company: ICompany) {
-    return resolveResponse(this.patientsService.findAll(pagination, company.id));
+    return resolveResponse(this.patientsService.findAll(pagination, company));
   }
 
   @Get('/get/overview')

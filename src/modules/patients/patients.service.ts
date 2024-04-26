@@ -57,9 +57,11 @@ export class PatientsService extends BasicService<Patient> {
     return patient;
   }
 
-  async findAll(pagination: BasicPaginationDto, companyId: string) {
+  async findAll(pagination: BasicPaginationDto, company: ICompany) {
     const query = this.patientRepo.createQueryBuilder('patient');
-    query.where('patient.companyId = :companyId', { companyId });
+    if (company) {
+      query.where('patient.companyId = :companyId', { companyId: company.id });
+    }
     return this.paginate(query, pagination);
   }
 
