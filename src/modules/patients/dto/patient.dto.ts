@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
 import { EnrollmentStatus } from '../interfaces/patient.interface';
 import { ApiProperty } from '@nestjs/swagger';
 import { Helper } from '../../../shared/helpers';
@@ -46,6 +46,9 @@ export class CreatePatientDto {
   @IsNotEmpty()
   @ApiProperty({ example: Helper.faker.datatype.boolean() })
   withinWindow: boolean;
+
+  @IsOptional()
+  companyId: string;
 }
 
 export class UpdatePatientDto extends CreatePatientDto {}

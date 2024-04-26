@@ -16,6 +16,9 @@ export class PatientsService extends BasicService<Patient> {
   }
 
   async create(payload: CreatePatientDto, company: ICompany): Promise<Patient> {
+    if(!company && !payload.companyId) {
+      throw new Error('Company is required to create a patient as a super admin');
+    }
     const patientId = await this.generatePatientId(company);
     const patient = await this.patientRepo.create({
       ...payload,
