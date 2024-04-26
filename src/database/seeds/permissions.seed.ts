@@ -540,6 +540,6 @@ export default class PermissionSeeder {
         description: 'View deliveries',
         permissionGroupId: permissionGroups[18].id,
       },
-    ]);
+    ]); 
   }
 }

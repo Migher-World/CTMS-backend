@@ -84,7 +84,7 @@ export class UsersService extends BasicService<User> {
     }
   }
   async findUsers(pagination: BasicPaginationDto, company: ICompany) {
-    const query = this.userRepo.createQueryBuilder('user');
+    const query = this.userRepo.createQueryBuilder('user').leftJoinAndSelect('user.role', 'role');
     if (company) {
       query.andWhere('user.companyId = :companyId', { companyId: company.id });
     }
