@@ -53,12 +53,6 @@ export class CreateTrialDto {
   budgetCategory: BudgetCategory;
 
   @IsNotEmpty()
-  siteLocation: string;
-
-  @IsNotEmpty()
-  siteInvestigator: string;
-
-  @IsNotEmpty()
   trackingNumber: string;
 
   @IsNotEmpty()

@@ -42,7 +42,6 @@ export interface ITrial {
   endDate: string;
   protocolDetails: ProtocolDetails;
   objectives: string;
-  // siteId: string;
   vendorId: string;
   sponsorId: string;
   vendor: ICompany;
@@ -50,8 +49,6 @@ export interface ITrial {
   sites: ICompany[];
   companyId: string;
   company: ICompany;
-  siteLocation: string;
-  siteInvestigator: string;
   gender: 'male' | 'female';
   ageGroup: AgeGroup;
   budgetCategory: BudgetCategory;
