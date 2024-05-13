@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import {
   AgeGroup,
   BudgetCategory,
@@ -44,12 +44,23 @@ export class Trial extends AbstractEntity implements ITrial {
   @JoinColumn()
   company: Company;
 
-  @Column({ nullable: true })
-  siteId: string;
+  @ManyToMany(() => Company, (company) => company.trials)
+  @JoinTable()
+  sites: Company[];
 
-  @ManyToOne(() => Company, (company) => company.trials, { eager: true })
+  @Column({ nullable: true })
+  vendorId: string;
+
+  @ManyToOne(() => Company, { eager: true })
   @JoinColumn()
-  site: Company;
+  vendor: Company;
+
+  @Column({ nullable: true })
+  sponsorId: string;
+
+  @ManyToOne(() => Company, { eager: true })
+  @JoinColumn()
+  sponsor: Company;
 
   @Column()
   siteLocation: string;

@@ -42,8 +42,12 @@ export interface ITrial {
   endDate: string;
   protocolDetails: ProtocolDetails;
   objectives: string;
-  siteId: string;
-  site: ICompany;
+  // siteId: string;
+  vendorId: string;
+  sponsorId: string;
+  vendor: ICompany;
+  sponsor: ICompany;
+  sites: ICompany[];
   companyId: string;
   company: ICompany;
   siteLocation: string;

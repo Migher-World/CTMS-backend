@@ -11,6 +11,7 @@ import { ICompany } from '../companies/interfaces/company.interface';
 import { TrialPermission } from './entities/trial-permission.entity';
 import { AgeGroup, BudgetCategory, ProtocolDetails, TrialPermissions } from './interfaces/trials.interface';
 import { Helper } from '../../shared/helpers';
+import { Company } from '../companies/entities/company.entity';
 
 @Injectable()
 export class TrialsService extends BasicService<Trial> {
@@ -24,12 +25,13 @@ export class TrialsService extends BasicService<Trial> {
   }
 
   async createTrial(createTrialDto: CreateTrialDto, user: User, company: ICompany): Promise<Trial> {
+    const sites = await this.resolveRelationships(createTrialDto.siteIds, Company);
     const createdTrial = this.trialRepo.create({
       ...createTrialDto,
       createdById: user.id,
       companyId: company.id,
     });
-    const trial = await this.trialRepo.save(createdTrial);
+    const trial = await this.trialRepo.save({ ...createdTrial, sites });
     return trial;
   }
 
@@ -71,7 +73,7 @@ export class TrialsService extends BasicService<Trial> {
   async addTrialPermission(trialId: string, payload: TrialPermissionDto) {
     const { userId, permissions } = payload;
     for (const permission of permissions) {
-      if(!Object.values(TrialPermissions).includes(permission)) {
+      if (!Object.values(TrialPermissions).includes(permission)) {
         throw new BadRequestException('Invalid permission');
       }
       const permissionExists = await this.trialPermissionRepo.findOne({ where: { trialId, userId, permission } });
@@ -86,7 +88,7 @@ export class TrialsService extends BasicService<Trial> {
   async removeTrialPermission(trialId: string, payload: TrialPermissionDto) {
     const { userId, permissions } = payload;
     for (const permission of permissions) {
-      if(!Object.values(TrialPermissions).includes(permission)) {
+      if (!Object.values(TrialPermissions).includes(permission)) {
         throw new BadRequestException('Invalid permission');
       }
       await this.trialPermissionRepo.delete({ trialId, userId, permission });

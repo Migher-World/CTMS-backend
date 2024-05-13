@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
 import { AbstractEntity } from '../../../shared/entities/abstract-entity';
 import { CompanyType, ICompany } from '../interfaces/company.interface';
 import { User } from '../../users/entities/user.entity';
@@ -30,6 +30,6 @@ export class Company extends AbstractEntity implements ICompany {
   @OneToMany(() => User, (user) => user.company)
   users: User[];
 
-  @OneToMany(() => Trial, (trial) => trial.site)
+  @ManyToMany(() => Trial, (trial) => trial.sites)
   trials: Trial[];
 }

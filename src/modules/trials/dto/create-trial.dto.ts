@@ -27,9 +27,16 @@ export class CreateTrialDto {
   @IsNotEmpty()
   objectives: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsUUID()
-  siteId: string;
+  vendorId: string;
+
+  @IsOptional()
+  @IsUUID()
+  sponsorId: string;
+
+  @IsOptional()
+  siteIds: string[];
 
   @IsNotEmpty()
   @ApiProperty({ example: 'male' })
