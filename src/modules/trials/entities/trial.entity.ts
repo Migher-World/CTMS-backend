@@ -12,6 +12,7 @@ import { AbstractEntity } from '../../../shared/entities/abstract-entity';
 import { Company } from '../../companies/entities/company.entity';
 import { Contract } from '../../contract/entities/contract.entity';
 import { Budget } from '../../budgets/entities/budget.entity';
+import { TrialPermission } from './trial-permission.entity';
 
 @Entity('trials')
 export class Trial extends AbstractEntity implements ITrial {

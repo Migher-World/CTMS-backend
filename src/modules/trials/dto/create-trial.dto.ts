@@ -5,6 +5,7 @@ import {
   ProtocolDetails,
   RecruitmentPlan,
   RegulatoryCompliance,
+  TrialPermissions,
 } from '../interfaces/trials.interface';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -80,4 +81,14 @@ export class CreateTrialDto {
 
   @IsOptional()
   irbApprovalDocument: string;
+}
+
+export class TrialPermissionDto {
+  @IsNotEmpty()
+  @IsUUID()
+  userId: string;
+
+  @IsNotEmpty()
+  @IsArray()
+  permissions: TrialPermissions[];
 }

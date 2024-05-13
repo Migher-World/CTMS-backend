@@ -10,6 +10,18 @@ export enum AgeGroup {
   TEENAGER = 'Teenager',
 }
 
+export enum TrialPermissions {
+  CREATE_TRIAL = 'CREATE_TRIAL',
+  UPDATE_TRIAL = 'UPDATE_TRIAL',
+  DELETE_TRIAL = 'DELETE_TRIAL',
+  VIEW_TRIAL = 'VIEW_TRIAL',
+  ASSIGN_TRIAL = 'ASSIGN_TRIAL',
+  ADD_PATIENT = 'ADD_PATIENT',
+  REMOVE_PATIENT = 'REMOVE_PATIENT',
+  ADD_SITE = 'ADD_SITE',
+  REMOVE_SITE = 'REMOVE_SITE',
+}
+
 export enum BudgetCategory {
   EMERGENCY = 'Emergency',
 }

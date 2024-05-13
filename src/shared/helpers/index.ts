@@ -169,4 +169,13 @@ export class Helper {
     const userWithPermissions = { ...user, permissions };
     return userWithPermissions;
   }
+
+  static convertSnakeToSentence(snakeCase: string): string {
+    return snakeCase
+      .split('_')
+      .map((word) => {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join(' ');
+  }
 }
