@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Query } from '@
 import { TrialsService } from './trials.service';
 import { CreateTrialDto, TrialPermissionDto } from './dto/create-trial.dto';
 import { UpdateTrialDto } from './dto/update-trial.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Headers } from 'src/shared/decorators/headers.decorator';
 import { resolveResponse } from 'src/shared/resolvers';
 import { BasicPaginationDto } from 'src/shared/dto/basic-pagination.dto';
@@ -30,6 +30,7 @@ export class TrialsController {
   }
 
   @Get('metadata')
+  @ApiOperation({ summary: 'Get metadata for trial' })
   async getMetadata() {
     return resolveResponse(this.trialsService.getMetadata());
   }
@@ -50,6 +51,7 @@ export class TrialsController {
   }
 
   @Get('permissions/:id')
+  @ApiOperation({ summary: 'Get signed in user trial permissions. the id is the trialId' })
   async getPermissions(@Param('id') id: string, @CurrentUser() user: User){
     return resolveResponse(this.trialsService.getTrialPermissions(id, user.id));
   }
