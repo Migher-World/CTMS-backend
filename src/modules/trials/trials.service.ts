@@ -35,7 +35,6 @@ export class TrialsService extends BasicService<Trial> {
       createdById: user.id,
       companyId: company?.id ?? createTrialDto.companyId,
     });
-    throw new Error('Method not implemented.');
     const trial = await this.trialRepo.save({ ...createdTrial, sites });
     return trial;
   }
