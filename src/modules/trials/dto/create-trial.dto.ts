@@ -82,6 +82,9 @@ export class CreateTrialDto {
 
   @IsOptional()
   irbApprovalDocument: string;
+
+  @IsOptional()
+  companyId: string;
 }
 
 export class TrialPermissionDto {

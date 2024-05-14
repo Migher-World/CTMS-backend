@@ -22,7 +22,7 @@ export class PatientsService extends BasicService<Patient> {
     const patientId = await this.generatePatientId(company);
     const patient = await this.patientRepo.create({
       ...payload,
-      companyId: company.id,
+      companyId: company?.id ?? payload.companyId,
       patientId,
       enrollmentDate: new Date().toISOString(),
     });

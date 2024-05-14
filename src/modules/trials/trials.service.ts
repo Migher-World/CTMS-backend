@@ -25,12 +25,17 @@ export class TrialsService extends BasicService<Trial> {
   }
 
   async createTrial(createTrialDto: CreateTrialDto, user: User, company: ICompany): Promise<Trial> {
+    if(!company && !createTrialDto.companyId) {
+      throw new Error('companyId is required to create a patient as a super admin');
+    }
     const sites = await this.resolveRelationships(createTrialDto.siteIds, Company);
+    console.log(sites);
     const createdTrial = this.trialRepo.create({
       ...createTrialDto,
       createdById: user.id,
-      companyId: company.id,
+      companyId: company?.id ?? createTrialDto.companyId,
     });
+    throw new Error('Method not implemented.');
     const trial = await this.trialRepo.save({ ...createdTrial, sites });
     return trial;
   }
