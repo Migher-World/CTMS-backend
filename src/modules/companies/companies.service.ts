@@ -28,9 +28,12 @@ export class CompaniesService extends BasicService<Company> {
     const {user} = data;
     const company = this.companyRepository.create(data);
     const result = await company.save();
-    await this.createCompanyDefaultRoles(result);
+    const roles = await this.createCompanyDefaultRoles(result);
     // create user with admin role
-    const userData = await this.usersService.create(user, result.id);
+    const userData = await this.usersService.create({
+      ...user,
+      roleId: roles.find((role) => role.name.includes('admin')).id,
+    }, result.id);
     return {
       company: result,
       user: userData,

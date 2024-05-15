@@ -60,7 +60,7 @@ export class CreateCompanyWithUserDto {
   @IsNotEmpty()
   @ValidateNested({ always: true })
   @Type(() => CreateUserDto)
-  user: CreateUserDto;
+  user: Omit<CreateUserDto, 'roleId' | 'password'>;
 }
 
 export class FilterCompanyDto {

@@ -17,7 +17,7 @@ export class CreateUserDto {
   phoneNumber: string;
 
   @IsOptional()
-  password: string;
+  password?: string;
 
   @IsNotEmpty()
   roleId: string;
