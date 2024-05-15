@@ -39,9 +39,11 @@ export class TrialsService extends BasicService<Trial> {
     return trial;
   }
 
-  async findTrials(pagination: BasicPaginationDto, companyId: string) {
+  async findTrials(pagination: BasicPaginationDto, company: ICompany) {
     const query = this.trialRepo.createQueryBuilder('trial');
-    query.where('trial.companyId = :companyId', { companyId });
+    if (company) {
+      query.where('trial.companyId = :companyId', { companyId: company.id });
+    }
     return this.paginate(query, pagination);
   }
 
