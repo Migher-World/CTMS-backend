@@ -10,15 +10,23 @@ import * as sponsorRoles from '../../json/sponsor-roles.json';
 import * as vendorRoles from '../../json/vendor-roles.json';
 import { IRole } from '../roles/interface/role.interface';
 import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
-import { FilterCompanyDto } from './dto/create-company.dto';
+import { CreateCompanyDto, FilterCompanyDto } from './dto/create-company.dto';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CompaniesService extends BasicService<Company> {
   constructor(
-    @InjectRepository(Company) private readonly companyRepository: typeof Company,
+    @InjectRepository(Company) private readonly companyRepository: Repository<Company>,
     private roleService: RolesService,
   ) {
     super(companyRepository, 'Company');
+  }
+
+  async create(data: CreateCompanyDto) {
+    const company = this.companyRepository.create(data);
+    const result = await company.save();
+    await this.createCompanyDefaultRoles(result);
+    return company;
   }
 
   async createCompanyDefaultRoles(company: Company) {
