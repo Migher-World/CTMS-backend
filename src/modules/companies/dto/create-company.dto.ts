@@ -1,7 +1,9 @@
-import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
 import { CompanyType } from '../interfaces/company.interface';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Helper } from '../../../shared/helpers';
+import { CreateUserDto } from '../../users/dto/create-user.dto';
+import { Type } from 'class-transformer';
 
 export class CreateCompanyDto {
   @IsNotEmpty()
@@ -27,6 +29,38 @@ export class CreateCompanyDto {
   @IsOptional()
   @ApiPropertyOptional({ example: Helper.faker.company.buzzPhrase() })
   industry: string;
+}
+
+
+export class CreateCompanyWithUserDto {
+  @IsNotEmpty()
+  @ApiProperty({ example: Helper.faker.company.name() })
+  name: string;
+
+  @IsNotEmpty()
+  @ApiProperty({ example: Helper.faker.internet.email() })
+  email: string;
+
+  @IsNotEmpty()
+  @ApiProperty({ example: Helper.faker.phone.number('+234 91# ### ####') })
+  phoneNumber: string;
+
+  @IsNotEmpty()
+  @ApiProperty({ example: Helper.faker.location.streetAddress() })
+  address: string;
+
+  @IsNotEmpty()
+  @IsEnum(CompanyType)
+  type: CompanyType;
+
+  @IsOptional()
+  @ApiPropertyOptional({ example: Helper.faker.company.buzzPhrase() })
+  industry: string;
+
+  @IsNotEmpty()
+  @ValidateNested({ always: true })
+  @Type(() => CreateUserDto)
+  user: CreateUserDto;
 }
 
 export class FilterCompanyDto {

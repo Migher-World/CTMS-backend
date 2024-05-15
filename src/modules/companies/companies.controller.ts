@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { CompaniesService } from './companies.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
-import { CreateCompanyDto, FilterCompanyDto } from './dto/create-company.dto';
+import { CreateCompanyDto, CreateCompanyWithUserDto, FilterCompanyDto } from './dto/create-company.dto';
 import { Headers } from '../../shared/decorators/headers.decorator';
 import { resolveResponse } from '../../shared/resolvers';
 
@@ -19,7 +19,7 @@ export class CompaniesController {
   }
 
   @Post()
-  async createCompany(@Body() data: CreateCompanyDto) {
-    return resolveResponse(this.companiesService.create(data));
+  async createCompany(@Body() data: CreateCompanyWithUserDto) {
+    return resolveResponse(this.companiesService.createCompany(data));
   }
 }
