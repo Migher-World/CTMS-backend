@@ -58,7 +58,7 @@ export class CreateCompanyWithUserDto {
   industry: string;
 
   @IsNotEmpty()
-  @ValidateNested({ always: true })
+  @ValidateNested()
   @Type(() => CreateUserDto)
   user: Omit<CreateUserDto, 'roleId' | 'password'>;
 }
