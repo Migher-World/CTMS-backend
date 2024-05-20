@@ -53,9 +53,6 @@ export class CreateTrialDto {
   budgetCategory: BudgetCategory;
 
   @IsNotEmpty()
-  trackingNumber: string;
-
-  @IsNotEmpty()
   allocatedAmount: string;
 
   @IsNotEmpty()

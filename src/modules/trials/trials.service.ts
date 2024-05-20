@@ -25,18 +25,28 @@ export class TrialsService extends BasicService<Trial> {
   }
 
   async createTrial(createTrialDto: CreateTrialDto, user: User, company: ICompany): Promise<Trial> {
-    if(!company && !createTrialDto.companyId) {
+    if (!company && !createTrialDto.companyId) {
       throw new Error('companyId is required to create a patient as a super admin');
     }
     const sites = await this.resolveRelationships(createTrialDto.siteIds, Company);
-    console.log(sites);
+    const trackingNumber = await this.generateUniqueTrackingId();
     const createdTrial = this.trialRepo.create({
       ...createTrialDto,
       createdById: user.id,
+      trackingNumber,
       companyId: company?.id ?? createTrialDto.companyId,
     });
     const trial = await this.trialRepo.save({ ...createdTrial, sites });
     return trial;
+  }
+
+  private async generateUniqueTrackingId() {
+    const trackingNumber = `TRIAL-${Helper.generateToken(6)}`;
+    const trial = await this.trialRepo.findOne({ where: { trackingNumber } });
+    if (trial) {
+      return this.generateUniqueTrackingId();
+    }
+    return trackingNumber;
   }
 
   async findTrials(pagination: BasicPaginationDto, company: ICompany) {
