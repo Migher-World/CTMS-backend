@@ -67,6 +67,20 @@ export class CompaniesService extends BasicService<Company> {
     return this.paginate(query, pagination);
   }
 
+  async listAll(filter: FilterCompanyDto) {
+    const { industry, type } = filter;
+    const query = this.companyRepository.createQueryBuilder('company');
+    if (type) {
+      query.andWhere('company.type = :type', { type: filter.type });
+    }
+
+    if (industry) {
+      query.andWhere('company.industry = :industry', { industry: filter.industry });
+    }
+
+    return query.getMany();
+  }
+
   async prepareRoles(companyType: CompanyType) {
     let rolesJson = [] as Partial<IRole>[];
     if (companyType === CompanyType.INDIVIDUAL) {

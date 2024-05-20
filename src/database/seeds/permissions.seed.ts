@@ -25,9 +25,9 @@ export default class PermissionSeeder {
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8b3c',
-        name: 'Company',
-        description: 'Company management',
-        slug: 'company',
+        name: 'Vendor',
+        description: 'Vendor management',
+        slug: 'vendor',
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8b3d',
@@ -131,6 +131,12 @@ export default class PermissionSeeder {
         description: 'Deliveries management',
         slug: 'deliveries',
       },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4b',
+        name: 'Sponsor',
+        description: 'Sponsor management',
+        slug: 'sponsor',
+      },
     ]);
 
     const permissions = await permissionRepository.save([
@@ -164,16 +170,16 @@ export default class PermissionSeeder {
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8b3j',
-        name: 'Create company',
-        description: 'Create company',
-        slug: 'create-company',
+        name: 'Create vendor',
+        description: 'Create vendor',
+        slug: 'create-vendor',
         permissionGroupId: permissionGroups[1].id,
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8b3k',
-        name: 'Update company',
-        description: 'Update company',
-        slug: 'update-company',
+        name: 'View vendor',
+        description: 'View vendor',
+        slug: 'view-vendor',
         permissionGroupId: permissionGroups[1].id,
       },
       {
@@ -286,6 +292,20 @@ export default class PermissionSeeder {
         name: 'View sites',
         description: 'View sites',
         slug: 'view-sites',
+        permissionGroupId: permissionGroups[7].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4z',
+        name: 'Create site',
+        description: 'Create site',
+        slug: 'create-site',
+        permissionGroupId: permissionGroups[7].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8baa',
+        name: 'Update site',
+        description: 'Update site',
+        slug: 'update-site',
         permissionGroupId: permissionGroups[7].id,
       },
       {
@@ -540,6 +560,20 @@ export default class PermissionSeeder {
         description: 'View deliveries',
         permissionGroupId: permissionGroups[18].id,
       },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4a',
+        name: 'Create sponsor',
+        slug: 'create-sponsor',
+        description: 'Create sponsor',
+        permissionGroupId: permissionGroups[19].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4b',
+        name: 'View sponsor',
+        slug: 'view-sponsor',
+        description: 'View sponsor',
+        permissionGroupId: permissionGroups[19].id,
+      }
     ]); 
   }
 }

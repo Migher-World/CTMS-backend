@@ -18,6 +18,11 @@ export class CompaniesController {
     return resolveResponse(this.companiesService.findAll(pagination, filter));
   }
 
+  @Get('list')
+  async listAll(@Query() filter: FilterCompanyDto) {
+    return resolveResponse(this.companiesService.listAll(filter));
+  }
+
   @Post()
   async createCompany(@Body() data: CreateCompanyWithUserDto) {
     return resolveResponse(this.companiesService.createCompany(data));
