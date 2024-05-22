@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CompaniesService } from './companies.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
@@ -19,7 +19,7 @@ export class CompaniesController {
   }
 
   @Get(':id')
-  async findOne(@Query() id: string) {
+  async findOne(@Param('id') id: string) {
     return resolveResponse(this.companiesService.findOne(id));
   }
 

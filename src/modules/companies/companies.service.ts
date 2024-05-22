@@ -43,8 +43,10 @@ export class CompaniesService extends BasicService<Company> {
   async createCompanyDefaultRoles(company: Company) {
     // const company = await this.findOne(companyId);
     const rolesJson = await this.prepareRoles(company.type);
-    rolesJson.map((role) => {
+    rolesJson.map(async (role) => {
+      const permissions = await this.roleService.resolveRelationships(role.permissions, Permissions);
       role.companyId = company.id;
+      role.permissions = permissions;
     });
     const roles = await this.roleService.bulkCreate(rolesJson);
     return roles;
