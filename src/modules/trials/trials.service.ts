@@ -50,7 +50,7 @@ export class TrialsService extends BasicService<Trial> {
   }
 
   async findTrials(pagination: BasicPaginationDto, company: ICompany) {
-    const query = this.trialRepo.createQueryBuilder('trial');
+    const query = this.trialRepo.createQueryBuilder('trial').leftJoinAndSelect('trial.sites', 'sites');
     if (company) {
       query.where('trial.companyId = :companyId', { companyId: company.id });
     }

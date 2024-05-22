@@ -50,6 +50,7 @@ export class CompaniesService extends BasicService<Company> {
     return roles;
   }
 
+  // TODO: get list of trials a company is assigned to
   async findAll(pagination: BasicPaginationDto, filter: FilterCompanyDto) {
     const { industry, type } = filter;
     const query = this.companyRepository.createQueryBuilder('company');

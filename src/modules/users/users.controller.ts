@@ -9,6 +9,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { CurrentCompany } from '../../shared/decorators/current-company.decorator';
 import { ICompany } from '../companies/interfaces/company.interface';
 import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
+import { FilterUserDto } from './dto/add-user.dto';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -26,8 +27,8 @@ export class UsersController {
   }
 
   @Get()
-  async findUsers(@Query() pagination: BasicPaginationDto, @CurrentCompany() company: ICompany) {
-    return resolveResponse(this.usersService.findUsers(pagination, company), 'All Users Found');
+  async findUsers(@Query() pagination: BasicPaginationDto, @CurrentCompany() company: ICompany, @Query() filter: FilterUserDto) {
+    return resolveResponse(this.usersService.findUsers(pagination, company, filter), 'All Users Found');
   }
 
   @Get(':id')

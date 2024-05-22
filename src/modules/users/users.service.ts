@@ -14,6 +14,7 @@ import { CacheService } from '../cache/cache.service';
 import { CreateEmailDto } from '../../shared/alerts/emails/dto/create-email.dto';
 import { AppEvents } from '../../constants';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { FilterUserDto } from './dto/add-user.dto';
 
 @Injectable()
 export class UsersService extends BasicService<User> {
@@ -83,8 +84,19 @@ export class UsersService extends BasicService<User> {
       throw new BadRequestException('Email exists');
     }
   }
-  async findUsers(pagination: BasicPaginationDto, company: ICompany) {
+
+  async findUsers(pagination: BasicPaginationDto, company: ICompany, filter: FilterUserDto) {
     const query = this.userRepo.createQueryBuilder('user').leftJoinAndSelect('user.role', 'role');
+    if (filter.search) {
+      query.andWhere('(user.firstName ILIKE :search OR user.lastName ILIKE :search OR user.email ILIKE :search)', {
+        search: `%${filter.search}%`,
+      });
+    }
+    if (filter.companyType) {
+      query
+        .innerJoin('user.company', 'company')
+        .andWhere('company.type = :companyType', { companyType: filter.companyType });
+    }
     if (company) {
       query.andWhere('user.companyId = :companyId', { companyId: company.id });
     }
