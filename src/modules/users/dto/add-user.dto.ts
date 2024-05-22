@@ -22,4 +22,7 @@ export class FilterUserDto {
 
   @IsOptional()
   companyType: CompanyType;
+
+  @IsOptional()
+  companyId: string;
 }

@@ -97,6 +97,9 @@ export class UsersService extends BasicService<User> {
         .innerJoin('user.company', 'company')
         .andWhere('company.type = :companyType', { companyType: filter.companyType });
     }
+    if (filter.companyId) {
+      query.andWhere('user.companyId = :companyId', { companyId: filter.companyId });
+    }
     if (company) {
       query.andWhere('user.companyId = :companyId', { companyId: company.id });
     }

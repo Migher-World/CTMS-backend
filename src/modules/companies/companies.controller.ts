@@ -18,7 +18,12 @@ export class CompaniesController {
     return resolveResponse(this.companiesService.findAll(pagination, filter));
   }
 
-  @Get('list')
+  @Get(':id')
+  async findOne(@Query() id: string) {
+    return resolveResponse(this.companiesService.findOne(id));
+  }
+
+  @Get('get/list')
   async listAll(@Query() filter: FilterCompanyDto) {
     return resolveResponse(this.companiesService.listAll(filter));
   }
