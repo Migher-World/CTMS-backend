@@ -40,6 +40,11 @@ export class TrialsController {
     return resolveResponse(this.trialsService.findTrial(id), 'Trial found');
   }
 
+  @Get('company/:companyId')
+  async getTrialsByCompany(@Param('companyId') companyId) {
+    return resolveResponse(this.trialsService.findTrialsByCompany(companyId));
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTrialDto: UpdateTrialDto) {
     return resolveResponse(this.trialsService.updateTrial(id, updateTrialDto));
@@ -52,17 +57,25 @@ export class TrialsController {
 
   @Get('permissions/:id')
   @ApiOperation({ summary: 'Get signed in user trial permissions. the id is the trialId' })
-  async getPermissions(@Param('id') id: string, @CurrentUser() user: User){
+  async getPermissions(@Param('id') id: string, @CurrentUser() user: User) {
     return resolveResponse(this.trialsService.getTrialPermissions(id, user.id));
   }
 
   @Post('permissions/add/:id')
-  async addPermission(@Param('id') id: string, @Body() trialPermissionDto: TrialPermissionDto, @CurrentUser() user: User){
+  async addPermission(
+    @Param('id') id: string,
+    @Body() trialPermissionDto: TrialPermissionDto,
+    @CurrentUser() user: User,
+  ) {
     return resolveResponse(this.trialsService.addTrialPermission(id, trialPermissionDto));
   }
 
   @Post('permissions/remove/:id')
-  async removePermission(@Param('id') id: string, @Body() trialPermissionDto: TrialPermissionDto, @CurrentUser() user: User){
+  async removePermission(
+    @Param('id') id: string,
+    @Body() trialPermissionDto: TrialPermissionDto,
+    @CurrentUser() user: User,
+  ) {
     return resolveResponse(this.trialsService.removeTrialPermission(id, trialPermissionDto));
   }
 }

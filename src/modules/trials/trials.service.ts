@@ -57,6 +57,12 @@ export class TrialsService extends BasicService<Trial> {
     return this.paginate(query, pagination);
   }
 
+  async findTrialsByCompany(companyId: string) {
+    // get trials where the site is assigned to the trial
+    const trials = await this.trialRepo.createQueryBuilder('trial').leftJoinAndSelect('trial.sites', 'sites', 'sites.companyId = :companyId', { companyId }).getMany();
+    return trials;
+  }
+
   async findTrial(trialId: string) {
     const id = trialId;
     const trial = await this.trialRepo.findOne({ where: { id } });
