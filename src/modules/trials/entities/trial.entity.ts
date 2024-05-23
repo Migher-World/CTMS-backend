@@ -44,7 +44,7 @@ export class Trial extends AbstractEntity implements ITrial {
   @JoinColumn()
   company: Company;
 
-  @ManyToMany(() => Company, (company) => company.trials)
+  @ManyToMany(() => Company, (company) => company.trials, { eager: true })
   @JoinTable()
   sites: Company[];
 

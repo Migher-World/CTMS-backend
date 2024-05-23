@@ -59,7 +59,14 @@ export class TrialsService extends BasicService<Trial> {
 
   async findTrialsByCompany(companyId: string) {
     // get trials where the site is assigned to the trial
-    const trials = await this.trialRepo.createQueryBuilder('trial').leftJoinAndSelect('trial.sites', 'sites', 'sites.companyId = :companyId', { companyId }).getMany();
+    const trials = await this.trialRepo
+      .createQueryBuilder('trial')
+      .leftJoinAndSelect('trial.company', 'company')
+      .leftJoinAndSelect('trial.sites', 'sites')
+      .leftJoinAndSelect('trial.vendor', 'vendor')
+      .leftJoinAndSelect('trial.sponsor', 'sponsor')
+      .leftJoinAndSelect('trial.sites', 'sites', 'sites.companyId = :companyId', { companyId })
+      .getMany();
     return trials;
   }
 
