@@ -143,6 +143,8 @@ export class AuthService {
     const newPassword = await Helper.hash(password);
     const user = await this.userRepo.findOne({ where: { email } });
 
+    await this.cacheService.delete(email);
+
     if (user.setPassword == true) {
       throw new BadRequestException('Password already set');
     }

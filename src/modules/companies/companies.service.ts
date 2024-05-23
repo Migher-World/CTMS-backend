@@ -13,6 +13,7 @@ import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
 import { CreateCompanyDto, CreateCompanyWithUserDto, FilterCompanyDto } from './dto/create-company.dto';
 import { Repository } from 'typeorm';
 import { UsersService } from '../users/users.service';
+import { Permission } from '../permissions/entities/permission.entity';
 
 @Injectable()
 export class CompaniesService extends BasicService<Company> {
@@ -43,12 +44,14 @@ export class CompaniesService extends BasicService<Company> {
   async createCompanyDefaultRoles(company: Company) {
     // const company = await this.findOne(companyId);
     const rolesJson = await this.prepareRoles(company.type);
-    rolesJson.map(async (role) => {
-      const permissions = await this.roleService.resolveRelationships(role.permissions, Permissions);
+    const payload = rolesJson.map(async (role) => {
+      const permissions = await this.roleService.resolveRelationships(role.permissions, Permission);
       role.companyId = company.id;
       role.permissions = permissions;
+      return role;
     });
-    const roles = await this.roleService.bulkCreate(rolesJson);
+    const rolesData = await Promise.all(payload);
+    const roles = await this.roleService.bulkCreate(rolesData);
     return roles;
   }
 
