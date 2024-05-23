@@ -62,10 +62,9 @@ export class TrialsService extends BasicService<Trial> {
     const trials = await this.trialRepo
       .createQueryBuilder('trial')
       .leftJoinAndSelect('trial.company', 'company')
-      .leftJoinAndSelect('trial.sites', 'sites')
       .leftJoinAndSelect('trial.vendor', 'vendor')
       .leftJoinAndSelect('trial.sponsor', 'sponsor')
-      .leftJoinAndSelect('trial.sites', 'sites', 'sites.companyId = :companyId', { companyId })
+      .innerJoinAndSelect('trial.sites', 'sites', 'sites.id = :companyId', { companyId })
       .getMany();
     return trials;
   }

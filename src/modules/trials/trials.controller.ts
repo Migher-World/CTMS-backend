@@ -41,7 +41,7 @@ export class TrialsController {
   }
 
   @Get('company/:companyId')
-  async getTrialsByCompany(@Param('companyId') companyId) {
+  async getTrialsByCompany(@Param('companyId') companyId: string) {
     return resolveResponse(this.trialsService.findTrialsByCompany(companyId));
   }
 
