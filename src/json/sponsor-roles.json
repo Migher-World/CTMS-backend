@@ -3,6 +3,7 @@
     "name": "sponsor admin",
     "description": "admin for an sponsor user",
     "permissions": [
+      "cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8bab",
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8b3g",
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8b3h",
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8b3i",
