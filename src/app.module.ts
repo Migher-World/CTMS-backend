@@ -32,16 +32,16 @@ const mg = require('nodemailer-mailgun-transport');
     EventEmitterModule.forRoot(),
     ScheduleModule.forRoot(),
     MailerModule.forRoot({
-      // transport: {
-      //   host: env.emailHost,
-      //   secure: true,
-      //   auth: {
-      //     user: env.emailUser,
-      //     pass: env.emailPassword,
-      //   },
-      // },
+      transport: {
+        host: env.emailHost,
+        secure: true,
+        auth: {
+          user: env.emailUser,
+          pass: env.emailPassword,
+        },
+      },
       // use mailhog for development
-      transport: 'smtp://localhost:1025',
+      // transport: 'smtp://localhost:1025',
       template: {
         dir: `${__dirname}/templates`,
         adapter: new PugAdapter(),

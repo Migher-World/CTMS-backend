@@ -8,6 +8,7 @@ import { Role } from './entities/role.entity';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { ICompany } from '../companies/interfaces/company.interface';
 import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class RolesService extends BasicService<Role> {
@@ -15,8 +16,12 @@ export class RolesService extends BasicService<Role> {
     super(roleRepo, 'Roles');
   }
 
-  async create(createRoleDto: CreateRoleDto, company: ICompany) {
+  async create(createRoleDto: CreateRoleDto, company: ICompany, user: User) {
     const { permissionsId } = createRoleDto;
+    let companyId;
+    if (!company) {
+      companyId = user.companyId;
+    }
     const permissions = await this.resolveRelationships(permissionsId, Permission);
     return super.create({ ...createRoleDto, permissions, companyId: company.id });
   }

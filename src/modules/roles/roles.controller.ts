@@ -8,6 +8,8 @@ import { CurrentCompany } from '../../shared/decorators/current-company.decorato
 import { Headers } from '../../shared/decorators/headers.decorator';
 import { ICompany } from '../companies/interfaces/company.interface';
 import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
+import { CurrentUser } from '../../shared/decorators/current-user.decorator';
+import { User } from '../users/entities/user.entity';
 
 @ApiTags('Roles')
 @ApiBearerAuth()
@@ -27,8 +29,8 @@ export class RolesController {
   }
 
   @Post()
-  async create(@Body() createRoleDto: CreateRoleDto, @CurrentCompany() company: ICompany) {
-    return resolveResponse(this.rolesService.create(createRoleDto, company), 'Role Created');
+  async create(@Body() createRoleDto: CreateRoleDto, @CurrentCompany() company: ICompany, @CurrentUser() user: User) {
+    return resolveResponse(this.rolesService.create(createRoleDto, company, user), 'Role Created');
   }
 
   @Put('update-permissions')

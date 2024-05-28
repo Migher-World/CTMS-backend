@@ -87,7 +87,7 @@ export class CreateTrialDto {
   therapeuticArea: string;
 
   @IsOptional()
-  typesOfPaticipants: string;
+  typesOfParticipants: string;
 
   @IsOptional()
   typeOfStudy: string;
