@@ -57,7 +57,7 @@ export class CompaniesService extends BasicService<Company> {
 
   // TODO: get list of trials a company is assigned to
   async findAll(pagination: BasicPaginationDto, filter: FilterCompanyDto) {
-    const { industry, type } = filter;
+    const { industry, type, sortBy } = filter;
     const query = this.companyRepository.createQueryBuilder('company');
     if (type) {
       query.andWhere('company.type = :type', { type: filter.type });
@@ -65,6 +65,12 @@ export class CompaniesService extends BasicService<Company> {
 
     if (industry) {
       query.andWhere('company.industry = :industry', { industry: filter.industry });
+    }
+
+    if (sortBy) {
+      query.orderBy('company.createdAt', sortBy);
+    } else {
+      query.orderBy('company.createdAt', 'DESC');
     }
 
     // if(name) {

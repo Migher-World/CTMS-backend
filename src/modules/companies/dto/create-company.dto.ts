@@ -72,6 +72,10 @@ export class FilterCompanyDto {
   @IsEnum(CompanyType)
   type: CompanyType;
 
+  @IsOptional()
+  @ApiPropertyOptional({ example: "DESC" })
+  sortBy: "DESC" | "ASC"
+
   // @IsOptional()
   // @ApiPropertyOptional({ example: Helper.faker.company.name() })
   // name: string;
