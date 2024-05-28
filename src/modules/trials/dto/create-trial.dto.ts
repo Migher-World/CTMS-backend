@@ -82,6 +82,15 @@ export class CreateTrialDto {
 
   @IsOptional()
   companyId: string;
+
+  @IsOptional()
+  therapeuticArea: string;
+
+  @IsOptional()
+  typesOfPaticipants: string;
+
+  @IsOptional()
+  typeOfStudy: string;
 }
 
 export class TrialPermissionDto {

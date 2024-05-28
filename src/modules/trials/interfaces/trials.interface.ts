@@ -27,8 +27,10 @@ export enum BudgetCategory {
 }
 
 export enum RegulatoryCompliance {
-  COMPLIED = 'Complied',
-  UNCOMPLIED = 'Uncomplied',
+  NAFDAC = 'NAFDAC',
+  NHREC = 'NHREC',
+  MINISTRY_OF_HEALTH = 'Ministry of Health',
+  OTHERS = 'Others',
 }
 
 export enum RecruitmentPlan {

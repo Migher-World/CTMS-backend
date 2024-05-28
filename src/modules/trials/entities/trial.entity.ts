@@ -58,6 +58,15 @@ export class Trial extends AbstractEntity implements ITrial {
   @Column({ nullable: true })
   sponsorId: string;
 
+  @Column({ nullable: true })
+  therapeuticArea: string;
+
+  @Column({ nullable: true })
+  typesOfPaticipants: string;
+
+  @Column({ nullable: true })
+  typeOfStudy: string;
+
   @ManyToOne(() => Company, { eager: true })
   @JoinColumn()
   sponsor: Company;
