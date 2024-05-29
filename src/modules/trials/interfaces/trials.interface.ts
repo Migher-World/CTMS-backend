@@ -53,7 +53,7 @@ export interface ITrial {
   company: ICompany;
   gender: 'male' | 'female';
   ageGroup: AgeGroup;
-  budgetCategory: BudgetCategory;
+  // budgetCategory: BudgetCategory;
   allocatedAmount: string;
   regulatoryCompliance: RegulatoryCompliance;
   recruitmentPlan: RecruitmentPlan;

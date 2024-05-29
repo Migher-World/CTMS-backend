@@ -47,18 +47,19 @@ export class CreateTrialDto {
   @ApiProperty({ enum: AgeGroup })
   ageGroup: AgeGroup;
 
-  @IsNotEmpty()
-  @IsEnum(BudgetCategory)
-  @ApiProperty({ enum: BudgetCategory })
-  budgetCategory: BudgetCategory;
+  // @IsNotEmpty()
+  // @IsEnum(BudgetCategory)
+  // @ApiProperty({ enum: BudgetCategory })
+  // budgetCategory: BudgetCategory;
 
   @IsNotEmpty()
   allocatedAmount: string;
 
   @IsNotEmpty()
-  @IsEnum(RegulatoryCompliance)
+  // @IsEnum(RegulatoryCompliance)
   @ApiProperty({ enum: RegulatoryCompliance })
-  regulatoryCompliance: RegulatoryCompliance;
+  // regulatoryCompliance: RegulatoryCompliance;
+  regulatoryCompliance: string;
 
   @IsNotEmpty()
   @IsEnum(RecruitmentPlan)

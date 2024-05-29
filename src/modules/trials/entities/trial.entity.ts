@@ -77,8 +77,8 @@ export class Trial extends AbstractEntity implements ITrial {
   @Column({ enum: AgeGroup, type: 'enum' })
   ageGroup: AgeGroup;
 
-  @Column({ enum: BudgetCategory, type: 'enum' })
-  budgetCategory: BudgetCategory;
+  // @Column({ enum: BudgetCategory, type: 'enum' })
+  // budgetCategory: BudgetCategory;
 
   @Column()
   allocatedAmount: string;

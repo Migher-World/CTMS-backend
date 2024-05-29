@@ -26,10 +26,11 @@ export class UpdateTrialDto extends PartialType(CreateTrialDto) {
   @ApiProperty({ enum: ProtocolDetails })
   protocolDetails?: ProtocolDetails;
 
-  @IsEnum(RegulatoryCompliance)
+  // @IsEnum(RegulatoryCompliance)
   @IsOptional()
-  @ApiProperty({ enum: RegulatoryCompliance })
-  regulatoryCompliance?: RegulatoryCompliance;
+  // @ApiProperty({ enum: RegulatoryCompliance })
+  // regulatoryCompliance?: RegulatoryCompliance;
+  regulatoryCompliance?: string;
 
   @IsEnum(RecruitmentPlan)
   @IsOptional()
