@@ -57,9 +57,9 @@ export class CreateTrialDto {
 
   @IsNotEmpty()
   // @IsEnum(RegulatoryCompliance)
-  @ApiProperty({ enum: RegulatoryCompliance })
+  // @ApiProperty({ enum: RegulatoryCompliance })
   // regulatoryCompliance: RegulatoryCompliance;
-  regulatoryCompliance: string;
+  regulatoryCompliance: RegulatoryCompliance;
 
   @IsNotEmpty()
   @IsEnum(RecruitmentPlan)
