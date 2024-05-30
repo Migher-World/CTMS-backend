@@ -57,7 +57,7 @@ export interface ITrial {
   allocatedAmount: string;
   regulatoryCompliance: RegulatoryCompliance;
   recruitmentPlan: RecruitmentPlan;
-  inclusionCriteria: string[];
+  inclusionCriteria: string;
   exclusionCriteria: string[];
   irbSubmissionDate: string;
   trackingNumber: string;

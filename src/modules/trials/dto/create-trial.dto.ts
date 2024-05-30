@@ -67,8 +67,8 @@ export class CreateTrialDto {
   recruitmentPlan: RecruitmentPlan;
 
   @IsNotEmpty()
-  @IsArray()
-  inclusionCriteria: string[];
+  // @IsArray()
+  inclusionCriteria: string;
 
   @IsNotEmpty()
   @IsArray()

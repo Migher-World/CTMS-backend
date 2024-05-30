@@ -38,8 +38,8 @@ export class UpdateTrialDto extends PartialType(CreateTrialDto) {
   recruitmentPlan?: RecruitmentPlan;
 
   @IsOptional()
-  @IsArray()
-  inclusionCriteria?: string[];
+  // @IsArray()
+  inclusionCriteria?: string;
 
   @IsOptional()
   @IsArray()
