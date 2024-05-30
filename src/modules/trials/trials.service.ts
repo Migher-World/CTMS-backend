@@ -58,7 +58,6 @@ export class TrialsService extends BasicService<Trial> {
   }
 
   async findTrialsByCompany(companyId: string) {
-    // get trials where the site is assigned to the trial
     const trials = await this.trialRepo
       .createQueryBuilder('trial')
       .leftJoinAndSelect('trial.company', 'company')

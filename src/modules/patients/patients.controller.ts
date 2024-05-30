@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { PatientsService } from './patients.service';
-import { CreatePatientDto, UpdatePatientDto, UpdatePatientStatusDto } from './dto/patient.dto';
+import { CreatePatientDto, FilterPatientsDto, UpdatePatientDto, UpdatePatientStatusDto } from './dto/patient.dto';
 import { resolveResponse } from '../../shared/resolvers';
 import { ICompany } from '../companies/interfaces/company.interface';
 import { CurrentCompany } from '../../shared/decorators/current-company.decorator';
@@ -37,8 +37,8 @@ export class PatientsController {
   }
 
   @Get()
-  getPatientsByCompanyId(@Query() pagination: BasicPaginationDto, @CurrentCompany() company: ICompany) {
-    return resolveResponse(this.patientsService.findAll(pagination, company));
+  getPatientsByCompanyId(@Query() pagination: BasicPaginationDto, @Query() filter: FilterPatientsDto, @CurrentCompany() company: ICompany) {
+    return resolveResponse(this.patientsService.findAll(pagination, filter, company));
   }
 
   @Get('/get/overview')

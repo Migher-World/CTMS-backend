@@ -3,7 +3,7 @@ import { BasicService } from '../../shared/services/basic-service.service';
 import { Patient } from './entities/patient.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreatePatientDto, UpdatePatientDto, UpdatePatientStatusDto } from './dto/patient.dto';
+import { CreatePatientDto, FilterPatientsDto, UpdatePatientDto, UpdatePatientStatusDto } from './dto/patient.dto';
 import { Helper } from '../../shared/helpers';
 import { ICompany } from '../companies/interfaces/company.interface';
 import { EnrollmentStatus } from './interfaces/patient.interface';
@@ -60,10 +60,19 @@ export class PatientsService extends BasicService<Patient> {
     return patient;
   }
 
-  async findAll(pagination: BasicPaginationDto, company: ICompany) {
+  async findAll(pagination: BasicPaginationDto, filter: FilterPatientsDto, company: ICompany) {
+    const { companyId, search } = filter;
     const query = this.patientRepo.createQueryBuilder('patient');
     if (company) {
       query.where('patient.companyId = :companyId', { companyId: company.id });
+    }
+
+    if (companyId) {
+      query.andWhere('patient.companyId = :companyId', { companyId });
+    }
+
+    if (search) {
+      query.andWhere('patient.patientId ILIKE :search', { search: `%${search}%` });
     }
     return this.paginate(query, pagination);
   }

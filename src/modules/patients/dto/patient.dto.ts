@@ -63,3 +63,14 @@ export class UpdatePatientStatusDto {
   @ApiProperty({ example: Helper.faker.string.uuid() })
   patientId: string;
 }
+
+export class FilterPatientsDto {
+  @IsOptional()
+  @ApiProperty({ example: '' })
+  search: string;
+
+  @IsOptional()
+  @ApiProperty({ example: Helper.faker.string.uuid() })
+  companyId: string;
+
+}
