@@ -44,6 +44,10 @@ export class FilterIssueDto {
   @IsOptional()
   @ApiPropertyOptional({ type: String, description: Helper.faker.string.uuid() })
   authorId: string;
+
+  @IsOptional()
+  @ApiPropertyOptional({ type: String, description: Helper.faker.string.uuid() })
+  companyId: string;
 }
 
 export class UpdateIssueStatusDto {

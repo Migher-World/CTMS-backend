@@ -35,10 +35,15 @@ export class IssuesService extends BasicService<Issue> {
     return this.issueRepo.save(issue);
   }
 
-  async findAll(pagination: BasicPaginationDto, filterIssueDto: FilterIssueDto, companyId: string) {
-    const { status, assignedToId, authorId } = filterIssueDto;
+  async findAll(pagination: BasicPaginationDto, filterIssueDto: FilterIssueDto, company: ICompany) {
+    const { status, assignedToId, authorId, companyId } = filterIssueDto;
     const query = this.issueRepo.createQueryBuilder('issue');
-    query.where('issue.companyId = :companyId', { companyId });
+    if(company) {
+      query.where('issue.companyId = :companyId', { companyId: company.id });
+    }
+    if(companyId && !company) {
+      query.where('issue.companyId = :companyId', { companyId });
+    }
     if (status) {
       query.andWhere('issue.status = :status', { status });
     }

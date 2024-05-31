@@ -30,7 +30,7 @@ export class IssuesController {
     @CurrentCompany() company: ICompany,
     @Query() filterIssueDto: FilterIssueDto,
   ) {
-    return resolveResponse(this.issuesService.findAll(pagination, filterIssueDto, company.id));
+    return resolveResponse(this.issuesService.findAll(pagination, filterIssueDto, company));
   }
 
   @Get(':id')
