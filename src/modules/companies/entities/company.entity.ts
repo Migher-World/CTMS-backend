@@ -18,6 +18,9 @@ export class Company extends AbstractEntity implements ICompany {
   @Column()
   phoneNumber: string;
 
+  @Column({ nullable: true })
+  siteType: string;
+
   @Column()
   address: string;
 

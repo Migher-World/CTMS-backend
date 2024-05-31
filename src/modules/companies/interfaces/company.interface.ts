@@ -9,6 +9,7 @@ export interface ICompany {
   name: string;
   address: string;
   email: string;
+  siteType: string;
   phoneNumber: string;
   type: CompanyType;
   status: boolean;

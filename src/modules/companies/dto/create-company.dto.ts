@@ -29,6 +29,10 @@ export class CreateCompanyDto {
   @IsOptional()
   @ApiPropertyOptional({ example: Helper.faker.company.buzzPhrase() })
   industry: string;
+
+  @IsOptional()
+  @ApiPropertyOptional({ description: 'only for sites' })
+  siteType: string;
 }
 
 
