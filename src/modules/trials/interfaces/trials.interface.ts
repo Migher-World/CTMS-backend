@@ -5,10 +5,10 @@ export enum ProtocolDetails {
 }
 
 export enum AgeGroup {
-  PEDIATRICS = 'Pediatrics',
-  ADOLESCENTS = 'Adolescents',
-  ADULTS = 'Adults',
-  GERIATRICS = 'Geriatrics',
+  PEDIATRICS = 'Pediatrics (0-12)',
+  ADOLESCENTS = 'Adolescents (13-18)',
+  ADULTS = 'Adults (19-59)',
+  GERIATRICS = 'Geriatrics (60 and above)',
 }
 
 export enum TrialPermissions {
