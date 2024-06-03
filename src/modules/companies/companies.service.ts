@@ -93,6 +93,12 @@ export class CompaniesService extends BasicService<Company> {
     return query.getMany();
   }
 
+  async updateCompany(id: string, data: CreateCompanyDto) {
+    const company = await this.findOne(id);
+    const updatedCompany = await this.companyRepository.update(company.id, data);
+    return updatedCompany;
+  }
+
   async prepareRoles(companyType: CompanyType) {
     let rolesJson = [] as Partial<IRole>[];
     if (companyType === CompanyType.INDIVIDUAL) {

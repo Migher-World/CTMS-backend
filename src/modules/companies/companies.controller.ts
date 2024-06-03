@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { CompaniesService } from './companies.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
@@ -26,6 +26,11 @@ export class CompaniesController {
   @Get('get/list')
   async listAll(@Query() filter: FilterCompanyDto) {
     return resolveResponse(this.companiesService.listAll(filter));
+  }
+
+  @Patch(':id')
+  async updateCompany(@Param('id') id: string, @Body() data: CreateCompanyDto) {
+    return resolveResponse(this.companiesService.updateCompany(id, data));
   }
 
   @Post()

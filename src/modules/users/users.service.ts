@@ -121,6 +121,14 @@ export class UsersService extends BasicService<User> {
     }
   }
 
+  async updateProfile(userId: string, updateUserDto: UpdateUserDto, user: User) {
+    if (user.id !== userId) {
+      throw new BadRequestException('You are not authorized to perform this action');
+    }
+    const updatedUser = await this.userRepo.update(userId, updateUserDto);
+    return updatedUser;
+  }
+
   async deleteUser(userId: string) {
     const user = await this.findUser(userId);
 

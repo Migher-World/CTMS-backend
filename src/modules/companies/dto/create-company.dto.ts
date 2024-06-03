@@ -31,7 +31,7 @@ export class CreateCompanyDto {
   industry: string;
 
   @IsOptional()
-  @ApiPropertyOptional({ description: 'only for sites' })
+  @ApiPropertyOptional({ description: 'only for sites', example: 'only for sites' })
   siteType: string;
 }
 

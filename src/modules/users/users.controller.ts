@@ -10,6 +10,8 @@ import { CurrentCompany } from '../../shared/decorators/current-company.decorato
 import { ICompany } from '../companies/interfaces/company.interface';
 import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
 import { FilterUserDto } from './dto/add-user.dto';
+import { CurrentUser } from '../../shared/decorators/current-user.decorator';
+import { User } from './entities/user.entity';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -39,6 +41,11 @@ export class UsersController {
   @Patch(':id')
   async updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return resolveResponse(this.usersService.updateUser(id, updateUserDto), 'User Updated');
+  }
+
+  @Patch('update-profile/:id')
+  async updateProfile(@Param('id') id: string, @CurrentUser() user: User, @Body() updateUserDto: UpdateUserDto) {
+    return resolveResponse(this.usersService.updateProfile(id, updateUserDto, user), 'Profile Updated');
   }
 
   @Delete(':id')
