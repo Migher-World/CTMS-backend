@@ -56,7 +56,7 @@ export interface ITrial {
   ageGroup: AgeGroup;
   // budgetCategory: BudgetCategory;
   allocatedAmount: string;
-  regulatoryCompliance: RegulatoryCompliance;
+  regulatoryCompliance: RegulatoryCompliance[];
   recruitmentPlan: RecruitmentPlan;
   inclusionCriteria: string[];
   // exclusionCriteria: string[];

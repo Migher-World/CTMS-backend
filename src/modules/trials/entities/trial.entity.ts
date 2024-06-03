@@ -58,8 +58,8 @@ export class Trial extends AbstractEntity implements ITrial {
   @Column({ nullable: true })
   sponsorId: string;
 
-  @Column({ nullable: true })
-  therapeuticArea: string;
+  @Column('simple-array', { nullable: true })
+  therapeuticArea: string[];
 
   @Column({ nullable: true })
   typesOfParticipants: string;
@@ -84,8 +84,8 @@ export class Trial extends AbstractEntity implements ITrial {
   allocatedAmount: string;
 
   // @Column({ enum: RegulatoryCompliance, type: 'enum' })
-  @Column()
-  regulatoryCompliance: RegulatoryCompliance;
+  @Column('simple-array')
+  regulatoryCompliance: RegulatoryCompliance[];
 
   @Column({ enum: RecruitmentPlan, type: 'enum' })
   recruitmentPlan: RecruitmentPlan;

@@ -56,10 +56,11 @@ export class CreateTrialDto {
   allocatedAmount: string;
 
   @IsNotEmpty()
+  @IsArray()
   // @IsEnum(RegulatoryCompliance)
   // @ApiProperty({ enum: RegulatoryCompliance })
   // regulatoryCompliance: RegulatoryCompliance;
-  regulatoryCompliance: RegulatoryCompliance;
+  regulatoryCompliance: RegulatoryCompliance[];
 
   @IsNotEmpty()
   @IsEnum(RecruitmentPlan)
@@ -91,7 +92,8 @@ export class CreateTrialDto {
   companyId: string;
 
   @IsOptional()
-  therapeuticArea: string;
+  @IsArray()
+  therapeuticArea: string[];
 
   @IsOptional()
   typesOfParticipants: string;

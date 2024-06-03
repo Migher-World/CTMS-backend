@@ -1,4 +1,5 @@
 import { ITrial } from 'src/modules/trials/interfaces/trials.interface';
+import { Trial } from '../../trials/entities/trial.entity';
 
 export enum Currency {
   Naira = 'Naira',
@@ -7,7 +8,7 @@ export enum Currency {
 
 export interface IBudget {
   id: string;
-  trial: ITrial;
+  trial: Trial;
   currency: Currency;
   totalBudget: string;
   startDate: string;
