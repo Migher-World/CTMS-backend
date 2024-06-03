@@ -70,6 +70,12 @@ export class CreateTrialDto {
   @IsArray()
   inclusionCriteria: string[];
 
+  @IsNotEmpty()
+  principalInvestigatorName: string;
+
+  @IsNotEmpty()
+  cro: string;
+
   // @IsNotEmpty()
   // @IsArray()
   // exclusionCriteria: string[];

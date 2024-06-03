@@ -106,6 +106,12 @@ export class Trial extends AbstractEntity implements ITrial {
   irbApprovalDocument: string;
 
   @Column()
+  principalInvestigatorName: string;
+
+  @Column()
+  cro: string;
+
+  @Column()
   createdById: string;
 
   @ManyToOne(() => User)
