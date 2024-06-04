@@ -14,6 +14,7 @@ import { CreateCompanyDto, CreateCompanyWithUserDto, FilterCompanyDto } from './
 import { Repository } from 'typeorm';
 import { UsersService } from '../users/users.service';
 import { Permission } from '../permissions/entities/permission.entity';
+import { UpdateCompanyDto } from './dto/update-company.dto';
 
 @Injectable()
 export class CompaniesService extends BasicService<Company> {
@@ -93,7 +94,7 @@ export class CompaniesService extends BasicService<Company> {
     return query.getMany();
   }
 
-  async updateCompany(id: string, data: CreateCompanyDto) {
+  async updateCompany(id: string, data: UpdateCompanyDto) {
     const company = await this.findOne(id);
     const updatedCompany = await this.companyRepository.update(company.id, data);
     return updatedCompany;

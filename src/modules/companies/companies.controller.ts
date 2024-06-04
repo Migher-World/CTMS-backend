@@ -5,6 +5,7 @@ import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
 import { CreateCompanyDto, CreateCompanyWithUserDto, FilterCompanyDto } from './dto/create-company.dto';
 import { Headers } from '../../shared/decorators/headers.decorator';
 import { resolveResponse } from '../../shared/resolvers';
+import { UpdateCompanyDto } from './dto/update-company.dto';
 
 @Controller('companies')
 @ApiTags('Company')
@@ -29,7 +30,7 @@ export class CompaniesController {
   }
 
   @Patch(':id')
-  async updateCompany(@Param('id') id: string, @Body() data: CreateCompanyDto) {
+  async updateCompany(@Param('id') id: string, @Body() data: UpdateCompanyDto) {
     return resolveResponse(this.companiesService.updateCompany(id, data));
   }
 
