@@ -8,4 +8,13 @@ export class UpdateCompanyDto extends PartialType(CreateCompanyDto) {
 
     @IsOptional()
     additionalInfo: string;
+
+    @IsOptional()
+    contactPerson: string;
+
+    @IsOptional()
+    contactPersonEmail: string;
+
+    @IsOptional()
+    contactPersonPhone: string;
 }
