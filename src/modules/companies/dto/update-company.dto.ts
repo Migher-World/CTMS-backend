@@ -21,4 +21,7 @@ export class UpdateCompanyDto extends PartialType(CreateCompanyDto) {
 
   @IsOptional()
   principalInvestigator: string;
+
+  @IsOptional()
+  siteOverview: string;
 }
