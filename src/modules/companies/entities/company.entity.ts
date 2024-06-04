@@ -43,6 +43,9 @@ export class Company extends AbstractEntity implements ICompany {
   contactPersonPhone: string;
 
   @Column({ nullable: true })
+  principalInvestigator: string;
+
+  @Column({ nullable: true })
   industry: string;
 
   @OneToMany(() => User, (user) => user.company)
