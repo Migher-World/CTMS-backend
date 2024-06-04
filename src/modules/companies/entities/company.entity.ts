@@ -27,8 +27,8 @@ export class Company extends AbstractEntity implements ICompany {
   @Column({ enum: CompanyType, type: 'enum' })
   type: CompanyType;
 
-  @Column({ nullable: true })
-  facilityInfra: string;
+  @Column('simple-array', { nullable: true })
+  facilityInfra: string[];
 
   @Column({ nullable: true })
   additionalInfo: string;

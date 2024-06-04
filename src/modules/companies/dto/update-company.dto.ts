@@ -1,10 +1,11 @@
 import { PartialType } from '@nestjs/swagger';
 import { CreateCompanyDto } from './create-company.dto';
-import { IsOptional } from 'class-validator';
+import { IsArray, IsOptional } from 'class-validator';
 
 export class UpdateCompanyDto extends PartialType(CreateCompanyDto) {
   @IsOptional()
-  facilityInfra: string;
+  @IsArray()
+  facilityInfra: string[];
 
   @IsOptional()
   additionalInfo: string;
