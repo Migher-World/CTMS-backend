@@ -3,6 +3,7 @@ import { Job } from 'bull';
 import { getRepository } from 'typeorm';
 import { EmailsService } from './emails.service';
 import { EmailEntity } from './entities/email.entity';
+import { AppDataSource } from '../../../config/db.config';
 
 @Processor('emailQueue')
 export class EmailsConsumer {
@@ -26,10 +27,10 @@ export class EmailsConsumer {
           context: { ...metaData },
           // context: { ...metaData, moneyFormat: Helper.moneyFormat },
         })
-        .then(async () => await getRepository(EmailEntity).update(id, { delivered: true }))
+        .then(async () => await AppDataSource.getRepository(EmailEntity).update(id, { delivered: true }))
         .catch(async (emailError) => {
           console.log({ emailError });
-          await getRepository(EmailEntity).update(id, { delivered: false });
+          await AppDataSource.getRepository(EmailEntity).update(id, { delivered: false });
         });
     } catch (error) {
       console.log({ processerror: error });
