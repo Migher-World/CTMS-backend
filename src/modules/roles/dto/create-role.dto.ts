@@ -13,3 +13,8 @@ export class CreateRoleDto {
   @IsOptional()
   requireTraining: boolean;
 }
+
+export class FilterRolesDto {
+  @IsOptional()
+  companyId: string;
+}

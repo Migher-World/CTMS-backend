@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Put, Param, Get, Delete, Query } from '@nestjs/common';
 import { RolesService } from './roles.service';
-import { CreateRoleDto } from './dto/create-role.dto';
+import { CreateRoleDto, FilterRolesDto } from './dto/create-role.dto';
 import { AddPermissionsToRoleDto, UpdateRoleDto } from './dto/update-role.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { resolveResponse } from '../../shared/resolvers';
@@ -19,13 +19,22 @@ export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
   @Get()
-  async findAll(@Query() pagination: BasicPaginationDto, @CurrentCompany() company: ICompany) {
-    return resolveResponse(this.rolesService.findAllByCompanyId(pagination, company));
+  async findAll(
+    @Query() pagination: BasicPaginationDto,
+    @Query() filter: FilterRolesDto,
+    @CurrentCompany() company: ICompany,
+  ) {
+    return resolveResponse(this.rolesService.findAllByCompanyId(pagination, company, filter));
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return resolveResponse(this.rolesService.findOne(id));
+  }
+
+  @Get('list/get')
+  async list(@Query() filter: FilterRolesDto) {
+    return resolveResponse(this.rolesService.listRoles(filter));
   }
 
   @Post()
