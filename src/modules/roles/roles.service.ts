@@ -21,9 +21,11 @@ export class RolesService extends BasicService<Role> {
     let companyId;
     if (!company) {
       companyId = user.companyId;
+    } else {
+      companyId = company.id;
     }
     const permissions = await this.resolveRelationships(permissionsId, Permission);
-    return super.create({ ...createRoleDto, permissions, companyId: company.id });
+    return super.create({ ...createRoleDto, permissions, companyId });
   }
 
   async update(id: string, updateRoleDto: UpdateRoleDto) {
