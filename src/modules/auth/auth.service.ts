@@ -24,6 +24,7 @@ import { CacheService } from '../cache/cache.service';
 import { AppEvents } from 'src/constants';
 import { EmailEntity } from 'src/shared/alerts/emails/entities/email.entity';
 import { CreateEmailDto } from 'src/shared/alerts/emails/dto/create-email.dto';
+import { Role } from '../roles/entities/role.entity';
 
 @Injectable()
 export class AuthService {
@@ -96,14 +97,11 @@ export class AuthService {
         type: CompanyType.UTCSS,
       };
 
-      company = await manager.findOne<Company>(Company, { where: { name: 'UTCSS' } });
-
+      company = await manager.findOne<Company>(Company, { where: { name: companyDto.name } });
 
       if (!company) {
         company = await manager.save<Company>(manager.create<Company>(Company, companyDto));
       }
-
-      const roles = await this.companyService.createCompanyDefaultRoles(company);
 
       const user = await manager.save<User>(
         manager.create<User>(User, {
@@ -111,14 +109,16 @@ export class AuthService {
           password,
           setPassword,
           company,
-          role: roles.find((role) => role.name.includes('admin')),
+          roleId: 'ebd21799-a716-405b-a080-e4faf6a2d43d',
         }),
       );
 
       const payload: AuthPayload = { id: user.id };
       const token = this.jwtService.sign(payload);
 
-      const userWithPermissions = Helper.formatPermissions(user);
+      const role = await manager.findOne<Role>(Role, { where: { id: 'ebd21799-a716-405b-a080-e4faf6a2d43d' } });
+
+      const userWithPermissions = Helper.formatPermissions({ ...user, role } as User);
 
       return { userWithPermissions, token };
     });
