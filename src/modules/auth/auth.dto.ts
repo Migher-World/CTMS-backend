@@ -78,6 +78,33 @@ export class RegisterDto {
   setPassword: boolean;
 }
 
+
+export class AdminRegisterDto {
+  @IsNotEmpty()
+  @ApiProperty({ example: Helper.faker.person.firstName() })
+  firstName: string;
+
+  @IsNotEmpty()
+  @ApiProperty({ example: Helper.faker.person.lastName() })
+  lastName: string;
+
+  @IsNotEmpty()
+  @IsEmail()
+  @ApiProperty({ example: Helper.faker.internet.email() })
+  email: string;
+
+  @IsNotEmpty()
+  @IsOptional()
+  @ApiPropertyOptional({ example: Helper.faker.phone.number('+234 91# ### ####') })
+  phoneNumber: string;
+
+  @IsNotEmpty()
+  password: string;
+
+  @IsOptional()
+  setPassword: boolean;
+}
+
 export interface AuthPayload {
   id: string;
 }

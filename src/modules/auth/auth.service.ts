@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import {
+  AdminRegisterDto,
   AuthPayload,
   LoginDto,
   RegisterDto,
@@ -46,17 +47,56 @@ export class AuthService {
           ? { ...credentials.company, name: `${credentials.firstName}: ${credentials.company.type} Company` }
           : credentials.company;
 
+      if (credentials.company.type === CompanyType.UTCSS) {
+        throw new BadRequestException('Invalid company type');
+      }
+
+      const company = await manager.save<Company>(manager.create<Company>(Company, companyDto));
+
+      const roles = await this.companyService.createCompanyDefaultRoles(company);
+
+      const user = await manager.save<User>(
+        manager.create<User>(User, {
+          ...credentials,
+          password,
+          setPassword,
+          company,
+          role: roles.find((role) => role.name.includes('admin')),
+        }),
+      );
+
+      const payload: AuthPayload = { id: user.id };
+      const token = this.jwtService.sign(payload);
+
+      const userWithPermissions = Helper.formatPermissions(user);
+
+      return { userWithPermissions, token };
+    });
+
+    return transaction;
+  }
+
+  async utcssSignUp(credentials: AdminRegisterDto) {
+    const transaction = await AppDataSource.transaction(async (manager) => {
+      let { password, setPassword, email, phoneNumber } = credentials;
+
+      if (!email.includes('@unitedclinicals.com')) {
+        throw new BadRequestException('Invalid email');
+      }
+
+      await this.usersService.checkDuplicate({ email, phoneNumber });
+
       let company;
 
-      if (credentials.company.type === CompanyType.UTCSS) {
-        companyDto.name = 'UTCSS';
+      const companyDto: CreateCompanyDto = {
+        address: 'United Clinicals',
+        email: 'utcss@unitedclinicals.com',
+        name: 'UTCSS',
+        phoneNumber: '08012345678',
+        type: CompanyType.UTCSS,
+      };
 
-        if (!email.includes('@unitedclinicals.com')) {
-          throw new BadRequestException('Invalid email');
-        }
-
-        company = await manager.findOne<Company>(Company, { where: { name: 'UTCSS' } });
-      }
+      company = await manager.findOne<Company>(Company, { where: { name: 'UTCSS' } });
 
       if (!company) {
         company = await manager.save<Company>(manager.create<Company>(Company, companyDto));
