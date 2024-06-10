@@ -55,11 +55,13 @@ export class AuthController {
   }
 
   @Post('verify-account')
+  @Public()
   async verifyAccount(@Body() verifyAccountDto: VerifyOTPDto) {
     return resolveResponse(this.authService.verifyAccount(verifyAccountDto));
   }
 
   @Post('send-otp')
+  @Public()
   async generateOTP(@Body() dto: GenerateOTPDto) {
     return resolveResponse(this.authService.sendOtp(dto.email));
   }

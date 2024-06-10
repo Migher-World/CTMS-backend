@@ -63,6 +63,7 @@ export class UsersService extends BasicService<User> {
         receiverEmail: email,
         subject: 'Complete your registration',
         template: 'setPassword',
+        senderEmail: 'CTMS <info@ctms.com>',
         metaData: { code: otp, email },
       };
 

@@ -181,6 +181,9 @@ export class AuthService {
       const { email, password } = loginDto;
       const user = await this.usersService.findOne(email, 'email', ['company']);
       if (user && (await user.comparePassword(password))) {
+        if (!user.emailVerified) {
+          this.sendOtp(user.email);
+        }
         const payload: AuthPayload = { id: user.id };
         const token = this.jwtService.sign(payload);
         const userWithPermissions = Helper.formatPermissions(user);
@@ -232,7 +235,8 @@ export class AuthService {
     // Send mail
     const createEmailDto: CreateEmailDto = {
       subject: 'Confirm OTP',
-      template: 'otp.pug',
+      template: 'otp',
+      senderEmail: 'CTMS <info@ctms.com>',
       //template: `Your OTP is ${otp}`,
       metaData: {
         code: otp,
@@ -273,6 +277,9 @@ export class AuthService {
     await this.verifyOTP(verifyOTPDto);
     await this.cacheService.delete(email);
     const user = await this.usersService.findOne(email, 'email');
+    if(user.emailVerified) {
+      throw new BadRequestException('Email already verified');
+    }
     user.emailVerified = true;
     await user.save();
     const payload: AuthPayload = { id: user.id };
