@@ -98,6 +98,7 @@ export class AuthService {
 
       company = await manager.findOne<Company>(Company, { where: { name: 'UTCSS' } });
 
+
       if (!company) {
         company = await manager.save<Company>(manager.create<Company>(Company, companyDto));
       }
