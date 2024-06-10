@@ -1,5 +1,5 @@
 export enum CompanyType {
-  INDIVIDUAL = 'INDIVIDUAL',
+  UTCSS = 'UTCSS',
   SITE = 'SITE',
   VENDOR = 'VENDOR',
   SPONSOR = 'SPONSOR',

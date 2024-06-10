@@ -4,7 +4,7 @@ import { Company } from './entities/company.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RolesService } from '../roles/roles.service';
 import { CompanyType } from './interfaces/company.interface';
-import * as individualRoles from '../../json/individual-roles.json';
+import * as utcssRoles from '../../json/utcss-roles.json';
 import * as siteRoles from '../../json/site-roles.json';
 import * as sponsorRoles from '../../json/sponsor-roles.json';
 import * as vendorRoles from '../../json/vendor-roles.json';
@@ -102,8 +102,8 @@ export class CompaniesService extends BasicService<Company> {
 
   async prepareRoles(companyType: CompanyType) {
     let rolesJson = [] as Partial<IRole>[];
-    if (companyType === CompanyType.INDIVIDUAL) {
-      rolesJson = individualRoles;
+    if (companyType === CompanyType.UTCSS) {
+      rolesJson = utcssRoles;
     } else if (companyType === CompanyType.SITE) {
       rolesJson = siteRoles;
     } else if (companyType === CompanyType.SPONSOR) {

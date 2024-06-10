@@ -42,11 +42,25 @@ export class AuthService {
       await this.usersService.checkDuplicate({ email, phoneNumber });
 
       const companyDto: CreateCompanyDto =
-        credentials.company.type === CompanyType.INDIVIDUAL || credentials.company.type === CompanyType.SPONSOR
+        credentials.company.type === CompanyType.SPONSOR
           ? { ...credentials.company, name: `${credentials.firstName}: ${credentials.company.type} Company` }
           : credentials.company;
 
-      const company = await manager.save<Company>(manager.create<Company>(Company, companyDto));
+      let company;
+
+      if (credentials.company.type === CompanyType.UTCSS) {
+        companyDto.name = 'UTCSS';
+
+        if (!email.includes('@unitedclinicals.com')) {
+          throw new BadRequestException('Invalid email');
+        }
+
+        company = await manager.findOne<Company>(Company, { where: { name: 'UTCSS' } });
+      }
+
+      if (!company) {
+        company = await manager.save<Company>(manager.create<Company>(Company, companyDto));
+      }
 
       const roles = await this.companyService.createCompanyDefaultRoles(company);
 
