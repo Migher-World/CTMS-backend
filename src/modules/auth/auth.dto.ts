@@ -2,7 +2,7 @@ import { IsEmail, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator
 import { CreateCompanyDto } from '../companies/dto/create-company.dto';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Helper } from '../../shared/helpers';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 
 export class RequestResetPasswordDto {
   @IsEmail()
@@ -107,4 +107,19 @@ export class AdminRegisterDto {
 
 export interface AuthPayload {
   id: string;
+}
+
+export class VerifyOTPDto {
+  @IsNotEmpty()
+  @Transform(({ value }) => value.trim().toLowerCase())
+  email: string;
+
+  @IsNotEmpty()
+  code: string;
+}
+
+export class GenerateOTPDto {
+  @IsNotEmpty()
+  @Transform(({ value }) => value.trim().toLowerCase())
+  email: string;
 }

@@ -8,6 +8,7 @@ import * as crypto from 'crypto';
 import { CloudStorage } from '../plugins/cloud-storage';
 import { Cloudinary } from '../plugins/cloud-storage/cloudinary';
 import { User } from '../../modules/users/entities/user.entity';
+import { isDev } from '../../environment/isDev';
 
 class SlugifyOptions {
   lower: boolean;
@@ -89,6 +90,9 @@ export class Helper {
   }
 
   static generateToken(length = 6, options: Record<string, any> = {}) {
+    if (isDev()) {
+      return '123456';
+    }
     return tokenGen.generate(length, {
       digits: true,
       upperCaseAlphabets: false,

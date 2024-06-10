@@ -7,6 +7,7 @@ import {
   RequestResetPasswordDto,
   ResetPasswordDto,
   SetPasswordDto,
+  VerifyOTPDto,
 } from './auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
@@ -74,6 +75,8 @@ export class AuthService {
       return { userWithPermissions, token };
     });
 
+    await this.sendOtp(credentials.email);
+
     return transaction;
   }
 
@@ -122,6 +125,8 @@ export class AuthService {
 
       return { userWithPermissions, token };
     });
+
+    await this.sendOtp(credentials.email);
 
     return transaction;
   }
@@ -214,6 +219,11 @@ export class AuthService {
     const { email } = requestResetPasswordDto;
     const isEmailExist = await this.userRepo.findOne({ where: { email } });
     // Generate otp
+    await this.sendOtp(email);
+    return isEmailExist;
+  }
+
+  async sendOtp(email: string) {
     const otp = await Helper.generateToken();
 
     // Save to redis
@@ -247,5 +257,30 @@ export class AuthService {
     const updatedUserPassword = await this.userRepo.save(user);
 
     return updatedUserPassword;
+  }
+
+  async verifyOTP(verifyOTPDto: VerifyOTPDto) {
+    const { code, email } = verifyOTPDto;
+    const otp = await this.cacheService.get(email);
+    if (otp !== code) {
+      throw new UnauthorizedException('Invalid OTP');
+    }
+    return true;
+  }
+
+  async verifyAccount(verifyOTPDto: VerifyOTPDto) {
+    const { email } = verifyOTPDto;
+    await this.verifyOTP(verifyOTPDto);
+    await this.cacheService.delete(email);
+    const user = await this.usersService.findOne(email, 'email');
+    user.emailVerified = true;
+    await user.save();
+    const payload: AuthPayload = { id: user.id };
+    const token = this.jwtService.sign(payload);
+    const userWithPermissions = Helper.formatPermissions(user);
+    return {
+      user: userWithPermissions,
+      token,
+    };
   }
 }
