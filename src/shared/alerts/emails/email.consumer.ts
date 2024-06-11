@@ -14,8 +14,6 @@ export class EmailsConsumer {
     try {
       const { subject, metaData, receiverEmail, senderEmail, template, id, replyTo, attachments } = job.data;
 
-      console.log({ jobdata: job.data });
-
       this.emailService
         .sendEmail({
           template,

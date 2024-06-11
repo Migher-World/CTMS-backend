@@ -55,7 +55,7 @@ export class AuthService {
 
       const company = await manager.save<Company>(manager.create<Company>(Company, companyDto));
 
-      const roles = await this.companyService.createCompanyDefaultRoles(company);
+      // const roles = await this.companyService.createCompanyDefaultRoles(company);
 
       const user = await manager.save<User>(
         manager.create<User>(User, {
@@ -63,21 +63,29 @@ export class AuthService {
           password,
           setPassword,
           company,
-          role: roles.find((role) => role.name.includes('admin')),
+          // role: roles.find((role) => role.name.includes('admin')),
         }),
       );
 
       const payload: AuthPayload = { id: user.id };
       const token = this.jwtService.sign(payload);
 
-      const userWithPermissions = Helper.formatPermissions(user);
+      // const userWithPermissions = Helper.formatPermissions(user);
 
-      return { userWithPermissions, token };
+      return { user, token };
     });
 
     await this.sendOtp(credentials.email);
 
-    return transaction;
+    const roles = await this.companyService.createCompanyDefaultRoles(transaction.user.company);
+
+    transaction.user.role = roles.find((role) => role.name.includes('admin'));
+
+    await this.userRepo.update(transaction.user.id, { roleId: roles.find((role) => role.name.includes('admin')).id });
+
+    const userWithPermissions = Helper.formatPermissions(transaction.user);
+
+    return { user: userWithPermissions, token: transaction.token };
   }
 
   async utcssSignUp(credentials: AdminRegisterDto) {
