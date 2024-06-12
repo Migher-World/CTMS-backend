@@ -92,8 +92,8 @@ export class AuthService {
     const transaction = await AppDataSource.transaction(async (manager) => {
       let { password, setPassword, email, phoneNumber } = credentials;
 
-      if (!email.includes('@unitedclinicals.com')) {
-        throw new BadRequestException('Invalid email');
+      if (!email.includes('@unitedclinicalss.com')) {
+        throw new BadRequestException('Invalid email, you can only register with a unitedclinicalss email address');
       }
 
       await this.usersService.checkDuplicate({ email, phoneNumber });
@@ -102,7 +102,7 @@ export class AuthService {
 
       const companyDto: CreateCompanyDto = {
         address: 'United Clinicals',
-        email: 'utcss@unitedclinicals.com',
+        email: 'utcss@unitedclinicalss.com',
         name: 'UTCSS',
         phoneNumber: '08012345678',
         type: CompanyType.UTCSS,
