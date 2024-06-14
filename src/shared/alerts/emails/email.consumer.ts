@@ -1,6 +1,5 @@
 import { Process, Processor } from '@nestjs/bull';
 import { Job } from 'bull';
-import { getRepository } from 'typeorm';
 import { EmailsService } from './emails.service';
 import { EmailEntity } from './entities/email.entity';
 import { AppDataSource } from '../../../config/db.config';
@@ -23,7 +22,6 @@ export class EmailsConsumer {
           replyTo,
           attachments,
           context: { ...metaData },
-          // context: { ...metaData, moneyFormat: Helper.moneyFormat },
         })
         .then(async () => await AppDataSource.getRepository(EmailEntity).update(id, { delivered: true }))
         .catch(async (emailError) => {

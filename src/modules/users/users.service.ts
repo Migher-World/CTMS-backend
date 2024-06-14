@@ -15,6 +15,9 @@ import { CreateEmailDto } from '../../shared/alerts/emails/dto/create-email.dto'
 import { AppEvents } from '../../constants';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { FilterUserDto } from './dto/add-user.dto';
+import * as dayjs from 'dayjs';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 
 @Injectable()
 export class UsersService extends BasicService<User> {
@@ -23,6 +26,7 @@ export class UsersService extends BasicService<User> {
     private readonly rolesService: RolesService,
     private cacheService: CacheService,
     private readonly eventEmitter: EventEmitter2,
+    @InjectQueue('userQueue') private readonly userQueue: Queue,
   ) {
     super(userRepo, 'Users');
   }
@@ -139,11 +143,30 @@ export class UsersService extends BasicService<User> {
   }
 
   async assignRole(assignRoleDto: AssignRoleDto) {
-    const { userId, roleId } = assignRoleDto;
+    const { userId, roleId, effectiveDate } = assignRoleDto;
+    const date = dayjs(effectiveDate).format('YYYY-MM-DD');
+    if (dayjs().isAfter(date)) {
+      throw new BadRequestException('Effective date must be in the future');
+    }
     const user = await this.findOne(userId);
     const role = await this.rolesService.findOne(roleId);
-    user.role = role;
-    await user.save();
-    return user;
+    const email: CreateEmailDto = {
+      receiverEmail: user.email,
+      subject: 'Role assigned',
+      template: 'roleChanged',
+      senderEmail: 'CTMS <info@ctms.com>',
+      metaData: { role: role.name, name: user.fullName, dateEffective: dayjs().format('dddd, MMMM D YYYY') },
+    };
+    if (dayjs().isSame(date)) {
+      user.role = role;
+      await user.save();
+      this.eventEmitter.emit(AppEvents.SEND_EMAIl, email);
+      return user;
+    } else {
+      // send to queue to run on effective date
+      this.eventEmitter.emit(AppEvents.SEND_EMAIl, email);
+      await this.userQueue.add('assignRole', assignRoleDto, { delay: dayjs(date).diff(dayjs(), 'milliseconds') });
+      return user;
+    }
   }
 }

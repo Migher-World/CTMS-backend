@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsDateString, IsNotEmpty } from 'class-validator';
 
 export class AssignRoleDto {
   @IsNotEmpty()
@@ -6,4 +6,8 @@ export class AssignRoleDto {
 
   @IsNotEmpty()
   roleId: string;
+
+  @IsNotEmpty()
+  @IsDateString()
+  effectiveDate: string;
 }
