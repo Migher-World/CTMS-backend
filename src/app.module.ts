@@ -23,6 +23,7 @@ import { InvoicesModule } from './modules/invoices/invoices.module';
 import { TrialsModule } from './modules/trials/trials.module';
 import { BudgetsModule } from './modules/budgets/budgets.module';
 import { FraudPreventionModule } from './modules/fraud-prevention/fraud-prevention.module';
+import IORedis from 'ioredis';
 
 const mg = require('nodemailer-mailgun-transport');
 
@@ -50,7 +51,13 @@ const mg = require('nodemailer-mailgun-transport');
         },
       },
     }),
-    BullModule.forRoot({}),
+    BullModule.forRoot({
+      createClient: () =>
+        new IORedis(env.redisUrl, {
+          enableReadyCheck: false,
+          maxRetriesPerRequest: null,
+        }),
+    }),
     // FirebaseAdminModule.forRootAsync({
     //   useFactory: () => ({
     //     credential: admin.credential.applicationDefault(),
