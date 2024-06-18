@@ -145,8 +145,8 @@ export class UsersService extends BasicService<User> {
   async assignRole(assignRoleDto: AssignRoleDto) {
     const { userId, roleId, effectiveDate } = assignRoleDto;
     const date = dayjs(effectiveDate).format('YYYY-MM-DD');
-    if (dayjs().isAfter(date)) {
-      throw new BadRequestException('Effective date must be in the future');
+    if (dayjs().isBefore(date)) {
+      throw new BadRequestException('Effective date must be today or in the future');
     }
     const user = await this.findOne(userId);
     const role = await this.rolesService.findOne(roleId);
