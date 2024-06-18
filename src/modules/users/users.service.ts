@@ -67,7 +67,7 @@ export class UsersService extends BasicService<User> {
         receiverEmail: email,
         subject: 'Complete your registration',
         template: 'setPassword',
-        senderEmail: 'CTMS <info@ctms.com>',
+        senderEmail: 'CTMS Info <info@lendhive.app>',
         metaData: { code: otp, email },
       };
 
@@ -154,7 +154,7 @@ export class UsersService extends BasicService<User> {
       receiverEmail: user.email,
       subject: 'Role assigned',
       template: 'roleChanged',
-      senderEmail: 'CTMS <info@ctms.com>',
+      senderEmail: 'CTMS Info <info@lendhive.app>',
       metaData: { role: role.name, name: user.fullName, dateEffective: dayjs().format('dddd, MMMM D YYYY') },
     };
     if (dayjs().isSame(date)) {

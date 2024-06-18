@@ -244,8 +244,7 @@ export class AuthService {
     const createEmailDto: CreateEmailDto = {
       subject: 'Confirm OTP',
       template: 'otp',
-      senderEmail: 'CTMS <info@ctms.com>',
-      //template: `Your OTP is ${otp}`,
+      senderEmail: 'CTMS Info <info@lendhive.app>',
       metaData: {
         code: otp,
       },

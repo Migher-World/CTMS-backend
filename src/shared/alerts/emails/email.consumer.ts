@@ -23,7 +23,10 @@ export class EmailsConsumer {
           attachments,
           context: { ...metaData },
         })
-        .then(async () => await AppDataSource.getRepository(EmailEntity).update(id, { delivered: true }))
+        .then(async (value) => {
+          console.log({ emailSuccess: 'Email sent successfully' });
+          await AppDataSource.getRepository(EmailEntity).update(id, { delivered: true });
+        })
         .catch(async (emailError) => {
           console.log({ emailError });
           await AppDataSource.getRepository(EmailEntity).update(id, { delivered: false });
