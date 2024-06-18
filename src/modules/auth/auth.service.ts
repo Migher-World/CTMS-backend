@@ -189,9 +189,9 @@ export class AuthService {
       const { email, password } = loginDto;
       const user = await this.usersService.findOne(email, 'email', ['company']);
       if (user && (await user.comparePassword(password))) {
-        if (!user.emailVerified) {
-          this.sendOtp(user.email);
-        }
+        // if (!user.emailVerified) {
+        //   this.sendOtp(user.email);
+        // }
         const payload: AuthPayload = { id: user.id };
         const token = this.jwtService.sign(payload);
         const userWithPermissions = Helper.formatPermissions(user);
