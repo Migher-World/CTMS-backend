@@ -145,7 +145,7 @@ export class UsersService extends BasicService<User> {
   async assignRole(assignRoleDto: AssignRoleDto) {
     const { userId, roleId, effectiveDate } = assignRoleDto;
     const date = dayjs(effectiveDate).format('YYYY-MM-DD');
-    if (dayjs().isBefore(date)) {
+    if (dayjs().isAfter(date, 'day')) {
       throw new BadRequestException('Effective date must be today or in the future');
     }
     const user = await this.findOne(userId);
@@ -157,7 +157,7 @@ export class UsersService extends BasicService<User> {
       senderEmail: 'CTMS Info <info@lendhive.app>',
       metaData: { role: role.name, name: user.fullName, dateEffective: dayjs().format('dddd, MMMM D YYYY') },
     };
-    if (dayjs().isSame(date)) {
+    if (dayjs().isSame(date, 'day')) {
       user.role = role;
       await user.save();
       this.eventEmitter.emit(AppEvents.SEND_EMAIl, email);
