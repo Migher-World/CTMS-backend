@@ -47,6 +47,10 @@ export class CreatePatientDto {
   @ApiProperty({ example: Helper.faker.datatype.boolean() })
   withinWindow: boolean;
 
+  @IsNotEmpty()
+  @ApiProperty({ example: 'patient' })
+  participantType: string;
+
   @IsOptional()
   companyId: string;
 }
@@ -72,5 +76,4 @@ export class FilterPatientsDto {
   @IsOptional()
   @ApiProperty({ example: Helper.faker.string.uuid() })
   companyId: string;
-
 }

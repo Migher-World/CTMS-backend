@@ -35,6 +35,9 @@ export class Patient extends AbstractEntity implements IPatient {
   @Column()
   visitCompleted: boolean;
 
+  @Column({default: 'patient'})
+  participantType: string;
+
   @Column()
   withinWindow: boolean;
 
