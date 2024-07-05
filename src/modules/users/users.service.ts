@@ -155,7 +155,7 @@ export class UsersService extends BasicService<User> {
       subject: 'Role assigned',
       template: 'roleChanged',
       senderEmail: 'CTMS Info <info@lendhive.app>',
-      metaData: { role: role.name, name: user.fullName, dateEffective: dayjs().format('dddd, MMMM D YYYY') },
+      metaData: { role: role.name, name: user.fullName, dateEffective: dayjs(date).format('dddd, MMMM D YYYY') },
     };
     if (dayjs().isSame(date, 'day')) {
       user.role = role;
