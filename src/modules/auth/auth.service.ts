@@ -229,6 +229,9 @@ export class AuthService {
   async requestResetPassword(requestResetPasswordDto: RequestResetPasswordDto) {
     const { email } = requestResetPasswordDto;
     const isEmailExist = await this.userRepo.findOne({ where: { email } });
+    if(!isEmailExist) {
+      throw new BadRequestException('Email does not exist');
+    }
     // Generate otp
     await this.sendOtp(email);
     return isEmailExist;
