@@ -90,8 +90,8 @@ export class EcrfService {
         throw new BadRequestException(`Invalid field: ${key}`);
       }
 
-      if (field.type === 'array' && (!field.items || !field.items.type || !field.items.enum)) {
-        throw new BadRequestException(`Invalid array field: ${key}`);
+      if (field.type === 'dropdown' && (!field.items || !field.items.type || !field.items.enum)) {
+        throw new BadRequestException(`Invalid dropdown field: ${key}`);
       }
     });
   }
@@ -113,19 +113,19 @@ export class EcrfService {
         throw new BadRequestException(`Invalid field: ${key}`);
       }
 
-      if (field.type === 'array' && (!field.items || !field.items.type || !field.items.enum)) {
-        throw new BadRequestException(`Invalid array field: ${key}`);
+      if (field.type === 'dropdown' && (!field.items || !field.items.type || !field.items.enum)) {
+        throw new BadRequestException(`Invalid dropdown field: ${key}`);
       }
 
       if (!response[key]) {
         throw new BadRequestException(`Missing response field: ${key}`);
       }
 
-      if (field.type === 'array' && !field.items.enum.includes(response[key] as any)) {
+      if (field.type === 'dropdown' && !field.items.enum.includes(response[key] as any)) {
         throw new BadRequestException(`Invalid response field: ${key}`);
       }
 
-      if (field.type !== 'array' && typeof response[key] !== field.type) {
+      if (field.type !== 'dropdown' && typeof response[key] !== field.type) {
         throw new BadRequestException(`Invalid response field: ${key}`);
       }
     });
