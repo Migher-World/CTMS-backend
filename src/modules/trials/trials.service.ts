@@ -28,7 +28,10 @@ export class TrialsService extends BasicService<Trial> {
     if (!company && !createTrialDto.companyId) {
       throw new Error('companyId is required to create a patient as a super admin');
     }
-    const sites = await this.resolveRelationships(createTrialDto.siteIds, Company);
+    let sites: Company[] = []
+    if(createTrialDto.siteIds) {
+      sites = await this.resolveRelationships(createTrialDto.siteIds, Company);
+    }
     const trackingNumber = await this.generateUniqueTrackingId();
     const createdTrial = this.trialRepo.create({
       ...createTrialDto,
