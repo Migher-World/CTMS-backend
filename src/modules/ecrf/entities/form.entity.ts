@@ -17,7 +17,7 @@ export class FormEntity extends AbstractEntity {
     @Column()
     trialId: string;
 
-    @ManyToOne(() => Trial)
+    @ManyToOne(() => Trial, { eager: true })
     trial: Trial;
 
     @Column()
