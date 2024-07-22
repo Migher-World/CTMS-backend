@@ -90,9 +90,6 @@ export class Helper {
   }
 
   static generateToken(length = 6, options: Record<string, any> = {}) {
-    if (isDev()) {
-      return '123456';
-    }
     return tokenGen.generate(length, {
       digits: true,
       upperCaseAlphabets: false,

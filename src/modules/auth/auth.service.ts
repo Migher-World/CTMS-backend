@@ -26,6 +26,7 @@ import { AppEvents } from 'src/constants';
 import { EmailEntity } from 'src/shared/alerts/emails/entities/email.entity';
 import { CreateEmailDto } from 'src/shared/alerts/emails/dto/create-email.dto';
 import { Role } from '../roles/entities/role.entity';
+import { isDev } from '../../environment/isDev';
 
 @Injectable()
 export class AuthService {
@@ -229,7 +230,7 @@ export class AuthService {
   async requestResetPassword(requestResetPasswordDto: RequestResetPasswordDto) {
     const { email } = requestResetPasswordDto;
     const isEmailExist = await this.userRepo.findOne({ where: { email } });
-    if(!isEmailExist) {
+    if (!isEmailExist) {
       throw new BadRequestException('Email does not exist');
     }
     // Generate otp
@@ -238,7 +239,7 @@ export class AuthService {
   }
 
   async sendOtp(email: string) {
-    const otp = await Helper.generateToken();
+    const otp = isDev() ? '123456' : await Helper.generateToken();
 
     // Save to redis
     await this.cacheService.set(email, otp, 600);
@@ -287,7 +288,7 @@ export class AuthService {
     await this.verifyOTP(verifyOTPDto);
     await this.cacheService.delete(email);
     const user = await this.usersService.findOne(email, 'email');
-    if(user.emailVerified) {
+    if (user.emailVerified) {
       throw new BadRequestException('Email already verified');
     }
     user.emailVerified = true;
