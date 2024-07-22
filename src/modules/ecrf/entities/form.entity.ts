@@ -1,20 +1,25 @@
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, ManyToOne } from 'typeorm';
 import { AbstractEntity } from '../../../shared/entities/abstract-entity';
 import { FormSchema } from '../dto/form.dto';
+import { Trial } from '../../trials/entities/trial.entity';
 
 @Entity()
-export class Form extends AbstractEntity {
+export class FormEntity extends AbstractEntity {
     @Column()
     name: string;
 
     @Column('json')
     schema: FormSchema;
 
-    // @Column()
+    @Column()
+    description: string;
 
-    // Add more columns as needed
+    @Column()
+    trialId: string;
 
-    // Add relationships with other entities if necessary
+    @ManyToOne(() => Trial)
+    trial: Trial;
 
-    // Add custom methods or decorators as needed
+    @Column()
+    category: string;
 }

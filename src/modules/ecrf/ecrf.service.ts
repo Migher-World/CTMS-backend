@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Form } from './entities/form.entity';
+import { FormEntity } from './entities/form.entity';
 import { Repository } from 'typeorm';
 import { FormDto, FormResponseDto, FormSchema, IFormResponse } from './dto/form.dto';
 import { FormResponse } from './entities/form-response.entity';
@@ -8,8 +8,8 @@ import { FormResponse } from './entities/form-response.entity';
 @Injectable()
 export class EcrfService {
   constructor(
-    @InjectRepository(Form)
-    private formRepo: Repository<Form>,
+    @InjectRepository(FormEntity)
+    private formRepo: Repository<FormEntity>,
     @InjectRepository(FormResponse)
     private formResponseRepo: Repository<FormResponse>,
   ) {}
@@ -27,7 +27,7 @@ export class EcrfService {
     return formResponse;
   }
 
-  async createForm(payload: FormDto): Promise<Form> {
+  async createForm(payload: FormDto): Promise<FormEntity> {
     this.validateSchema(payload.schema);
 
     const createdForm = this.formRepo.create({ ...payload });
@@ -36,7 +36,7 @@ export class EcrfService {
     return form;
   }
 
-  async editForm(formId: string, payload: FormDto): Promise<Form> {
+  async editForm(formId: string, payload: FormDto): Promise<FormEntity> {
     this.validateSchema(payload.schema);
 
     const form = await this.formRepo.findOne({ where: { id: formId } });
@@ -50,7 +50,7 @@ export class EcrfService {
     return updatedForm;
   }
 
-  async getForm(formId: string): Promise<Form> {
+  async getForm(formId: string): Promise<FormEntity> {
     const form = await this.formRepo.findOne({ where: { id: formId } });
     if (!form) {
       throw new BadRequestException('Form not found');
@@ -59,7 +59,7 @@ export class EcrfService {
     return form;
   }
 
-  async getForms(): Promise<Form[]> {
+  async getForms(): Promise<FormEntity[]> {
     const forms = await this.formRepo.find();
     return forms;
   }

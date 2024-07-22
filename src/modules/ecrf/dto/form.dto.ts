@@ -32,6 +32,15 @@ export class FormDto {
   name: string;
 
   @IsNotEmpty()
+  description: string;
+
+  @IsNotEmpty()
+  trialId: string;
+
+  @IsNotEmpty()
+  category: string;
+
+  @IsNotEmpty()
   @ApiProperty({
     type: 'object',
     example: {
