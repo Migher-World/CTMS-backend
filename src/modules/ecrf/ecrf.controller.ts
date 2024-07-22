@@ -23,11 +23,11 @@ export class EcrfController {
   }
 
   @Get(':formId')
-  getForm(@Param() formId: string) {
+  getForm(@Param('formId') formId: string) {
     return resolveResponse(this.ecrfService.getForm(formId));
   }
 
-  @Post(':formId')
+  @Post('/response/save')
   saveResponse(@Body() payload: FormResponseDto) {
     return resolveResponse(this.ecrfService.saveResponse(payload));
   }

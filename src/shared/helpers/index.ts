@@ -170,7 +170,7 @@ export class Helper {
       return acc;
     }, {});
     delete user.role.permissions;
-    const userWithPermissions = { ...user, permissions };
+    const userWithPermissions = { ...user.toJSON(), permissions };
     return userWithPermissions;
   }
 
