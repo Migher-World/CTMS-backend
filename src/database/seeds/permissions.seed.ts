@@ -201,21 +201,21 @@ export default class PermissionSeeder {
         name: 'Create issue',
         description: 'Create issue',
         slug: 'create-issue',
-        permissionGroupId: permissionGroups[3].id,
+        permissionGroupId: permissionGroups[7].id,
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8b3r',
         name: 'Update issue',
         description: 'Update issue',
         slug: 'update-issue',
-        permissionGroupId: permissionGroups[3].id,
+        permissionGroupId: permissionGroups[7].id,
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8b3s',
         name: 'Delete issue',
         description: 'Delete issue',
         slug: 'delete-issue',
-        permissionGroupId: permissionGroups[3].id,
+        permissionGroupId: permissionGroups[7].id,
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8b3t',
@@ -573,6 +573,34 @@ export default class PermissionSeeder {
         slug: 'view-sponsor',
         description: 'View sponsor',
         permissionGroupId: permissionGroups[19].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4c',
+        name: 'Create eCRF',
+        slug: 'create-ecrf',
+        description: 'Create eCRF',
+        permissionGroupId: permissionGroups[7].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4f',
+        name: 'Update eCRF',
+        slug: 'update-ecrf',
+        description: 'Create eCRF',
+        permissionGroupId: permissionGroups[7].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4d',
+        name: 'View eCRF',
+        slug: 'view-ecrf',
+        description: 'Create eCRF',
+        permissionGroupId: permissionGroups[7].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4e',
+        name: 'Delete eCRF',
+        slug: 'delete-ecrf',
+        description: 'Create eCRF',
+        permissionGroupId: permissionGroups[7].id,
       }
     ]); 
   }
