@@ -13,7 +13,8 @@ export const typeOrmConfig: DataSourceOptions = {
   url: env.dbUrl,
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   synchronize: env.synchronize,
-  logging: env.dbLogging,
+  // logging: env.dbLogging,
+  logging: true,
   dropSchema: false,
   extra: env.typeormDriverExtra,
 };
