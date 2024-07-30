@@ -115,7 +115,7 @@ export class AuthService {
         company = await manager.save<Company>(manager.create<Company>(Company, companyDto));
       }
 
-      const user = await manager.save<User>(
+      let user = await manager.save<User>(
         manager.create<User>(User, {
           ...credentials,
           password,
@@ -125,6 +125,8 @@ export class AuthService {
           status: false,
         }),
       );
+
+      console.log(user);
 
       const payload: AuthPayload = { id: user.id };
       const token = this.jwtService.sign(payload);
