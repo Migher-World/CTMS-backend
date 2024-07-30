@@ -137,6 +137,12 @@ export default class PermissionSeeder {
         description: 'Sponsor management',
         slug: 'sponsor',
       },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b5c',
+        name: 'eCRF Management',
+        description: 'eCRF management',
+        slug: 'ecrf-management',
+      }
     ]);
 
     const permissions = await permissionRepository.save([
@@ -341,6 +347,13 @@ export default class PermissionSeeder {
         name: 'Assign trial',
         slug: 'assign-trial',
         description: 'Assign trial',
+        permissionGroupId: permissionGroups[8].id,
+      },
+      {
+        id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3g',
+        name: 'assign pm',
+        slug: 'assign-pm',
+        description: 'assign pm',
         permissionGroupId: permissionGroups[8].id,
       },
       {
@@ -579,28 +592,28 @@ export default class PermissionSeeder {
         name: 'Create eCRF',
         slug: 'create-ecrf',
         description: 'Create eCRF',
-        permissionGroupId: permissionGroups[7].id,
+        permissionGroupId: permissionGroups[20].id,
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4f',
         name: 'Update eCRF',
         slug: 'update-ecrf',
         description: 'Create eCRF',
-        permissionGroupId: permissionGroups[7].id,
+        permissionGroupId: permissionGroups[20].id,
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4d',
         name: 'View eCRF',
         slug: 'view-ecrf',
         description: 'Create eCRF',
-        permissionGroupId: permissionGroups[7].id,
+        permissionGroupId: permissionGroups[20].id,
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4e',
         name: 'Delete eCRF',
         slug: 'delete-ecrf',
         description: 'Create eCRF',
-        permissionGroupId: permissionGroups[7].id,
+        permissionGroupId: permissionGroups[20].id,
       }
     ]); 
   }

@@ -68,8 +68,19 @@
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4c",
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4d",
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4e",
-      "cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4f"
+      "cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4f",
+      "cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3g"
 
+    ]
+  },
+  {
+    "name": "utcss project manager",
+    "description": "project manager for a utcss trials",
+    "permissions": [
+      "e03f0f34-ce6b-4c38-bc39-5924816acb26",
+      "cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3k",
+      "cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3l",
+      "cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3m"
     ]
   }
 ]

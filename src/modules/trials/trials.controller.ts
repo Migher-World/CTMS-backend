@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Query } from '@nestjs/common';
 import { TrialsService } from './trials.service';
-import { CreateTrialDto, TrialPermissionDto } from './dto/create-trial.dto';
+import { AssignPMDto, CreateTrialDto, TrialPermissionDto } from './dto/create-trial.dto';
 import { UpdateTrialDto } from './dto/update-trial.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Headers } from 'src/shared/decorators/headers.decorator';
@@ -77,5 +77,10 @@ export class TrialsController {
     @CurrentUser() user: User,
   ) {
     return resolveResponse(this.trialsService.removeTrialPermission(id, trialPermissionDto));
+  }
+
+  @Post('assign-pm/:id')
+  async assignPm(@Param('id') id: string, @Body() assignPMDto: AssignPMDto) {
+    return resolveResponse(this.trialsService.assignPM(id, assignPMDto.userId));
   }
 }

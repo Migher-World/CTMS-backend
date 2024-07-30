@@ -111,3 +111,9 @@ export class TrialPermissionDto {
   @IsArray()
   permissions: TrialPermissions[];
 }
+
+export class AssignPMDto {
+  @IsNotEmpty()
+  @IsUUID()
+  userId: string;
+}

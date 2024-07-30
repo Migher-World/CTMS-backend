@@ -28,8 +28,8 @@ export class TrialsService extends BasicService<Trial> {
     if (!company && !createTrialDto.companyId) {
       throw new Error('companyId is required to create a patient as a super admin');
     }
-    let sites: Company[] = []
-    if(createTrialDto.siteIds) {
+    let sites: Company[] = [];
+    if (createTrialDto.siteIds) {
       sites = await this.resolveRelationships(createTrialDto.siteIds, Company);
     }
     const trackingNumber = await this.generateUniqueTrackingId();
@@ -124,6 +124,23 @@ export class TrialsService extends BasicService<Trial> {
       await this.trialPermissionRepo.delete({ trialId, userId, permission });
     }
     return { message: 'Permissions removed successfully' };
+  }
+
+  async assignPM(trialId: string, userId: string) {
+    const trial = await this.findTrial(trialId);
+    if (trial) {
+      // assign all permissions to the PM
+      const permissions = Object.values(TrialPermissions);
+      for (const permission of permissions) {
+        const permissionExists = await this.trialPermissionRepo.findOne({ where: { trialId, userId, permission } });
+        if (!permissionExists) {
+          const trialPermission = this.trialPermissionRepo.create({ trialId, userId, permission });
+          await this.trialPermissionRepo.save(trialPermission);
+        }
+      }
+      return { message: 'PM assigned successfully' };
+    }
+    throw new BadRequestException('Trial not found');
   }
 
   async getMetadata() {
