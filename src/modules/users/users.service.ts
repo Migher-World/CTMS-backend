@@ -8,7 +8,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { AssignRoleDto } from './dto/assign-role.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ICompany } from '../companies/interfaces/company.interface';
+import { CompanyType, ICompany } from '../companies/interfaces/company.interface';
 import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
 import { CacheService } from '../cache/cache.service';
 import { CreateEmailDto } from '../../shared/alerts/emails/dto/create-email.dto';
@@ -140,6 +140,32 @@ export class UsersService extends BasicService<User> {
     if (user) {
       await this.userRepo.softDelete(userId);
     }
+  }
+
+  async approveUser(userId: string) {
+    const user = await this.findUser(userId);
+    
+    if (user) {
+      user.status = true;
+      await user.save();
+      const email: CreateEmailDto = {
+        receiverEmail: user.email,
+        subject: 'Account Approved',
+        template: 'accountApproved',
+        senderEmail: 'CTMS Info <info@lendhive.app>',
+        metaData: { name: user.fullName },
+      };
+  
+      this.eventEmitter.emit(AppEvents.SEND_EMAIl, email);
+
+      return user;
+    }
+
+    throw new BadRequestException('User not found');
+  }
+
+  async getUnapprovedAdmins() {
+    return this.userRepo.find({ where: { status: false, company: { type: CompanyType.UTCSS } }});
   }
 
   async assignRole(assignRoleDto: AssignRoleDto) {

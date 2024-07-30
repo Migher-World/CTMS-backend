@@ -29,7 +29,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       relations: ['company']
     });
 
-    if (!user) {
+    if (!user || !user.status) {
       throw new UnauthorizedException();
     }
     const userWithPermissions = Helper.formatPermissions(user);

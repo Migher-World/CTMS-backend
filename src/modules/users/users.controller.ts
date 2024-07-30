@@ -29,7 +29,11 @@ export class UsersController {
   }
 
   @Get()
-  async findUsers(@Query() pagination: BasicPaginationDto, @CurrentCompany() company: ICompany, @Query() filter: FilterUserDto) {
+  async findUsers(
+    @Query() pagination: BasicPaginationDto,
+    @CurrentCompany() company: ICompany,
+    @Query() filter: FilterUserDto,
+  ) {
     return resolveResponse(this.usersService.findUsers(pagination, company, filter), 'All Users Found');
   }
 
@@ -56,5 +60,15 @@ export class UsersController {
   @Post('assign-role')
   async assignRole(@Body() assignRoleDto: AssignRoleDto) {
     return resolveResponse(this.usersService.assignRole(assignRoleDto), 'Role Assigned');
+  }
+
+  @Post('approve/:id')
+  async approveUser(@Param('id') id: string) {
+    return resolveResponse(this.usersService.approveUser(id), 'User Approved');
+  }
+
+  @Get('unapproved/get')
+  async getUnapprovedAdmins() {
+    return resolveResponse(this.usersService.getUnapprovedAdmins(), 'Unapproved Users Found');
   }
 }

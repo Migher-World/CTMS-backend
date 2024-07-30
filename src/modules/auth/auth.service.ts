@@ -93,9 +93,9 @@ export class AuthService {
     const transaction = await AppDataSource.transaction(async (manager) => {
       let { password, setPassword, email, phoneNumber } = credentials;
 
-      if (!email.includes('@unitedclinicalss.com')) {
-        throw new BadRequestException('Invalid email, you can only register with a unitedclinicalss email address');
-      }
+      // if (!email.includes('@unitedclinicalss.com')) {
+      //   throw new BadRequestException('Invalid email, you can only register with a unitedclinicalss email address');
+      // }
 
       await this.usersService.checkDuplicate({ email, phoneNumber });
 
@@ -122,6 +122,7 @@ export class AuthService {
           setPassword,
           company,
           roleId: 'ebd21799-a716-405b-a080-e4faf6a2d43d',
+          status: false,
         }),
       );
 
@@ -131,6 +132,21 @@ export class AuthService {
       const role = await manager.findOne<Role>(Role, { where: { id: 'ebd21799-a716-405b-a080-e4faf6a2d43d' } });
 
       const userWithPermissions = Helper.formatPermissions({ ...user, role } as User);
+
+      // send 2 emails, one to the user and one to existing admins
+
+      const createEmailDto: CreateEmailDto = {
+        subject: 'New Admin Registration',
+        template: 'new-admin',
+        senderEmail: 'CTMS Info <info@lendhive.app>',
+        metaData: {
+          name: user.firstName,
+          email: user.email,
+        },
+        receiverEmail: 'noriaphilips@unitedclinicalss.com, jade@unitedclinicalss.com',
+      };
+
+      this.eventEmitter.emit(AppEvents.SEND_EMAIl, createEmailDto);
 
       return { userWithPermissions, token };
     });
