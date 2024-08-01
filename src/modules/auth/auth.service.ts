@@ -239,7 +239,7 @@ export class AuthService {
       throw new BadRequestException('Password already set');
     }
 
-    Object.assign(user, { password: newPassword, setPassword: true });
+    Object.assign(user, { password: newPassword, setPassword: true, emalVerified: true });
     const updatedUserPassword = await this.userRepo.save(user);
 
     return updatedUserPassword;
