@@ -73,7 +73,11 @@ export class TrialsService extends BasicService<Trial> {
 
   async findTrial(trialId: string) {
     const id = trialId;
-    const trial = await this.trialRepo.findOne({ where: { id } });
+    const trial = await this.findOne(id);
+    const hasPermission = await this.checkPermission(trialId, trial.createdById, TrialPermissions.VIEW_TRIAL);
+    if (!hasPermission) {
+      throw new BadRequestException('You do not have permission to view this trial');
+    }
     return trial;
   }
 
@@ -154,5 +158,10 @@ export class TrialsService extends BasicService<Trial> {
       })),
     };
     return metadata;
+  }
+
+  private async checkPermission(trialId: string, userId: string, permission: TrialPermissions) {
+    const trialPermission = await this.trialPermissionRepo.findOne({ where: { trialId, userId, permission } });
+    return !!trialPermission;
   }
 }
