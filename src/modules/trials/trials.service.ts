@@ -60,14 +60,17 @@ export class TrialsService extends BasicService<Trial> {
     // return this.paginate(query, pagination);
 
     // only get the trials that the user has permission to view except for super admins
-    let trials: Trial[];
+    let query;
     if (user.role.name === 'utcss admin') {
-      trials = await this.trialRepo.find();
+      query = await this.trialRepo.createQueryBuilder('trial');
     } else {
       const permissions = await this.trialPermissionRepo.find({ where: { userId: user.id } });
       const trialIds = permissions.map((permission) => permission.trialId);
-      trials = await this.trialRepo.findBy({ id: In(trialIds) });
+      query = await this.trialRepo.createQueryBuilder('trial').where({ id: In(trialIds) })
+      .leftJoinAndSelect('trial.sites', 'sites');
     }
+
+    return this.paginate(query, pagination);
   }
 
   async findTrialsByCompany(companyId: string) {
