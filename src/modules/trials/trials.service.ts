@@ -4,7 +4,7 @@ import { UpdateTrialDto } from './dto/update-trial.dto';
 import { BasicService } from 'src/shared/services/basic-service.service';
 import { Trial } from './entities/trial.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { BasicPaginationDto } from 'src/shared/dto/basic-pagination.dto';
 import { User } from '../users/entities/user.entity';
 import { ICompany } from '../companies/interfaces/company.interface';
@@ -52,12 +52,22 @@ export class TrialsService extends BasicService<Trial> {
     return trackingNumber;
   }
 
-  async findTrials(pagination: BasicPaginationDto, company: ICompany) {
-    const query = this.trialRepo.createQueryBuilder('trial').leftJoinAndSelect('trial.sites', 'sites');
-    if (company) {
-      query.where('trial.companyId = :companyId', { companyId: company.id });
+  async findTrials(pagination: BasicPaginationDto, company: ICompany, user: User) {
+    // const query = this.trialRepo.createQueryBuilder('trial').leftJoinAndSelect('trial.sites', 'sites');
+    // if (company) {
+    //   query.where('trial.companyId = :companyId', { companyId: company.id });
+    // }
+    // return this.paginate(query, pagination);
+
+    // only get the trials that the user has permission to view except for super admins
+    let trials: Trial[];
+    if (user.role.name === 'utcss admin') {
+      trials = await this.trialRepo.find();
+    } else {
+      const permissions = await this.trialPermissionRepo.find({ where: { userId: user.id } });
+      const trialIds = permissions.map((permission) => permission.trialId);
+      trials = await this.trialRepo.findBy({ id: In(trialIds) });
     }
-    return this.paginate(query, pagination);
   }
 
   async findTrialsByCompany(companyId: string) {
