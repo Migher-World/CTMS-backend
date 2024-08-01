@@ -25,8 +25,8 @@ export class TrialsController {
   }
 
   @Get()
-  async getTrials(@Query() pagination: BasicPaginationDto, @CurrentCompany() company: ICompany) {
-    return resolveResponse(this.trialsService.findTrials(pagination, company));
+  async getTrials(@Query() pagination: BasicPaginationDto, @CurrentCompany() company: ICompany, @CurrentUser() user: User) {
+    return resolveResponse(this.trialsService.findTrials(pagination, company, user));
   }
 
   @Get('metadata')
