@@ -24,6 +24,7 @@ import { TrialsModule } from './modules/trials/trials.module';
 import { BudgetsModule } from './modules/budgets/budgets.module';
 import { FraudPreventionModule } from './modules/fraud-prevention/fraud-prevention.module';
 import { EcrfModule } from './modules/ecrf/ecrf.module';
+import { AdminModule } from './modules/admin/admin.module';
 import IORedis from 'ioredis';
 
 const mg = require('nodemailer-mailgun-transport');
@@ -78,6 +79,7 @@ const mg = require('nodemailer-mailgun-transport');
     BudgetsModule,
     FraudPreventionModule,
     EcrfModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
