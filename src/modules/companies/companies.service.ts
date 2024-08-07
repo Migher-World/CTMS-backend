@@ -74,6 +74,11 @@ export class CompaniesService extends BasicService<Company> {
       query.orderBy('company.createdAt', 'DESC');
     }
 
+    // include trials count
+    query.loadRelationCountAndMap('company.trialsCount', 'company.trials');
+    query.loadRelationCountAndMap('company.vendorTrialCount', 'company.vendorTrial');
+    query.loadRelationCountAndMap('company.sponsorTrialCount', 'company.sponsorTrial');
+
     // if(name) {
     //   query.andWhere('company.name ILIKE :name', { name: `%${name}%` });
     // }
@@ -92,6 +97,17 @@ export class CompaniesService extends BasicService<Company> {
     }
 
     return query.getMany();
+  }
+
+  async findOne(id: string) {
+    const query = this.companyRepository.createQueryBuilder('company');
+    // get trials and count
+    query.leftJoinAndSelect('company.trials', 'trials');
+    query.leftJoinAndSelect('company.vendorTrial', 'vendorTrial');
+    query.leftJoinAndSelect('company.sponsorTrial', 'sponsorTrial');
+    query.where('company.id = :id', { id });
+
+    return query.getOne();
   }
 
   async updateCompany(id: string, data: UpdateCompanyDto) {
