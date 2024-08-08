@@ -38,11 +38,12 @@ export class IssuesService extends BasicService<Issue> {
   async findAll(pagination: BasicPaginationDto, filterIssueDto: FilterIssueDto, company: ICompany) {
     const { status, assignedToId, authorId, companyId } = filterIssueDto;
     const query = this.issueRepo.createQueryBuilder('issue');
-    if(company) {
+    if(!company) {
+      if(companyId) {
+        query.where('issue.companyId = :companyId', { companyId });
+      }
+    } else {
       query.where('issue.companyId = :companyId', { companyId: company.id });
-    }
-    if(companyId && !company) {
-      query.where('issue.companyId = :companyId', { companyId });
     }
     if (status) {
       query.andWhere('issue.status = :status', { status });
