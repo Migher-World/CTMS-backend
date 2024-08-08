@@ -38,10 +38,10 @@ export class IssuesController {
     return resolveResponse(this.issuesService.findSingleIssue(id), 'Issue Found');
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateIssueDto: UpdateIssueDto) {
-  //   return resolveResponse(this.issuesService.update(id, updateIssueDto), 'Issue Updated');
-  // }
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateIssueDto: UpdateIssueDto) {
+    return resolveResponse(this.issuesService.update(id, updateIssueDto), 'Issue Updated');
+  }
 
   @Post(':id/status')
   updateStatus(@Param('id') id: string, @Body() status: UpdateIssueStatusDto) {
