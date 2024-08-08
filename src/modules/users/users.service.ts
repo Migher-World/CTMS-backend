@@ -104,8 +104,7 @@ export class UsersService extends BasicService<User> {
     }
     if (filter.companyId) {
       query.andWhere('user.companyId = :companyId', { companyId: filter.companyId });
-    }
-    if (company) {
+    } else if (company) {
       query.andWhere('user.companyId = :companyId', { companyId: company.id });
     }
     return this.paginate(query, pagination);
@@ -144,7 +143,7 @@ export class UsersService extends BasicService<User> {
 
   async approveUser(userId: string) {
     const user = await this.findUser(userId);
-    
+
     if (user) {
       user.status = true;
       await user.save();
@@ -155,7 +154,7 @@ export class UsersService extends BasicService<User> {
         senderEmail: 'CTMS Info <info@lendhive.app>',
         metaData: { name: user.fullName },
       };
-  
+
       this.eventEmitter.emit(AppEvents.SEND_EMAIl, email);
 
       return user;
@@ -165,7 +164,7 @@ export class UsersService extends BasicService<User> {
   }
 
   async getUnapprovedAdmins() {
-    return this.userRepo.find({ where: { status: false, company: { type: CompanyType.UTCSS } }});
+    return this.userRepo.find({ where: { status: false, company: { type: CompanyType.UTCSS } } });
   }
 
   async assignRole(assignRoleDto: AssignRoleDto) {
