@@ -60,6 +60,6 @@ export class IssuesController {
 
   @Get('get/overview')
   getOverview(@CurrentCompany() company: ICompany) {
-    return resolveResponse(this.issuesService.getOverview(company.id));
+    return resolveResponse(this.issuesService.getOverview(company));
   }
 }
