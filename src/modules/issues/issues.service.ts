@@ -37,9 +37,12 @@ export class IssuesService extends BasicService<Issue> {
 
   async findAll(pagination: BasicPaginationDto, filterIssueDto: FilterIssueDto, company: ICompany) {
     const { status, assignedToId, authorId, companyId } = filterIssueDto;
-    const query = this.issueRepo.createQueryBuilder('issue');
-    if(!company) {
-      if(companyId) {
+    const query = this.issueRepo
+      .createQueryBuilder('issue')
+      .leftJoinAndSelect('issue.author', 'author')
+      .leftJoinAndSelect('issue.assignedTo', 'assignedTo');
+    if (!company) {
+      if (companyId) {
         query.where('issue.companyId = :companyId', { companyId });
       }
     } else {
@@ -89,7 +92,7 @@ export class IssuesService extends BasicService<Issue> {
 
   async getOverview(company: ICompany) {
     const query = this.issueRepo.createQueryBuilder('issue');
-    if(company) {
+    if (company) {
       query.where('issue.companyId = :companyId', { companyId: company.id });
     }
     const total = await query.getCount();

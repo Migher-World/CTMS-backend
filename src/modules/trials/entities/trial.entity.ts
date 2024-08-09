@@ -117,4 +117,11 @@ export class Trial extends AbstractEntity implements ITrial {
   @ManyToOne(() => User)
   @JoinColumn()
   createdBy: User;
+
+  @Column({ nullable: true })
+  projectManagerId: string;
+
+  @ManyToOne(() => User, { eager: true })
+  @JoinColumn()
+  projectManager: User;
 }

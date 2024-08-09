@@ -147,6 +147,8 @@ export class TrialsService extends BasicService<Trial> {
     const trial = await this.findTrial(trialId);
     if (trial) {
       // assign all permissions to the PM
+      trial.projectManagerId = userId;
+      await this.trialRepo.save(trial);
       const permissions = Object.values(TrialPermissions);
       for (const permission of permissions) {
         const permissionExists = await this.trialPermissionRepo.findOne({ where: { trialId, userId, permission } });
