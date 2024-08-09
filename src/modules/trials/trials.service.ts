@@ -79,6 +79,7 @@ export class TrialsService extends BasicService<Trial> {
       .leftJoinAndSelect('trial.company', 'company')
       .leftJoinAndSelect('trial.vendor', 'vendor')
       .leftJoinAndSelect('trial.sponsor', 'sponsor')
+      .leftJoinAndSelect('trial.projectManager', 'projectManager')
       .innerJoinAndSelect('trial.sites', 'sites', 'sites.id = :companyId', { companyId })
       .getMany();
     return trials;
