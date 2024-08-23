@@ -53,8 +53,8 @@ export class UsersController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return resolveResponse(this.usersService.deleteUser(id), 'User deleted');
+  async remove(@Param('id') id: string, @CurrentUser() user: User) {
+    return resolveResponse(this.usersService.deleteUser(id, user), 'User deleted');
   }
 
   @Post('assign-role')

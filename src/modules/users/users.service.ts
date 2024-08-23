@@ -133,10 +133,13 @@ export class UsersService extends BasicService<User> {
     return updatedUser;
   }
 
-  async deleteUser(userId: string) {
+  async deleteUser(userId: string, currentUser: User) {
     const user = await this.findUser(userId);
 
     if (user) {
+      if (currentUser.id === userId) {
+        throw new BadRequestException('You cannot delete yourself');
+      }
       await this.userRepo.softDelete(userId);
     }
   }

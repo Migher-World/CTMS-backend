@@ -61,7 +61,7 @@ export class RolesController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return resolveResponse(this.rolesService.remove(id));
+  async remove(@Param('id') id: string, @CurrentUser() user: User) {
+    return resolveResponse(this.rolesService.delete(id, user));
   }
 }
