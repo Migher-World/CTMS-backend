@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BasicService } from '../../shared/services/basic-service.service';
@@ -73,5 +73,12 @@ export class RolesService extends BasicService<Role> {
     const permissions = await this.resolveRelationships(permissionsId, Permission);
     role.permissions = role.permissions.filter((permission) => !permissions.includes(permission));
     return this.roleRepo.save(role);
+  }
+
+  async delete(id: string, user: User) {
+    if(id === user.roleId) {
+      throw new BadRequestException('You cannot delete your own role');
+    }
+    return this.roleRepo.softDelete(id);
   }
 }
