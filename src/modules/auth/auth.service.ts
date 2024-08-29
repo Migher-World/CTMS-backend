@@ -71,18 +71,20 @@ export class AuthService {
       const payload: AuthPayload = { id: user.id };
       const token = this.jwtService.sign(payload);
 
-      // const userWithPermissions = Helper.formatPermissions(user);
+      const roles = await this.companyService.createCompanyDefaultRoles(user.company, manager);
+
+      console.log({ roles });
+
+      user.role = roles.find((role) => role.name.includes('admin'));
+
+      await manager.save(user);
+
+      // await this.userRepo.update(user.id, { roleId: roles.find((role) => role.name.includes('admin')).id });
 
       return { user, token };
     });
 
     await this.sendOtp(credentials.email);
-
-    const roles = await this.companyService.createCompanyDefaultRoles(transaction.user.company);
-
-    transaction.user.role = roles.find((role) => role.name.includes('admin'));
-
-    await this.userRepo.update(transaction.user.id, { roleId: roles.find((role) => role.name.includes('admin')).id });
 
     const userWithPermissions = Helper.formatPermissions(transaction.user);
 

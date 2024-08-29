@@ -11,10 +11,11 @@ import * as vendorRoles from '../../json/vendor-roles.json';
 import { IRole } from '../roles/interface/role.interface';
 import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
 import { CreateCompanyDto, CreateCompanyWithUserDto, FilterCompanyDto } from './dto/create-company.dto';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { UsersService } from '../users/users.service';
 import { Permission } from '../permissions/entities/permission.entity';
 import { UpdateCompanyDto } from './dto/update-company.dto';
+import { Role } from '../roles/entities/role.entity';
 
 @Injectable()
 export class CompaniesService extends BasicService<Company> {
@@ -42,9 +43,10 @@ export class CompaniesService extends BasicService<Company> {
     };
   }
 
-  async createCompanyDefaultRoles(company: Company) {
-    // const company = await this.findOne(companyId);
+  async createCompanyDefaultRoles(company: Company, manager?: EntityManager) {
+    console.log({company});
     const rolesJson = await this.prepareRoles(company.type);
+    console.log({rolesJson});
     const payload = rolesJson.map(async (role) => {
       const permissions = await this.roleService.resolveRelationships(role.permissions, Permission);
       role.companyId = company.id;
@@ -52,7 +54,8 @@ export class CompaniesService extends BasicService<Company> {
       return role;
     });
     const rolesData = await Promise.all(payload);
-    const roles = await this.roleService.bulkCreate(rolesData);
+    console.log({rolesData});
+    const roles = manager ? await manager.save<Role>(manager.create<Role>(Role, rolesData)) : await this.roleService.bulkCreate(rolesData);
     return roles;
   }
 
