@@ -162,9 +162,9 @@ export default class PermissionSeeder {
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8b3i',
-        name: 'Delete user',
-        description: 'Delete user',
-        slug: 'delete-user',
+        name: 'Deactivate user',
+        description: 'Deactivate user',
+        slug: 'deactivate-user',
         permissionGroupId: permissionGroups[0].id,
       },
       {
@@ -218,9 +218,9 @@ export default class PermissionSeeder {
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8b3s',
-        name: 'Delete issue',
-        description: 'Delete issue',
-        slug: 'delete-issue',
+        name: 'Deactivate issue',
+        description: 'Deactivate issue',
+        slug: 'deactivate-issue',
         permissionGroupId: permissionGroups[7].id,
       },
       {
@@ -239,9 +239,9 @@ export default class PermissionSeeder {
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8b3v',
-        name: 'Delete patient',
-        description: 'Delete patient',
-        slug: 'delete-patient',
+        name: 'Deactivate patient',
+        description: 'Deactivate patient',
+        slug: 'deactivate-patient',
         permissionGroupId: permissionGroups[4].id,
       },
       {
@@ -267,9 +267,9 @@ export default class PermissionSeeder {
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8b3y',
-        name: 'Delete appointment',
-        description: 'Delete appointment',
-        slug: 'delete-appointment',
+        name: 'Deactivate appointment',
+        description: 'Deactivate appointment',
+        slug: 'deactivate-appointment',
         permissionGroupId: permissionGroups[5].id,
       },
       {
@@ -330,9 +330,9 @@ export default class PermissionSeeder {
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3k',
-        name: 'Delete trial',
-        slug: 'delete-trial',
-        description: 'Delete trial',
+        name: 'Deactivate trial',
+        slug: 'deactivate-trial',
+        description: 'Deactivate trial',
         permissionGroupId: permissionGroups[8].id,
       },
       {
@@ -414,9 +414,9 @@ export default class PermissionSeeder {
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3t',
-        name: 'Delete transactions',
-        slug: 'delete-transactions',
-        description: 'Delete transactions',
+        name: 'Deactivate transactions',
+        slug: 'deactivate-transactions',
+        description: 'Deactivate transactions',
         permissionGroupId: permissionGroups[11].id,
       },
       {
@@ -449,9 +449,9 @@ export default class PermissionSeeder {
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8bap',
-        name: 'Delete regulation',
-        slug: 'delete-regulation',
-        description: 'Delete regulation',
+        name: 'Deactivate regulation',
+        slug: 'deactivate-regulation',
+        description: 'Deactivate regulation',
         permissionGroupId: permissionGroups[10].id,
       },
       {
@@ -477,9 +477,9 @@ export default class PermissionSeeder {
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3ba3bc',
-        name: 'Delete supply',
-        slug: 'delete-supply',
-        description: 'Delete supply',
+        name: 'Deactivate supply',
+        slug: 'deactivate-supply',
+        description: 'Deactivate supply',
         permissionGroupId: permissionGroups[15].id,
       },
       {
@@ -505,9 +505,9 @@ export default class PermissionSeeder {
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3x',
-        name: 'Delete finance',
-        slug: 'delete-finance',
-        description: 'Delete finance',
+        name: 'Deactivate finance',
+        slug: 'deactivate-finance',
+        description: 'Deactivate finance',
         permissionGroupId: permissionGroups[16].id,
       },
       {
@@ -533,9 +533,9 @@ export default class PermissionSeeder {
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3ab',
-        name: 'Delete budget',
-        slug: 'delete-budget',
-        description: 'Delete budget',
+        name: 'Deactivate budget',
+        slug: 'deactivate-budget',
+        description: 'Deactivate budget',
         permissionGroupId: permissionGroups[16].id,
       },
       {
@@ -561,9 +561,9 @@ export default class PermissionSeeder {
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3af',
-        name: 'Delete deliveries',
-        slug: 'delete-deliveries',
-        description: 'Delete deliveries',
+        name: 'Deactivate deliveries',
+        slug: 'deactivate-deliveries',
+        description: 'Deactivate deliveries',
         permissionGroupId: permissionGroups[18].id,
       },
       {
@@ -610,8 +610,8 @@ export default class PermissionSeeder {
       },
       {
         id: 'cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4e',
-        name: 'Delete eCRF',
-        slug: 'delete-ecrf',
+        name: 'Deactivate eCRF',
+        slug: 'deactivate-ecrf',
         description: 'Create eCRF',
         permissionGroupId: permissionGroups[20].id,
       }
