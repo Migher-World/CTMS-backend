@@ -1,7 +1,7 @@
 [
   {
-    "name": "utcss admin",
-    "description": "admin for a utcss user",
+    "name": "uctss admin",
+    "description": "admin for a uctss user",
     "permissions": [
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8bab",
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8b3g",
@@ -60,7 +60,6 @@
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4z",
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8bah",
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8baa",
-
 
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8b3j",
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8b3k",
@@ -70,12 +69,11 @@
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4e",
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4f",
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b3g"
-
     ]
   },
   {
-    "name": "utcss project manager",
-    "description": "project manager for a utcss trials",
+    "name": "uctss project manager",
+    "description": "project manager for a uctss trials",
     "permissions": [
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8bab",
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8b3g",
@@ -134,7 +132,6 @@
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8b4z",
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8bah",
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1ba3b8baa",
-
 
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8b3j",
       "cbf4b3b0-0b1b-4b3b-8b3b-0b1b4b3b8b3k",

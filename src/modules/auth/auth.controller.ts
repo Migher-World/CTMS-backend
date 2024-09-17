@@ -3,7 +3,16 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../../shared/decorators/current-user.decorator';
 import { resolveResponse, sendObjectResponse } from '../../shared/resolvers';
 import { User } from '../users/entities/user.entity';
-import { AdminRegisterDto, GenerateOTPDto, LoginDto, RegisterDto, RequestResetPasswordDto, ResetPasswordDto, SetPasswordDto, VerifyOTPDto } from './auth.dto';
+import {
+  AdminRegisterDto,
+  GenerateOTPDto,
+  LoginDto,
+  RegisterDto,
+  RequestResetPasswordDto,
+  ResetPasswordDto,
+  SetPasswordDto,
+  VerifyOTPDto,
+} from './auth.dto';
 import { AuthService } from './auth.service';
 import { Public } from '../../shared/decorators/public.decorator';
 
@@ -21,7 +30,7 @@ export class AuthController {
   @Post('sign-up-admin')
   @Public()
   createAdmin(@Body() registerDto: AdminRegisterDto) {
-    return resolveResponse(this.authService.utcssSignUp(registerDto), 'Admin Account Created');
+    return resolveResponse(this.authService.uctssSignUp(registerDto), 'Admin Account Created');
   }
 
   @Post('sign-in')

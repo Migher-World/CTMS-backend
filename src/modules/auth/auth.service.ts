@@ -50,7 +50,7 @@ export class AuthService {
           ? { ...credentials.company, name: `${credentials.firstName}: ${credentials.company.type} Company` }
           : credentials.company;
 
-      if (credentials.company.type === CompanyType.UTCSS) {
+      if (credentials.company.type === CompanyType.UCTSS) {
         throw new BadRequestException('Invalid company type');
       }
 
@@ -91,7 +91,7 @@ export class AuthService {
     return { user: userWithPermissions, token: transaction.token };
   }
 
-  async utcssSignUp(credentials: AdminRegisterDto) {
+  async uctssSignUp(credentials: AdminRegisterDto) {
     const transaction = await AppDataSource.transaction(async (manager) => {
       let { password, setPassword, email, phoneNumber } = credentials;
 
@@ -105,10 +105,10 @@ export class AuthService {
 
       const companyDto: CreateCompanyDto = {
         address: 'United Clinicals',
-        email: 'utcss@unitedclinicalss.com',
-        name: 'UTCSS',
+        email: 'uctss@unitedclinicalss.com',
+        name: 'UCTSS',
         phoneNumber: '08012345678',
-        type: CompanyType.UTCSS,
+        type: CompanyType.UCTSS,
       };
 
       company = await manager.findOne<Company>(Company, { where: { name: companyDto.name } });

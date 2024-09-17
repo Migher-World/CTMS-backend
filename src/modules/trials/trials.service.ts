@@ -61,7 +61,7 @@ export class TrialsService extends BasicService<Trial> {
 
     // only get the trials that the user has permission to view except for super admins
     let query;
-    if (user.role.name.includes('utcss')) {
+    if (user.role.name.includes('uctss')) {
       query = this.trialRepo.createQueryBuilder('trial').leftJoinAndSelect('trial.projectManager', 'projectManager');
     } else {
       const permissions = await this.trialPermissionRepo.find({ where: { userId: user.id } });

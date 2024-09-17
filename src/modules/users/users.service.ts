@@ -167,7 +167,7 @@ export class UsersService extends BasicService<User> {
   }
 
   async getUnapprovedAdmins() {
-    return this.userRepo.find({ where: { status: false, company: { type: CompanyType.UTCSS } } });
+    return this.userRepo.find({ where: { status: false, company: { type: CompanyType.UCTSS } } });
   }
 
   async assignRole(assignRoleDto: AssignRoleDto) {

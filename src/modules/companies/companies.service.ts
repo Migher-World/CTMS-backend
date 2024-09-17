@@ -4,7 +4,7 @@ import { Company } from './entities/company.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RolesService } from '../roles/roles.service';
 import { CompanyType } from './interfaces/company.interface';
-import * as utcssRoles from '../../json/utcss-roles.json';
+import * as uctssRoles from '../../json/uctss-roles.json';
 import * as siteRoles from '../../json/site-roles.json';
 import * as sponsorRoles from '../../json/sponsor-roles.json';
 import * as vendorRoles from '../../json/vendor-roles.json';
@@ -28,15 +28,18 @@ export class CompaniesService extends BasicService<Company> {
   }
 
   async createCompany(data: CreateCompanyWithUserDto) {
-    const {user} = data;
+    const { user } = data;
     const company = this.companyRepository.create(data);
     const result = await company.save();
     const roles = await this.createCompanyDefaultRoles(result);
     // create user with admin role
-    const userData = await this.usersService.create({
-      ...user,
-      roleId: roles.find((role) => role.name.includes('admin')).id,
-    }, result.id);
+    const userData = await this.usersService.create(
+      {
+        ...user,
+        roleId: roles.find((role) => role.name.includes('admin')).id,
+      },
+      result.id,
+    );
     return {
       company: result,
       user: userData,
@@ -44,9 +47,9 @@ export class CompaniesService extends BasicService<Company> {
   }
 
   async createCompanyDefaultRoles(company: Company, manager?: EntityManager) {
-    console.log({company});
+    console.log({ company });
     const rolesJson = await this.prepareRoles(company.type);
-    console.log({rolesJson});
+    console.log({ rolesJson });
     const payload = rolesJson.map(async (role) => {
       const permissions = await this.roleService.resolveRelationships(role.permissions, Permission);
       role.companyId = company.id;
@@ -54,8 +57,10 @@ export class CompaniesService extends BasicService<Company> {
       return role;
     });
     const rolesData = await Promise.all(payload);
-    console.log({rolesData});
-    const roles = manager ? await manager.save<Role>(manager.create<Role>(Role, rolesData)) : await this.roleService.bulkCreate(rolesData);
+    console.log({ rolesData });
+    const roles = manager
+      ? await manager.save<Role>(manager.create<Role>(Role, rolesData))
+      : await this.roleService.bulkCreate(rolesData);
     return roles;
   }
 
@@ -121,8 +126,8 @@ export class CompaniesService extends BasicService<Company> {
 
   async prepareRoles(companyType: CompanyType) {
     let rolesJson = [] as Partial<IRole>[];
-    if (companyType === CompanyType.UTCSS) {
-      rolesJson = utcssRoles;
+    if (companyType === CompanyType.UCTSS) {
+      rolesJson = uctssRoles;
     } else if (companyType === CompanyType.SITE) {
       rolesJson = siteRoles;
     } else if (companyType === CompanyType.SPONSOR) {
