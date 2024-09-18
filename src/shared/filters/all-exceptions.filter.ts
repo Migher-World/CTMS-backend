@@ -15,12 +15,16 @@ export class AllExceptionsFilter implements ExceptionFilter {
       message: null,
       code: null,
       stack: undefined,
+      path: ctx.getRequest().url,
+      payload: ctx.getRequest().body,
     };
 
     if (isDev()) {
       errorFormat.stack = exception.stack;
-      console.log('stack', errorFormat.stack);
     }
+    console.log('stack:', errorFormat.stack);
+    console.log('path:', errorFormat.path);
+    console.log('payload:', errorFormat.payload);
 
     if (exception instanceof TypeORMError) {
       const ormStatus = exception.name === 'EntityNotFoundError' ? HttpStatus.NOT_FOUND : status;
