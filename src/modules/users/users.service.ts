@@ -18,6 +18,7 @@ import { FilterUserDto } from './dto/add-user.dto';
 import * as dayjs from 'dayjs';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+import { isDev } from '../../environment/isDev';
 
 @Injectable()
 export class UsersService extends BasicService<User> {
@@ -59,9 +60,9 @@ export class UsersService extends BasicService<User> {
     if (!password) {
       password = Helper.randString(3, 2, 6);
       setPassword = false;
-      const otp = 123456;
+      const otp = isDev() ? '123456' : await Helper.generateToken();
 
-      await this.cacheService.set(email, otp, 60 * 60 * 24);
+      await this.cacheService.set(`${email}-setPassword`, otp, null);
 
       const emailDto: CreateEmailDto = {
         receiverEmail: email,

@@ -227,7 +227,8 @@ export class AuthService {
   async setPassword(setPasswordDto: SetPasswordDto) {
     const { email, password, code } = setPasswordDto;
 
-    const storedOtp = await this.cacheService.get(email);
+    const storedOtp = await this.cacheService.get(`${email}-setPassword`);
+    console.log({code, storedOtp});
     if (code != storedOtp) {
       throw new UnauthorizedException('Invalid OTP');
     }
@@ -235,13 +236,13 @@ export class AuthService {
     const newPassword = await Helper.hash(password);
     const user = await this.userRepo.findOne({ where: { email } });
 
-    await this.cacheService.delete(email);
+    await this.cacheService.delete(`${email}-setPassword`);
 
     if (user.setPassword == true) {
       throw new BadRequestException('Password already set');
     }
 
-    Object.assign(user, { password: newPassword, setPassword: true, emalVerified: true });
+    Object.assign(user, { password: newPassword, setPassword: true, emailVerified: true });
     const updatedUserPassword = await this.userRepo.save(user);
 
     return updatedUserPassword;
