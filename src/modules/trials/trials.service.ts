@@ -69,7 +69,8 @@ export class TrialsService extends BasicService<Trial> {
       query = this.trialRepo
         .createQueryBuilder('trial')
         .where({ id: In(trialIds) })
-        .leftJoinAndSelect('trial.sites', 'sites');
+        .leftJoinAndSelect('trial.sites', 'sites')
+        .innerJoinAndSelect('trial.sites', 'sites', 'sites.id = :companyId', { companyId: company.id });
     }
 
     return this.paginate(query, pagination);
