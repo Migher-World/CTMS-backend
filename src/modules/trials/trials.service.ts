@@ -12,6 +12,7 @@ import { TrialPermission } from './entities/trial-permission.entity';
 import { AgeGroup, BudgetCategory, ProtocolDetails, TrialPermissions } from './interfaces/trials.interface';
 import { Helper } from '../../shared/helpers';
 import { Company } from '../companies/entities/company.entity';
+import { AppDataSource } from '../../config/db.config';
 
 @Injectable()
 export class TrialsService extends BasicService<Trial> {
@@ -40,6 +41,9 @@ export class TrialsService extends BasicService<Trial> {
       companyId: company?.id ?? createTrialDto.companyId,
     });
     const trial = await this.trialRepo.save({ ...createdTrial, sites });
+    for (const site of sites) {
+      await this.assignTrialToSiteAdmin(trial, site, [TrialPermissions.VIEW_TRIAL]);
+    }
     return trial;
   }
 
@@ -69,11 +73,36 @@ export class TrialsService extends BasicService<Trial> {
       query = this.trialRepo
         .createQueryBuilder('trial')
         .where({ id: In(trialIds) })
-        .leftJoinAndSelect('trial.sites', 'sites')
+        // .leftJoinAndSelect('trial.sites', 'sites')
         .innerJoinAndSelect('trial.sites', 'sites', 'sites.id = :companyId', { companyId: company.id });
     }
 
     return this.paginate(query, pagination);
+  }
+
+  async assignTrialToSiteAdmin(trial: Trial, site: Company, permissions: TrialPermissions[]) {
+    // assign a trial to a site and give the site admin permission to view the trial
+    if (trial && site) {
+      const siteAdmin = await AppDataSource.getRepository(User).findOne({
+        where: {
+          companyId: site.id,
+          role: {
+            name: 'site admin',
+          },
+        },
+      });
+      for (const permission of permissions) {
+        const permissionExists = await this.trialPermissionRepo.findOne({
+          where: { trialId: trial.id, userId: siteAdmin.id, permission },
+        });
+        if (!permissionExists) {
+          const trialPermission = this.trialPermissionRepo.create({ trialId: trial.id, userId: siteAdmin.id, permission });
+          await this.trialPermissionRepo.save(trialPermission);
+        }
+      }
+      return { message: 'Trial assigned to site successfully' };
+    }
+    throw new BadRequestException('Trial or site not found');
   }
 
   async findTrialsByCompany(companyId: string) {
@@ -104,6 +133,9 @@ export class TrialsService extends BasicService<Trial> {
     if (trial) {
       Object.assign(trial, updateTrialDto);
       const updatedTrial = await this.trialRepo.save(trial);
+      for (const site of updatedTrial.sites) {
+        await this.assignTrialToSiteAdmin(trial, site, [TrialPermissions.VIEW_TRIAL]);
+      }
       return updatedTrial;
     }
   }
