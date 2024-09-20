@@ -226,7 +226,6 @@ export class AuthService {
 
   async setPassword(setPasswordDto: SetPasswordDto) {
     const { email, password, code } = setPasswordDto;
-
     const storedOtp = await this.cacheService.get(`${email}-setPassword`);
     console.log({code, storedOtp});
     if (code != storedOtp) {
@@ -235,6 +234,10 @@ export class AuthService {
 
     const newPassword = await Helper.hash(password);
     const user = await this.userRepo.findOne({ where: { email } });
+
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
 
     await this.cacheService.delete(`${email}-setPassword`);
 
