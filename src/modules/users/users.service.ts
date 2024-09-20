@@ -57,6 +57,8 @@ export class UsersService extends BasicService<User> {
 
     await this.checkDuplicate(createUserDto);
 
+    const role = await this.rolesService.findOne(createUserDto.roleId);
+
     if (!password) {
       password = Helper.randString(3, 2, 6);
       setPassword = false;
@@ -69,7 +71,7 @@ export class UsersService extends BasicService<User> {
         subject: 'Complete your registration',
         template: 'setPassword',
         senderEmail: 'CTMS Info <info@lendhive.app>',
-        metaData: { code: otp, email },
+        metaData: { code: otp, email, name: createUserDto.firstName, role: role.name },
       };
 
       this.eventEmitter.emit(AppEvents.SEND_EMAIl, emailDto);
