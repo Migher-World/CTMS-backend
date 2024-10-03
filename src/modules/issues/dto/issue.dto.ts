@@ -30,7 +30,32 @@ export class CreateIssueDto {
   attachment: string;
 }
 
-export class UpdateIssueDto extends CreateIssueDto {}
+export class UpdateIssueDto {
+  @IsNotEmpty()
+  @ApiProperty({ type: String, description: Helper.faker.lorem.words() })
+  title: string;
+
+  @IsNotEmpty()
+  @ApiProperty({ type: String, description: Helper.faker.lorem.sentence() })
+  description: string;
+
+  @IsNotEmpty()
+  @IsEnum(IssueStatus)
+  status: IssueStatus;
+
+  @IsOptional()
+  @IsEnum(IssueSeverity)
+  @ApiPropertyOptional({ example: IssueSeverity.LOW })
+  severity: IssueSeverity;
+
+  @IsOptional()
+  @ApiPropertyOptional({ type: String, description: Helper.faker.string.uuid() })
+  assignedToId: string;
+
+  @IsOptional()
+  @ApiPropertyOptional({ type: String, description: Helper.faker.image.url() })
+  attachment: string;
+}
 
 export class FilterIssueDto {
   @IsOptional()
