@@ -67,8 +67,9 @@ export class IssuesService extends BasicService<Issue> {
 
   async update(id: string, payload: UpdateIssueDto): Promise<Issue> {
     const issue = await this.findOne(id);
-    const result = await this.issueRepo.save({ ...issue, ...payload });
-    return result;
+    const newIssue = this.issueRepo.merge(issue, payload);
+    return this.issueRepo.save(newIssue); 
+    return newIssue;
   }
 
   async updateIssueStatus(id: string, status: IssueStatus): Promise<Issue> {
