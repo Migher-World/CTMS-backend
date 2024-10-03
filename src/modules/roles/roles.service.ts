@@ -43,6 +43,8 @@ export class RolesService extends BasicService<Role> {
 
     const permissions = await this.resolveRelationships(permissionsId, Permission);
     role.permissions = permissions;
+    // remove duplicates
+    role.permissions = role.permissions.filter((permission, index, self) => self.findIndex((p) => p.id === permission.id) === index);
     return this.roleRepo.save(role);
   }
 
