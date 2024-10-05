@@ -26,8 +26,11 @@ export class TrialsService extends BasicService<Trial> {
   }
 
   async createTrial(createTrialDto: CreateTrialDto, user: User, company: ICompany): Promise<Trial> {
-    if (!company && !createTrialDto.companyId) {
-      throw new Error('companyId is required to create a patient as a super admin');
+    if (company) {
+      throw new BadRequestException('You do not have permission to create a trial');
+    }
+    if (!createTrialDto.companyId) {
+      throw new Error('companyId is required to create a trial');
     }
     let sites: Company[] = [];
     if (createTrialDto.siteIds) {
@@ -69,7 +72,12 @@ export class TrialsService extends BasicService<Trial> {
       query = this.trialRepo.createQueryBuilder('trial').leftJoinAndSelect('trial.projectManager', 'projectManager');
     } else {
       const permissions = await this.trialPermissionRepo.find({ where: { userId: user.id } });
-      const trialIds = permissions.map((permission) => permission.trialId);
+      // get the trial ids from the permissions where the user has permission to view the trial
+      const trialIds = permissions.map((permission) => {
+        if (permission.permission === TrialPermissions.VIEW_TRIAL) {
+          return permission.trialId;
+        }
+      });
       query = this.trialRepo
         .createQueryBuilder('trial')
         .where({ id: In(trialIds) })
@@ -96,7 +104,11 @@ export class TrialsService extends BasicService<Trial> {
           where: { trialId: trial.id, userId: siteAdmin.id, permission },
         });
         if (!permissionExists) {
-          const trialPermission = this.trialPermissionRepo.create({ trialId: trial.id, userId: siteAdmin.id, permission });
+          const trialPermission = this.trialPermissionRepo.create({
+            trialId: trial.id,
+            userId: siteAdmin.id,
+            permission,
+          });
           await this.trialPermissionRepo.save(trialPermission);
         }
       }
@@ -120,15 +132,19 @@ export class TrialsService extends BasicService<Trial> {
   async findTrial(trialId: string) {
     const id = trialId;
     const trial = await this.findOne(id, 'id', ['sites', 'company', 'vendor', 'sponsor']);
-    // const hasPermission = await this.checkPermission(trialId, trial.createdById, TrialPermissions.VIEW_TRIAL);
-    // if (!hasPermission) {
-    //   throw new BadRequestException('You do not have permission to view this trial');
-    // }
+    const hasPermission = await this.checkPermission(trialId, trial.createdById, TrialPermissions.VIEW_TRIAL);
+    if (!hasPermission) {
+      throw new BadRequestException('You do not have permission to view this trial');
+    }
     return trial;
   }
 
-  async updateTrial(trialId: string, updateTrialDto: UpdateTrialDto) {
+  async updateTrial(trialId: string, updateTrialDto: UpdateTrialDto, user: User) {
     const trial = await this.findTrial(trialId);
+    const hasPermission = await this.checkPermission(trialId, user.id, TrialPermissions.UPDATE_TRIAL);
+    if (!hasPermission) {
+      throw new BadRequestException('You do not have permission to update this trial');
+    }
 
     if (trial) {
       Object.assign(trial, updateTrialDto);

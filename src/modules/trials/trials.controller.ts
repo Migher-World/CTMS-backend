@@ -46,8 +46,8 @@ export class TrialsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTrialDto: UpdateTrialDto) {
-    return resolveResponse(this.trialsService.updateTrial(id, updateTrialDto));
+  update(@Param('id') id: string, @Body() updateTrialDto: UpdateTrialDto, @CurrentUser() user: User) {
+    return resolveResponse(this.trialsService.updateTrial(id, updateTrialDto, user));
   }
 
   @Delete(':id')
