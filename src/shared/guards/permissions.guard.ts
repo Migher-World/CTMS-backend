@@ -20,8 +20,7 @@ export class PermissionGuard implements CanActivate {
     if (!user.permissions) {
       return false;
     }
-
-    console.log('user permissions is', user.permissions);
+    
     // check the permission object down to every leven to see if the user has the permission
     const hasPermission = () => {
       const keys = Object.keys(user.permissions);
