@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Query, UseGuards } from '@nestjs/common';
 import { TrialsService } from './trials.service';
 import { AssignPMDto, CreateTrialDto, TrialPermissionDto } from './dto/create-trial.dto';
 import { UpdateTrialDto } from './dto/update-trial.dto';
@@ -11,15 +11,19 @@ import { Company } from '../companies/entities/company.entity';
 import { ICompany } from '../companies/interfaces/company.interface';
 import { CurrentUser } from '../../shared/decorators/current-user.decorator';
 import { User } from '../users/entities/user.entity';
+import { UsePermissions } from '../../shared/decorators/permission.decorator';
+import { PermissionGuard } from '../../shared/guards/permissions.guard';
 
 @ApiTags('Trials')
 @ApiBearerAuth()
 @Headers()
+@UseGuards(PermissionGuard)
 @Controller('trials')
 export class TrialsController {
   constructor(private readonly trialsService: TrialsService) {}
 
   @Post()
+  @UsePermissions('create-trials')
   create(@Body() createTrialDto: CreateTrialDto, @CurrentUser() user: User, @CurrentCompany() company: ICompany) {
     return resolveResponse(this.trialsService.createTrial(createTrialDto, user, company), 'Trial Created');
   }

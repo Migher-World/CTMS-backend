@@ -10,19 +10,25 @@ export class PermissionGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
+    console.log('permissions is', permissions);
     if (!permissions) {
       return true;
     }
     const request = context.switchToHttp().getRequest();
     const user = request.user;
 
-    if (!user.role.permissions) {
+    if (!user.permissions) {
       return false;
     }
 
-    console.log('user permissions is', user);
-    // return true;
-    const hasPermission = () => user.permissions.some((permission) => permissions.includes(permission.name));
+    console.log('user permissions is', user.permissions);
+    // check the permission object down to every leven to see if the user has the permission
+    const hasPermission = () => {
+      const keys = Object.keys(user.permissions);
+      const has = keys.find((key) => user.permissions[key].some((permission) => permissions.includes(permission.slug)));
+      return !!has;
+    }
+    // const hasPermission = () => user.permissions.some((permission) => permissions.includes(permission.slug));
 
     console.log('has role is', hasPermission());
     // console.log('user prmissions is', user.permissions);

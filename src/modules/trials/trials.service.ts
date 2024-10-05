@@ -26,10 +26,7 @@ export class TrialsService extends BasicService<Trial> {
   }
 
   async createTrial(createTrialDto: CreateTrialDto, user: User, company: ICompany): Promise<Trial> {
-    if (company) {
-      throw new BadRequestException('You do not have permission to create a trial');
-    }
-    if (!createTrialDto.companyId) {
+    if (!company && !createTrialDto.companyId) {
       throw new Error('companyId is required to create a trial');
     }
     let sites: Company[] = [];
@@ -77,7 +74,7 @@ export class TrialsService extends BasicService<Trial> {
         if (permission.permission === TrialPermissions.VIEW_TRIAL) {
           return permission.trialId;
         }
-      });
+      })
       query = this.trialRepo
         .createQueryBuilder('trial')
         .where({ id: In(trialIds) })
@@ -104,11 +101,7 @@ export class TrialsService extends BasicService<Trial> {
           where: { trialId: trial.id, userId: siteAdmin.id, permission },
         });
         if (!permissionExists) {
-          const trialPermission = this.trialPermissionRepo.create({
-            trialId: trial.id,
-            userId: siteAdmin.id,
-            permission,
-          });
+          const trialPermission = this.trialPermissionRepo.create({ trialId: trial.id, userId: siteAdmin.id, permission });
           await this.trialPermissionRepo.save(trialPermission);
         }
       }
