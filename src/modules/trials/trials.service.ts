@@ -125,10 +125,10 @@ export class TrialsService extends BasicService<Trial> {
   async findTrial(trialId: string) {
     const id = trialId;
     const trial = await this.findOne(id, 'id', ['sites', 'company', 'vendor', 'sponsor']);
-    const hasPermission = await this.checkPermission(trialId, trial.createdById, TrialPermissions.VIEW_TRIAL);
-    if (!hasPermission) {
-      throw new BadRequestException('You do not have permission to view this trial');
-    }
+    // const hasPermission = await this.checkPermission(trialId, trial.createdById, TrialPermissions.VIEW_TRIAL);
+    // if (!hasPermission) {
+    //   throw new BadRequestException('You do not have permission to view this trial');
+    // }
     return trial;
   }
 
