@@ -134,10 +134,10 @@ export class TrialsService extends BasicService<Trial> {
 
   async updateTrial(trialId: string, updateTrialDto: UpdateTrialDto, user: User) {
     const trial = await this.findTrial(trialId);
-    const hasPermission = await this.checkPermission(trialId, user.id, TrialPermissions.UPDATE_TRIAL);
-    if (!hasPermission) {
-      throw new BadRequestException('You do not have permission to update this trial');
-    }
+    // const hasPermission = await this.checkPermission(trialId, user.id, TrialPermissions.UPDATE_TRIAL);
+    // if (!hasPermission) {
+    //   throw new BadRequestException('You do not have permission to update this trial');
+    // }
 
     if (trial) {
       Object.assign(trial, updateTrialDto);
