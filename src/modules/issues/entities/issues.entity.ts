@@ -31,7 +31,9 @@ export class Issue extends AbstractEntity {
   severity: IssueSeverity;
 
   @ManyToOne(() => User, { eager: true })
-  @JoinColumn()
+  @JoinColumn({
+    foreignKeyConstraintName: 'assignedToId',
+  })
   assignedTo: User;
 
   @Column({ nullable: true })
