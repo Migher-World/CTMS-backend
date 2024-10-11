@@ -93,7 +93,7 @@ export class UsersService extends BasicService<User> {
     }
   }
 
-  async findUsers(pagination: BasicPaginationDto, company: ICompany, filter: FilterUserDto) {
+  async findUsers(pagination: BasicPaginationDto, company: ICompany, filter: FilterUserDto, user: User) {
     const query = this.userRepo.createQueryBuilder('user').leftJoinAndSelect('user.role', 'role');
     if (filter.search) {
       query.andWhere('(user.firstName ILIKE :search OR user.lastName ILIKE :search OR user.email ILIKE :search)', {
@@ -109,6 +109,9 @@ export class UsersService extends BasicService<User> {
       query.andWhere('user.companyId = :companyId', { companyId: filter.companyId });
     } else if (company) {
       query.andWhere('user.companyId = :companyId', { companyId: company.id });
+    } else {
+      const comapnyId = user.companyId;
+      query.andWhere('user.companyId = :companyId', { companyId: comapnyId });
     }
     return this.paginate(query, pagination);
   }

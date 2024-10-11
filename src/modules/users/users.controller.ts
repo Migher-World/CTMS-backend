@@ -33,8 +33,9 @@ export class UsersController {
     @Query() pagination: BasicPaginationDto,
     @CurrentCompany() company: ICompany,
     @Query() filter: FilterUserDto,
+    @CurrentUser() user: User
   ) {
-    return resolveResponse(this.usersService.findUsers(pagination, company, filter), 'All Users Found');
+    return resolveResponse(this.usersService.findUsers(pagination, company, filter, user), 'All Users Found');
   }
 
   @Get(':id')
