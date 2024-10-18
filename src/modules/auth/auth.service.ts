@@ -111,7 +111,7 @@ export class AuthService {
         type: CompanyType.UCTSS,
       };
 
-      company = await manager.findOne<Company>(Company, { where: { name: companyDto.name } });
+      company = await manager.findOne<Company>(Company, { where: { name: companyDto.name, type: CompanyType.UCTSS } });
 
       if (!company) {
         company = await manager.save<Company>(manager.create<Company>(Company, companyDto));
