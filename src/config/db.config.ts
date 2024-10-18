@@ -16,6 +16,10 @@ export const typeOrmConfig: DataSourceOptions = {
   logging: env.dbLogging,
   dropSchema: false,
   extra: env.typeormDriverExtra,
+  pool: {
+    max: 5,
+    min: 2,
+  }
 };
 
 export const AppDataSource = new DataSource(typeOrmConfig);
