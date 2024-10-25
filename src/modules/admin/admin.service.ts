@@ -90,10 +90,18 @@ export class AdminService {
       },
     );
 
+    const patientsByDemographics = patients.reduce(
+      (acc, patient) => {
+        acc[patient.nationality] += 1;
+        return acc;
+      }
+    );
+
     return {
       patientData,
       issueData,
       users: users.length,
+      patientsByDemographics,
     }
   }
 }
