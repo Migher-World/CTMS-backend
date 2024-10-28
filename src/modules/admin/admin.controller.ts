@@ -22,4 +22,9 @@ export class AdminController {
   getCompanyDashboardData(@CurrentCompany() company: Company) {
     return resolveResponse(this.adminService.getCompanyDashboardData(company.id));
   }
+
+  @Get('budget-dashboard')
+  getBudgetDashboardData(@CurrentCompany() company: Company) {
+    return resolveResponse(this.adminService.getCompanyBudgetData(company.id));
+  }
 }

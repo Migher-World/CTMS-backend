@@ -7,6 +7,7 @@ import { CompanyType } from '../companies/interfaces/company.interface';
 import { Patient } from '../patients/entities/patient.entity';
 import { Issue } from '../issues/entities/issues.entity';
 import { User } from '../users/entities/user.entity';
+import { Contract } from '../contract/entities/contract.entity';
 
 @Injectable()
 export class AdminService {
@@ -33,13 +34,33 @@ export class AdminService {
     };
   }
 
+
   /**
    * Retrieves the dashboard data for a specific company, including patient data by status,
-   * issue data by status, and the total number of users.
+   * issue data by status, user count, and patient demographics.
    *
-   * @param {string} companyId - The ID of the company for which to retrieve the dashboard data.
-   * @returns {Promise<{ patientData: Record<string, number>, issueData: Record<string, number>, users: number }>} 
-   * An object containing patient data by status, issue data by status, and the total number of users.
+   * @param {string} companyId - The ID of the company for which to retrieve dashboard data.
+   * @returns {Promise<{
+   *   patientData: {
+   *     enrolled: number;
+   *     withdrawn: number;
+   *     completed: number;
+   *     onHold: number;
+   *     screeningInProgress: number;
+   *     screeningFailed: number;
+   *     inactive: number;
+   *     pendingConsent: number;
+   *     pendingScreeningResults: number;
+   *   };
+   *   issueData: {
+   *     OPEN: number;
+   *     IN_PROGRESS: number;
+   *     DONE: number;
+   *     CLOSE: number;
+   *   };
+   *   users: number;
+   *   patientsByDemographics: Record<string, number>;
+   * }>} An object containing the dashboard data for the specified company.
    * @throws {BadRequestException} If the companyId is not provided.
    */
   async getCompanyDashboardData(companyId: string) {
@@ -103,5 +124,39 @@ export class AdminService {
       users: users.length,
       patientsByDemographics,
     }
+  }
+
+  async getCompanyBudgetData(companyId: string) {
+    // get budget data for a specific company that are ongoing, i.e startDate < today < endDate
+    // also the number of ongoing trials
+    // also the number of expenses (the expenses are contracts)
+    // then a financial overview of the company which is a chart of the budget vs expenses for the ongoing trials
+
+    const company = await AppDataSource.getRepository(Company).findOne({ where: { id: companyId } });
+    const trials = await AppDataSource.getRepository(Trial).find({ where: { companyId: companyId, endDate: LessThan(new Date().toDateString()) } });
+    const contracts = await AppDataSource.getRepository(Contract).find({ where: { trial: {companyId: companyId}, expirationDate: LessThan(new Date().toDateString()) } });
+
+    const ongoingTrials = trials.length;
+    const ongoingExpenses = contracts.length;
+
+    // financial overview should be for each trial and should be for active budgets and expenses
+    const financialOverview = trials.map(trial => {
+      const activeBudgets = trial.budgets.filter(budget => new Date(budget.startDate) < new Date() && new Date(budget.endDate) > new Date());
+      const activeExpenses = contracts.filter(contract => new Date(contract.effectiveDate) < new Date() && new Date(contract.expirationDate) > new Date());
+      return {
+        trialId: trial.id,
+        trialName: trial.name,
+        activeBudgets,
+        activeExpenses,
+      }
+    });
+
+
+
+    return {
+      ongoingTrials,
+      ongoingExpenses,
+      financialOverview,
+    };
   }
 }
