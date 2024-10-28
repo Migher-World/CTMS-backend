@@ -151,8 +151,6 @@ export class AdminService {
       }
     });
 
-
-
     return {
       ongoingTrials,
       ongoingExpenses,
