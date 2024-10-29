@@ -1,13 +1,14 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { AppDataSource } from '../../config/db.config';
 import { Trial } from '../trials/entities/trial.entity';
-import { LessThan } from 'typeorm';
+import { LessThan, In } from 'typeorm';
 import { Company } from '../companies/entities/company.entity';
 import { CompanyType } from '../companies/interfaces/company.interface';
 import { Patient } from '../patients/entities/patient.entity';
 import { Issue } from '../issues/entities/issues.entity';
 import { User } from '../users/entities/user.entity';
 import { Contract } from '../contract/entities/contract.entity';
+import * as dayjs from 'dayjs';
 
 @Injectable()
 export class AdminService {
@@ -70,6 +71,7 @@ export class AdminService {
     const patients = await AppDataSource.getRepository(Patient).find({ where: { companyId: companyId } });
     const issues = await AppDataSource.getRepository(Issue).find({ where: { companyId: companyId } });
     const users = await AppDataSource.getRepository(User).find({ where: { companyId: companyId } });
+    const trials = await AppDataSource.getRepository(Trial).find({ where: { sites: { id: companyId } } });
 
     // data by status
     const patientData = patients.reduce(
@@ -111,11 +113,26 @@ export class AdminService {
       },
     );
 
+    const trialData = trials.reduce(
+      (acc, trial) => {
+        acc.ongoing += dayjs(trial.startDate).isBefore(dayjs(new Date().toDateString())) && dayjs(trial.endDate).isAfter(dayjs(new Date().toDateString())) ? 1 : 0;
+        acc.completed += dayjs(trial.endDate).isBefore(dayjs(new Date().toDateString())) ? 1 : 0;
+        acc.scheduled += dayjs(trial.startDate).isAfter(dayjs(new Date().toDateString())) ? 1 : 0;
+        return acc;
+      },
+      {
+        ongoing: 0,
+        completed: 0,
+        scheduled: 0,
+      }
+    );
+
+
     const patientsByDemographics = patients.reduce(
       (acc, patient) => {
-        acc[patient.nationality] += 1;
+        acc[patient.nationality] ? acc[patient.nationality] += 1 : acc[patient.nationality] = 1;
         return acc;
-      }
+      }, {}
     );
 
     return {
@@ -123,6 +140,7 @@ export class AdminService {
       issueData,
       users: users.length,
       patientsByDemographics,
+      trialData
     }
   }
 

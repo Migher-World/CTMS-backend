@@ -57,13 +57,6 @@ export class TrialsService extends BasicService<Trial> {
   }
 
   async findTrials(pagination: BasicPaginationDto, company: ICompany, user: User) {
-    // const query = this.trialRepo.createQueryBuilder('trial').leftJoinAndSelect('trial.sites', 'sites');
-    // if (company) {
-    //   query.where('trial.companyId = :companyId', { companyId: company.id });
-    // }
-    // return this.paginate(query, pagination);
-
-    // only get the trials that the user has permission to view except for super admins
     let query;
     if (user.role.name.toLowerCase().includes('uctss')) {
       query = this.trialRepo.createQueryBuilder('trial').leftJoinAndSelect('trial.projectManager', 'projectManager');
