@@ -133,7 +133,7 @@ export class AdminService {
     // then a financial overview of the company which is a chart of the budget vs expenses for the ongoing trials
 
     const company = await AppDataSource.getRepository(Company).findOne({ where: { id: companyId } });
-    const trials = await AppDataSource.getRepository(Trial).find({ where: { companyId: companyId, endDate: LessThan(new Date().toDateString()) } });
+    const trials = await AppDataSource.getRepository(Trial).find({ where: { companyId: companyId, endDate: LessThan(new Date().toDateString()) }, relations: ['budgets'] });
     const contracts = await AppDataSource.getRepository(Contract).find({ where: { trial: {companyId: companyId}, expirationDate: LessThan(new Date().toDateString()) } });
 
     const ongoingTrials = trials.length;
@@ -148,13 +148,26 @@ export class AdminService {
         trialName: trial.name,
         activeBudgets,
         activeExpenses,
+        budgetTotal: activeBudgets.reduce((acc, budget) => acc + parseFloat(budget.totalBudget), 0),
+        expenseTotal: activeExpenses.reduce((acc, expense) => acc + parseFloat(expense.contractValue), 0),
       }
     });
+
+    const totalBudget = financialOverview.reduce((acc, trial) => {
+      const total = trial.activeBudgets.reduce((acc, budget) => acc + parseFloat(budget.totalBudget), 0);
+      return acc + total;
+    }, 0);
+
+    const numberOfBudgets = financialOverview.reduce((acc, trial) => {
+      return acc + trial.activeBudgets.length;
+    }, 0);
 
     return {
       ongoingTrials,
       ongoingExpenses,
       financialOverview,
+      totalBudget,
+      numberOfBudgets,
     };
   }
 }
