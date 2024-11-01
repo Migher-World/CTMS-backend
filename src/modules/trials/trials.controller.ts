@@ -23,7 +23,7 @@ export class TrialsController {
   constructor(private readonly trialsService: TrialsService) {}
 
   @Post()
-  @UsePermissions('create-trials')
+  @UsePermissions('create-trial')
   create(@Body() createTrialDto: CreateTrialDto, @CurrentUser() user: User, @CurrentCompany() company: ICompany) {
     return resolveResponse(this.trialsService.createTrial(createTrialDto, user, company), 'Trial Created');
   }

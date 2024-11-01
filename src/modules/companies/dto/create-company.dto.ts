@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
+import { IsArray, IsEnum, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
 import { CompanyType } from '../interfaces/company.interface';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Helper } from '../../../shared/helpers';
@@ -34,7 +34,6 @@ export class CreateCompanyDto {
   @ApiPropertyOptional({ description: 'only for sites', example: 'only for sites' })
   siteType?: string;
 }
-
 
 export class CreateCompanyWithUserDto {
   @IsNotEmpty()
@@ -77,8 +76,8 @@ export class FilterCompanyDto {
   type: CompanyType;
 
   @IsOptional()
-  @ApiPropertyOptional({ example: "DESC" })
-  sortBy: "DESC" | "ASC"
+  @ApiPropertyOptional({ example: 'DESC' })
+  sortBy: 'DESC' | 'ASC';
 
   // @IsOptional()
   // @ApiPropertyOptional({ example: Helper.faker.company.name() })

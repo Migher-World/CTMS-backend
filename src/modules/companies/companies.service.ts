@@ -10,12 +10,13 @@ import * as sponsorRoles from '../../json/sponsor-roles.json';
 import * as vendorRoles from '../../json/vendor-roles.json';
 import { IRole } from '../roles/interface/role.interface';
 import { BasicPaginationDto } from '../../shared/dto/basic-pagination.dto';
-import { CreateCompanyDto, CreateCompanyWithUserDto, FilterCompanyDto } from './dto/create-company.dto';
+import { CreateCompanyWithUserDto, FilterCompanyDto } from './dto/create-company.dto';
 import { EntityManager, Repository } from 'typeorm';
 import { UsersService } from '../users/users.service';
 import { Permission } from '../permissions/entities/permission.entity';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { Role } from '../roles/entities/role.entity';
+import * as csvWriter from 'csv-writer';
 
 @Injectable()
 export class CompaniesService extends BasicService<Company> {
