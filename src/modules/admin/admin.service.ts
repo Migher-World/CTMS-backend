@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { AppDataSource } from '../../config/db.config';
 import { Trial } from '../trials/entities/trial.entity';
-import { LessThan, In } from 'typeorm';
+import { LessThan, In, MoreThan } from 'typeorm';
 import { Company } from '../companies/entities/company.entity';
 import { CompanyType } from '../companies/interfaces/company.interface';
 import { Patient } from '../patients/entities/patient.entity';
@@ -16,10 +16,12 @@ export class AdminService {
 
   async getDashboardData() {
     // get active sites, active trials, active sponsors, active vendors
-
-    const activeTrials = await AppDataSource.getRepository(Trial).count({
-      where: { endDate: LessThan(new Date().toDateString()) },
+    const trials = await AppDataSource.getRepository(Trial).find({
+      where: { endDate: MoreThan(new Date().toISOString()) },
+      select: ['endDate'],
     });
+
+    const activeTrials = trials.filter(trial => dayjs(trial.endDate).isAfter(dayjs().toDate())).length;
 
     const activeCompanies = await AppDataSource.getRepository(Company).find();
 
