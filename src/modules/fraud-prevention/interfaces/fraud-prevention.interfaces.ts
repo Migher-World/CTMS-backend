@@ -8,7 +8,7 @@ export enum SecurityLevel {
 }
 
 export enum Category {
-  RISKY = 'Riscky',
+  RISKY = 'Risky',
 }
 
 export enum FaultNature {
