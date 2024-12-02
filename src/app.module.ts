@@ -90,8 +90,8 @@ export class AppModule implements NestModule {
     consumer
       .apply(CompanyMiddleware)
       .exclude(
-        { path: '/api/auth/(.*)', method: RequestMethod.ALL },
-        { path: '/api/permission-groups', method: RequestMethod.ALL },
+        { path: '/auth/(.*)', method: RequestMethod.ALL },
+        { path: '/permission-groups', method: RequestMethod.ALL },
       )
       .forRoutes('*');
   }
