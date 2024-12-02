@@ -15,7 +15,7 @@ async function bootstrap() {
   //   credential: admin.credential.cert(firebaseConfig as any),
   // });
   const app = await NestFactory.create(AppModule);
-  // app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api');
   app.enableCors();
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
