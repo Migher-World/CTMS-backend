@@ -19,6 +19,7 @@ import * as dayjs from 'dayjs';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { isDev } from '../../environment/isDev';
+import env from '../../config/env.config';
 
 @Injectable()
 export class UsersService extends BasicService<User> {
@@ -70,7 +71,7 @@ export class UsersService extends BasicService<User> {
         receiverEmail: email,
         subject: 'Complete your registration',
         template: 'setPassword',
-        senderEmail: 'CTMS Info <info@lendhive.app>',
+        senderEmail: env.emailUser,
         metaData: { code: otp, email, name: createUserDto.firstName, role: role.name },
       };
 
@@ -160,7 +161,7 @@ export class UsersService extends BasicService<User> {
         receiverEmail: user.email,
         subject: 'Account Approved',
         template: 'accountApproved',
-        senderEmail: 'CTMS Info <info@lendhive.app>',
+        senderEmail: env.emailUser,
         metaData: { name: user.fullName },
       };
 
@@ -188,7 +189,7 @@ export class UsersService extends BasicService<User> {
       receiverEmail: user.email,
       subject: 'Role assigned',
       template: 'roleChanged',
-      senderEmail: 'CTMS Info <info@lendhive.app>',
+      senderEmail: env.emailUser,
       metaData: { role: role.name, name: user.fullName, dateEffective: dayjs(date).format('dddd, MMMM D YYYY') },
     };
     if (dayjs().isSame(date, 'day')) {

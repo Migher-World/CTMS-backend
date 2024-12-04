@@ -27,6 +27,7 @@ import { EmailEntity } from 'src/shared/alerts/emails/entities/email.entity';
 import { CreateEmailDto } from 'src/shared/alerts/emails/dto/create-email.dto';
 import { Role } from '../roles/entities/role.entity';
 import { isDev } from '../../environment/isDev';
+import env from '../../config/env.config';
 
 @Injectable()
 export class AuthService {
@@ -142,7 +143,7 @@ export class AuthService {
       const createEmailDto: CreateEmailDto = {
         subject: 'New Admin Registration',
         template: 'new-admin',
-        senderEmail: 'CTMS Info <info@lendhive.app>',
+        senderEmail: env.emailUser,
         metaData: {
           name: user.firstName,
           email: user.email,
@@ -227,7 +228,7 @@ export class AuthService {
   async setPassword(setPasswordDto: SetPasswordDto) {
     const { email, password, code } = setPasswordDto;
     const storedOtp = await this.cacheService.get(`${email}-setPassword`);
-    console.log({code, storedOtp});
+    console.log({ code, storedOtp });
     if (code != storedOtp) {
       throw new UnauthorizedException('Invalid OTP');
     }
@@ -253,13 +254,14 @@ export class AuthService {
 
   async requestResetPassword(requestResetPasswordDto: RequestResetPasswordDto) {
     const { email } = requestResetPasswordDto;
-    const isEmailExist = await this.userRepo.findOne({ where: { email } });
-    if (!isEmailExist) {
-      throw new BadRequestException('Email does not exist');
-    }
+    // const isEmailExist = await this.userRepo.findOne({ where: { email } });
+    // if (!isEmailExist) {
+    //   throw new BadRequestException('Email does not exist');
+    // }
     // Generate otp
     await this.sendOtp(email);
-    return isEmailExist;
+    return { message: 'OTP sent' };
+    // return isEmailExist;
   }
 
   async sendOtp(email: string) {
@@ -272,7 +274,7 @@ export class AuthService {
     const createEmailDto: CreateEmailDto = {
       subject: 'Confirm OTP',
       template: 'otp',
-      senderEmail: 'CTMS Info <info@lendhive.app>',
+      senderEmail: env.emailUser,
       metaData: {
         code: otp,
       },

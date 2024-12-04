@@ -37,7 +37,11 @@ const mg = require('nodemailer-mailgun-transport');
     MailerModule.forRoot({
       transport: {
         host: env.emailHost,
-        secure: true,
+        secure: false,
+        port: 587,
+        tls: {
+          ciphers: 'SSLv3',
+        },
         auth: {
           user: env.emailUser,
           pass: env.emailPassword,
